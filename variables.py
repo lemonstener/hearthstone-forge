@@ -394,19 +394,19 @@ years = {
 }
 
 formats = {
-    'Standard': {
+    'stnd': {
         'code': 'stnd',
         'name': 'Standard',
         'sets': ['c21','aou','schl','mad','bar']
     },
-    'Wild': {
+    'wild': {
         'code': 'wild',
         'name': 'Wild',
         'sets': ['dhi','leg','nax','gvg','brm','tgt',
         'loe','wog','krzn','msg','goro','kft','knc',
         'wtch','bmp','rsr','ros','sou','dod','gka']
     },
-    'Classic': {
+    'clsc': {
         'code': 'clsc',
         'name': 'Classic',
         'sets': ['cls']

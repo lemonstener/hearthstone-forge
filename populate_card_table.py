@@ -1,7 +1,7 @@
 from models import db, Card
-from app import requests
+import requests
 from variables import classes, rarity, card_types, minion_types, factions, schools_of_magic, sets
-
+from app import app
 # If you haven't done so yet, now is the time to create the database 
 # in your terminal:   -----> createdb forge_db
 
@@ -17,11 +17,11 @@ def add_card(card):
       new_card = Card(name=card['name'])
       new_card.type=card_types[card['type']]['code']
       if card['cardSet'] == 'Naxxramas':
-        new_card.set = 'nax'
+        new_card.card_set = 'nax'
       elif card['cardSet'] == 'Core':
-        new_card.set = 'c21'
+        new_card.card_set = 'c21'
       else:
-        new_card.set=sets[card['cardSet']]['code']
+        new_card.card_set=sets[card['cardSet']]['code']
       new_card.player_class=classes[card['playerClass']]['code']
       new_card.img=card['img']
       if 'rarity' in card:
