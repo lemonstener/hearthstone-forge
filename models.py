@@ -18,7 +18,7 @@ class Card(db.Model):
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     name = db.Column(db.String,nullable=False)
-    player_class = db.Column(db.String(3),nullable=False)
+    player_class = db.Column(db.String(40),nullable=False)
     type = db.Column(db.String(4),nullable=False)
     rarity = db.Column(db.String(4),nullable=False)
     card_set = db.Column(db.String(4),nullable=False)
@@ -46,7 +46,13 @@ class Card(db.Model):
             'rarity': self.rarity,
             'card_set': self.card_set,
             'minion_type': self.minion_type,
+            'cost': self.cost,
+            'attack': self.attack,
+            'health': self.health,
+            'armor': self.armor,
+            'durability': self.durability,
             'school': self.school,
+            'text': self.text,
             'flavor': self.flavor,
             'artist': self.artist,
             'img': self.img,
@@ -106,6 +112,9 @@ class User(db.Model):
             return msg
         else:
             for card in cards:
+                # if card.rarity == 'lgnd' and cards.count(card) > 1:
+                #     msg = 'Legendary cards cannot have duplicates in a deck.'
+                #     return msg
                 if cards.count(card) > 2:
                     msg = 'Only 2 copies of the same card are allowed in a deck.'
                     return msg 
@@ -144,9 +153,13 @@ class User(db.Model):
             return msg
 
         for card in cards:
+            # if card.rarity == 'lgnd' and cards.count(card) > 1:
+            #     msg = 'Legendary cards cannot have duplicates in a deck.'
+            #     return msg
             if cards.count(card) > 2:
                 msg = 'Only 2 copies of the same card are allowed in a deck.'
-        
+                return msg
+    
         for card in d.cards:
             db.session.delete(card)
             db.session.commit()
@@ -351,8 +364,8 @@ class Deck(db.Model):
         '''Show all cards from the deck.'''
 
         cards = []
-        for card in self.cards:
-            cards.append(card.card)
+        for dc in self.cards:
+            cards.append(dc.card.serialize_card())
         return cards
     
     def favorite_count(self):

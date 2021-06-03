@@ -3,56 +3,67 @@
 classes = {
     'Demon Hunter': {
         'code': 'dhn',
+        'params': f'demon%20hunter',
         'name': 'Demon Hunter',
         'quote': 'You are not prepared!'
     },
     'Druid': {
         'code': 'dru',
+        'params': 'druid',
         'name': 'Druid',
         'quote': 'Nature will rise against you!'
     },
     'Hunter': {
         'code': 'hun',
+        'params': 'hunter',
         'name': 'Hunter',
         'quote': 'Let the hunt begin!'
     },
     'Mage': {
         'code': 'mag',
+        'params': 'mage',
         'name': 'Mage',
         'quote': 'My magic will tear you apart!'
     },
     'Paladin': {
         'code': 'pal',
+        'params':'paladin',
         'name': 'Paladin',
         'quote': 'The Light protects those who wield it.'
     },
     'Priest': {
         'code': 'pst',
+        'params': 'priest',
         'name': 'Priest',
         'quote': 'Light smiles upon the just!'
     },
     'Rogue': {
         'code': 'rog',
+        'params': 'rogue',
         'name': 'Rogue',
         'quote': 'Watch your back!'
     },
     'Shaman': {
         'code': 'shm',
+        'params': 'shaman',
         'name': 'Shaman',
         'quote': 'Storm, earth and fire, heed my call!'
     },
     'Warlock': {
         'code': 'wal',
+        'params': 'warlock',
         'name': 'Warlock',
         'quote': 'I am your nightmare!'
     },
     'Warrior': {
         'code': 'war',
+        'params': 'warrior',
         'name': 'Warrior',
         'quote': 'Victory or death!'
     },
     'Neutral': {
         'code': 'neu',
+        'params': 'neutral',
         'name': 'Neutral'
     }
 }
@@ -394,7 +405,7 @@ years = {
 }
 
 formats = {
-    'stnd': {
+    'standard': {
         'code': 'stnd',
         'name': 'Standard',
         'sets': ['c21','aou','schl','mad','bar']
@@ -406,7 +417,7 @@ formats = {
         'loe','wog','krzn','msg','goro','kft','knc',
         'wtch','bmp','rsr','ros','sou','dod','gka']
     },
-    'clsc': {
+    'classic': {
         'code': 'clsc',
         'name': 'Classic',
         'sets': ['cls']

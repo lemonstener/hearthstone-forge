@@ -22,7 +22,14 @@ def add_card(card):
         new_card.card_set = 'c21'
       else:
         new_card.card_set=sets[card['cardSet']]['code']
-      new_card.player_class=classes[card['playerClass']]['code']
+      if 'multiClassGroup' in card:
+        text = ''
+        for c in card['classes']:
+          text += classes[c]['code'] + ','
+        text = text[:-1]
+        new_card.player_class = text
+      else:
+        new_card.player_class=classes[card['playerClass']]['code']
       new_card.img=card['img']
       if 'rarity' in card:
         new_card.rarity = rarity[card['rarity']]['code']
