@@ -76,6 +76,15 @@ class User(db.Model):
     favorites = db.relationship('Favorite',backref='user',cascade='all,delete')
 
 
+    def serialize(self):
+        user =  {
+            'id': self.id,
+            'username': self.username
+        }
+
+        return user
+
+
     def update_user(self,user_id,bio):
         '''Users can update their avatar and bio.
         Admins can promote users to moderators.'''
@@ -101,7 +110,7 @@ class User(db.Model):
         return
 
 
-    def create_deck(self,title,guide,player_class,cards,format):
+    def create_deck(self,title,player_class,cards,format):
         '''Create new deck, populate with cards. 
         Max 30 cards per deck allowed.
         A card can only appear twice in a deck.
@@ -126,9 +135,6 @@ class User(db.Model):
             format = format
         )
 
-        if len(guide) != 0:
-            new_deck.guide = guide
-
         db.session.add(new_deck)
         db.session.commit()
         
@@ -140,13 +146,13 @@ class User(db.Model):
         return new_deck
 
 
-    def update_deck(self,deck_id,title,guide,cards):
+    def update_deck(self,deck_id,title,cards):
         '''Users can update the title,guide and cards of their decks.'''
 
         d = Deck.query.get_or_404(deck_id)
         
         if self.id != d.user_id:
-            return
+            return 
 
         elif len(cards) != 30:
             msg = 'Decks must have exactly 30 cards.'
@@ -170,8 +176,8 @@ class User(db.Model):
             db.session.commit()
 
         d.title = title
-        d.guide = guide
         db.session.commit()
+        return d
 
     
     def delete_deck(self,deck_id):
@@ -180,9 +186,27 @@ class User(db.Model):
         d = Deck.query.get(deck_id)
 
         if self.id != d.user_id:
-            return 
+            msg = 'You are not authorized to do that.'
+            return msg
+
         db.session.delete(d)
         db.session.commit()
+        
+        msg = 'Delete successful'
+        return msg
+
+    
+    def update_deck_guide(self,guide,deck_id):
+        '''Create and update the guide for a deck.'''
+
+        d = Deck.query.get(deck_id)
+
+        if self.id != d.user_id:
+            return 
+        
+        d.guide = guide
+        db.session.commit()
+        return d
 
 
     def fav_unfav_deck(self,deck_id):
@@ -213,6 +237,7 @@ class User(db.Model):
 
         db.session.add(new_comment)
         db.session.commit()
+        return new_comment.text
 
 
     def update_comment(self,comment_id,text,is_flagged):
@@ -295,55 +320,6 @@ class User(db.Model):
             return
         return
 
-    
-    @classmethod
-    def register_admin(cls,username,password,email):
-        '''Create an admin type user.
-        Administrators can delete flagged comments,
-        post articles, and promote other users to moderators.
-        Has more power than a moderator.'''
-
-        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-
-        new_user = User(
-            username = username,
-            password = hashed_pwd,
-            email = email,
-            is_mod = True,
-            is_admin = True
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user
-
-    @classmethod
-    def register(cls,username,password,email):
-        '''Register user, hash password and store in database.'''
-
-        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-
-        new_user = User(
-            username = username,
-            password = hashed_pwd,
-            email = email,
-            is_admin = False
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user
-
-    @classmethod
-    def login_auth(cls,username,password):
-        '''Retrieve login request, make sure password and username match.'''
-
-        user = cls.query.filter_by(username=username).first()
-
-        if user:
-            is_auth = bcrypt.check_password_hash(user.password, password)
-            if is_auth:
-                return user
-
-        return False
 
 class Deck(db.Model):
     __tablename__ = 'decks'
@@ -352,7 +328,6 @@ class Deck(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     format = db.Column(db.String(4),nullable=False)
     title = db.Column(db.String(30),nullable=False)
-    guide = db.Column(db.Text)
     player_class = db.Column(db.String(3),nullable=False)
     created_at = db.Column(db.DateTime,default=datetime.utcnow())
 
@@ -380,17 +355,17 @@ class Deck(db.Model):
 
         return len(self.comments)
     
-    def serialize_deck(self):
+    def serialize(self):
         '''Display all properties of the deck.'''
 
         return {
             'title': self.title,
             'player_class': self.player_class,
             'format': self.format,
-            'guide': self.guide,
             'cost': 0,
             'created_at': self.created_at,
-            'cards': self.show_cards()
+            'cards': self.show_cards(),
+            'guide': self.guide
         }
 
 class Favorite(db.Model):

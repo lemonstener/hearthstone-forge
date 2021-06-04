@@ -1,6 +1,13 @@
-from flask import Flask, json, jsonify, request
+from flask.globals import session
+from flask_bcrypt import Bcrypt
+from forms import LoginForm
+from flask import Flask, jsonify, request
 from variables import formats, classes
 from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article
+
+
+curr_user = 'curr_user'
+bcrypt = Bcrypt()
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///forge_db'
@@ -12,10 +19,71 @@ connect_db(app)
 
 
 # ------------------------------------------------------
-# Card model routes
+# Login and Register routes.
 # ------------------------------------------------------
 
-@app.route('/api/forge/<format>/<player_class>')
+def login_auth(username,password):
+    '''Retrieve login request, make sure password and username match.
+    Store user in session.'''
+
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        is_auth = bcrypt.check_password_hash(user.password, password)
+        if is_auth:
+            session[curr_user] = user.serialize()
+            return jsonify(user.serialize())
+
+    return False
+
+def register(username,password,email):
+    '''Register user, hash password and store in database.
+    Store user in session.'''
+
+    hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return 
+
+    new_user = User(
+            username = username,
+            password = hashed_pwd,
+            email = email,
+            is_admin = False
+        )
+    db.session.add(new_user)
+    db.session.commit()
+    session[curr_user] = new_user.serialize()
+    return new_user.serialize()
+
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    username = request.json['username']
+    password = request.json['password']
+    user = login_auth(username,password)
+    return user
+
+@app.route('/register',methods=['POST'])
+def register_user():
+    username = request.json['username']
+    email = request.json['email']
+    password = request.json['password']
+    user = register(username,password,email)
+    return user
+
+@app.route('/logout')
+def logout():
+    if curr_user in session:
+        del session[curr_user]
+    return 'Logout successfull'
+
+
+# ------------------------------------------------------
+# Retrieve all valid cards when creating a new deck.
+# ------------------------------------------------------
+
+@app.route('/api/cards/<format>/<player_class>')
 def get_cards(format,player_class):
     '''
     Fetch all cards from that format by card set.
@@ -36,24 +104,98 @@ def get_cards(format,player_class):
             neutral_cards.append(c.serialize_card())
     return jsonify(c=class_specific_cards,n=neutral_cards)
 
-# @app.route('/api/forge/<format>/<player_class>/<cards>')
-# def create_deck(format,player_class,cards):
-
 
 # ------------------------------------------------------
-# Deck model routes
+# Deck routes
 # ------------------------------------------------------
+
+# Route for getting all decks from the database.
 
 @app.route('/api/decks')
-def get_decks():
+def get_all_decks():
     all_decks =  [deck.serialize_deck() for deck in Deck.query.all()]
     return jsonify(all_decks=all_decks)
 
-@app.route('/api/decks/<int:id>')
-def handle_deck(id):
-     deck = Deck.query.get(id)
-     return jsonify(deck=deck.serialize_deck())
+# Route for creating a new deck in the database.
 
+@app.route('/api/decks',methods=['POST'])
+def create_deck():
+    user = User.query.get_or_404(session[curr_user]['id'])
+    data = request.json
+    
+    deck = user.create_deck(
+        title = data['title'],
+        player_class = data['playerClass'],
+        cards = data['cards'],
+        format = data['format'])
+    return jsonify(deck.serialize())
+
+# Routes for a single deck. 
+
+@app.route('/api/decks/<int:id>', methods=['GET','PATCH','DELETE'])
+def handle_deck(id):
+    user = User.query.get_or_404(session[curr_user]['id'])
+
+    if request.method == 'GET':
+        '''Get information for a specific deck.'''
+        deck = Deck.query.get(id)
+        return jsonify(deck=deck.serialize())
+
+    else:
+        if request.method == 'PATCH':
+            '''Update deck.'''
+            data = request.json
+            deck = user.update_deck(
+            deck_id = id,
+            title = data['title'],
+            cards = data['cards']
+        )
+            return jsonify(deck.serialize())
+
+        if request.method == 'DELETE':
+            '''Delete deck if the user in session owns it.'''
+            deck_id = id
+            msg = user.delete_deck(deck_id)
+            return msg
+
+# Guide route.
+
+@app.route('/api/decks/<int:id>/guide',methods=['PATCH'])
+def handle_guide(id):
+    if request.method == 'PATCH':
+        '''Create or update a guide for a deck created by the user in session.'''
+        user = User.query.get_or_404(session[curr_user]['id'])
+        data = request.json
+
+        deck = user.update_deck_guide(data['guide'],id)
+        return deck.serialize()
+
+
+# ------------------------------------------------------
+# Favorite routes
+# ------------------------------------------------------
+
+@app.route('/api/decks/<int:id>/favorite',methods=['POST'])
+def fav_unfav_deck(id):
+    '''User can favorite or unfavorite a deck.'''
+    user = User.query.get_or_404(session[curr_user]['id'])
+    user.fav_unfav_deck(id)
+
+
+# ------------------------------------------------------
+# Comment routes
+# ------------------------------------------------------
+
+@app.route('/api/comments',methods=['POST'])
+def handle_comment():
+    user = User.query.get_or_404(session[curr_user]['id'])
+    if request.method == 'POST':
+        '''Create a comment about a deck.'''
+        data = request.json
+        deck_id = data['deckId']
+        text = data['text']
+
+        return user.post_comment(deck_id,text)
 
 
     
