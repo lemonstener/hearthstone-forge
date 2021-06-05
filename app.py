@@ -1,13 +1,11 @@
+from functools import reduce
 from flask.globals import session
-from flask_bcrypt import Bcrypt
-from forms import LoginForm
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect
 from variables import formats, classes
-from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article
+from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article, bcrypt
 
 
 curr_user = 'curr_user'
-bcrypt = Bcrypt()
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///forge_db'
@@ -41,9 +39,10 @@ def register(username,password,email):
     Store user in session.'''
 
     hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(email=email).first()
     if user:
-        return 
+        msg = 'Email is already registered to a different user.'
+        return msg
 
     new_user = User(
             username = username,
@@ -143,8 +142,9 @@ def handle_deck(id):
 
     else:
         if request.method == 'PATCH':
-            '''Update deck.'''
+            '''Update deck if the user is session owns it.'''
             data = request.json
+            
             deck = user.update_deck(
             deck_id = id,
             title = data['title'],
@@ -187,18 +187,110 @@ def fav_unfav_deck(id):
 # ------------------------------------------------------
 
 @app.route('/api/comments',methods=['POST'])
-def handle_comment():
+def create_comment():
+    '''Create a comment about a deck.'''
     user = User.query.get_or_404(session[curr_user]['id'])
-    if request.method == 'POST':
-        '''Create a comment about a deck.'''
-        data = request.json
-        deck_id = data['deckId']
-        text = data['text']
+    data = request.json
+    deck_id = data['deckId']
+    text = data['text']
 
-        return user.post_comment(deck_id,text)
+    return user.post_comment(deck_id,text)
+
+@app.route('/api/comments/<int:id>',methods=['PATCH','DELETE'])
+def handle_comment(id):
+    user = User.query.get_or_404(session[curr_user]['id'])
+
+    if request.method == 'PATCH':
+        '''Update comment.'''
+        data = request.json
+
+        if 'text' in data:
+            user.update_comment(id,data['text'])
+        elif 'isFlagged' in data:
+            user.flag_comment(id)
+    elif request.method == 'DELETE':
+        '''Users in session can delete a comment if they have the privilige.'''
+        user.delete_comment(id)
+
+
+# ------------------------------------------------------
+# Cardset routes
+# ------------------------------------------------------
+
+@app.route('/api/cards/<set>')
+def get_set(set):
+    '''Get all cards from a set.'''
+    cards = [card.serialize() for card in Card.query.filter_by(card_set=set).all()]
+    return jsonify(cards)
+
+# ------------------------------------------------------
+# Article routes
+# ------------------------------------------------------
+
+@app.route('/api/articles',methods=['GET','POST'])
+def get_articles():
+    if request.method == 'GET':
+        '''Get all news articles from the database.'''
+        all_articles = [a.serialize() for a in Article.query.all()]
+        return jsonify(articles=all_articles)
+    elif request.method == 'POST':
+        user = User.query.get_or_404(session[curr_user]['id'])
+        data = request.json
+
+        user.post_article(
+            title = data['title'],
+            text = data['text']
+        )
+
+@app.route('/api/articles/<int:id>',methods=['PATCH','DELETE'])
+def handle_article(id):
+    user = User.query.get_or_404(session[curr_user]['id'])
+    if request.method == 'PATCH':
+        '''Update article.'''
+        data = request.json
+        user.update_article(id,data['title'],data['text'])
+    elif request.method == 'DELETE':
+        '''Delete article.'''
+        user.delete_article(id)
+
+
+# ------------------------------------------------------
+# User routes
+# ------------------------------------------------------
+
+@app.route('/api/users/<int:id>', methods=['GET','PATCH','DELETE'])
+def get_user(id):
+    user = User.query.get_or_404(id)
+    if request.method == 'GET':
+        '''Display user info, show own decks and favorites.'''
+        user_info = user.serialize()
+        own_decks = [{deck.id:deck.title} for deck in user.decks]
+        if curr_user in session:
+            '''If user in session is fetching information about his own accout.'''
+            if user.id == session[curr_user]['id']:
+                fav_decks = [{f.deck.id:f.deck.title} for f in user.favorites]
+                return jsonify(user_info=user_info,own_decks=own_decks,fav_decks=fav_decks)
+            else:
+                return jsonify(user_info=user_info,own_decks=own_decks)
+    elif request.method == 'PATCH':
+        data = request.json
+        if 'bio' in data:
+            '''Update user bio.'''
+            user.bio = data['bio']
+            db.session.commit()
+        elif 'promote' in data:
+            '''Promote user to moderator if user in session is an admin.'''
+            admin = User.query.get_or_404(session[curr_user]['id'])
+            if admin.is_admin:
+               admin.promote_user(id)  
+    elif request.method == 'DELETE':
+        sess_user = User.query.get_or_404(session[curr_user]['id'])
+        sess_user.delete_user(id)
+
 
 
     
+
         
 
 

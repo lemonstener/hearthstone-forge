@@ -38,7 +38,7 @@ class Card(db.Model):
     how_to_get = db.Column(db.String)
 
 
-    def serialize_card(self):
+    def serialize(self):
         return {
             'name': self.name,
             'player_class': self.player_class,
@@ -79,32 +79,22 @@ class User(db.Model):
     def serialize(self):
         user =  {
             'id': self.id,
-            'username': self.username
+            'username': self.username,
+            'bio': self.bio
         }
 
         return user
 
-
-    def update_user(self,user_id,bio):
-        '''Users can update their avatar and bio.
-        Admins can promote users to moderators.'''
-
-        if self.id == user_id:
-            self.bio = bio
-            db.session.commit()
-        elif self.is_admin:
-            self.promote_user(user_id)
-        else:
-            return
     
     def delete_user(self,user_id):
         '''Users can delete their accounts.
         Mods cannot delete other users.
-        Admins can delete anybody's account.'''
+        Admins can delete anybody's account except for other admins.
+        Only I can do that MWAHAHAHAHA!!!'''
 
         u = User.query.get(user_id)
 
-        if self.is_admin or self.id == user_id:
+        if self.id == user_id or self.is_admin and u.is_admin == False:
             db.session.delete(u)
             db.session.commit()
         return
@@ -147,7 +137,8 @@ class User(db.Model):
 
 
     def update_deck(self,deck_id,title,cards):
-        '''Users can update the title,guide and cards of their decks.'''
+        '''Users can update the title and cards of their decks.
+        Updating the guide takes a separate function.'''
 
         d = Deck.query.get_or_404(deck_id)
         
@@ -240,23 +231,29 @@ class User(db.Model):
         return new_comment.text
 
 
-    def update_comment(self,comment_id,text,is_flagged):
-        '''Users can update the text of their own comments.
-        Users can flag other user comments for deletion.
-        Mods cannot flag comments to ensure they don't abuse their power.
-        Admins can flag comments but they don't need to as they can just delete without a flag.'''
+    def update_comment(self,comment_id,text):
+        '''Users can update the text of their own comments.'''
 
         c = Comment.query.get(comment_id)
         if c.user_id == self.id:
             c.text = text
             db.session.commit()
-        else:
-            if self.is_mod == True:
-                return
-            else:
-                c.is_flagged = is_flagged
-                db.session.commit()
 
+    def flag_comment(self,comment_id):
+        '''Users can flag other user comments for deletion.
+        Mods cannot flag comments to ensure they don't abuse their power.
+        Admins can flag comments but they don't need to as they can just delete without a flag.
+        Mods and admins can unflag comments.'''
+
+        c = Comment.query.get(comment_id)
+        if self.is_mod and c.is_flagged == False:
+            return
+        else:
+            if self.is_mod == False and c.is_flagged == False:
+                c.is_flagged = True
+            elif self.is_mod and c.is_flagged:
+                c.is_flagged = False
+        
 
     def delete_comment(self,comment_id):
         '''Users can delete their own comments.
@@ -265,10 +262,10 @@ class User(db.Model):
 
         c = Comment.query.get(comment_id)
 
-        if c.user_id == self.id:
+        if c.user_id == self.id or self.is_mod:
             db.session.delete(c)
             db.session.commit()
-        elif self.is_mod and c.is_flagged == True or self.is_admin:
+        elif self.is_mod and c.is_flagged:
             db.session.delete(c)
             db.session.commit()
         return
@@ -310,8 +307,7 @@ class User(db.Model):
 
 
     def promote_user(self,user_id):
-        '''Helper function for update_user().
-        Admins can promote other users to mods.'''
+        '''Admins can promote other users to mods.'''
 
         if self.is_admin:
             user = User.query.get(user_id)
@@ -320,6 +316,22 @@ class User(db.Model):
             return
         return
 
+    @classmethod
+    def create_admin(cls,username,password,email):
+        '''Create an admin type of user.'''
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        new_user = User(
+            username = username,
+            password = hashed_pwd,
+            email = email,
+            is_admin = True,
+            is_mod = True
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return new_user.serialize()
+
 
 class Deck(db.Model):
     __tablename__ = 'decks'
@@ -327,6 +339,7 @@ class Deck(db.Model):
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     format = db.Column(db.String(4),nullable=False)
+    guide = db.Column(db.Text,default='The owner of this deck has not created a guide for it yet.')
     title = db.Column(db.String(30),nullable=False)
     player_class = db.Column(db.String(3),nullable=False)
     created_at = db.Column(db.DateTime,default=datetime.utcnow())
@@ -340,15 +353,14 @@ class Deck(db.Model):
 
         cards = []
         for dc in self.cards:
-            cards.append(dc.card.serialize_card())
+            cards.append(dc.card.serialize())
         return cards
     
     def favorite_count(self):
         '''Display how many times this deck has been favorited by other users.'''
 
         count = len(self.favorites)
-        if count != 0:
-            return count
+        return len(self.favorites)
 
     def comment_count(self):
         '''Display number of comments.'''
@@ -365,7 +377,10 @@ class Deck(db.Model):
             'cost': 0,
             'created_at': self.created_at,
             'cards': self.show_cards(),
-            'guide': self.guide
+            'guide': self.guide,
+            'comments': [comment for comment in self.comments],
+            'comment_count': self.comment_count(),
+            'favorite_count': self.favorite_count()
         }
 
 class Favorite(db.Model):
@@ -407,6 +422,14 @@ class Article(db.Model):
     posted_by = db.Column(db.String)
     title = db.Column(db.String(20),nullable=False,unique=True)
     text = db.Column(db.Text,nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'posted_by': self.posted_by,
+            'title': self.title,
+            'text': self.text
+        }
 
 
 
