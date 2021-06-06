@@ -79,8 +79,10 @@ def logout():
 
 
 # ------------------------------------------------------
-# Retrieve all valid cards when creating a new deck.
+# Card routes
 # ------------------------------------------------------
+
+# Getting all viable cards for creating a deck.
 
 @app.route('/api/cards/<format>/<player_class>')
 def get_cards(format,player_class):
@@ -102,6 +104,22 @@ def get_cards(format,player_class):
         for c in n_cards:
             neutral_cards.append(c.serialize_card())
     return jsonify(c=class_specific_cards,n=neutral_cards)
+
+# Getting all cards of a card set.
+
+@app.route('/api/cards/<set>')
+def get_set(set):
+    '''Get all cards from a set.'''
+    cards = [card.serialize() for card in Card.query.filter_by(card_set=set).all()]
+    return jsonify(cards)
+
+# Getting all cards by artist
+
+@app.route('/api/cards/<artist_name>')
+def get_cards_by_artist(artist_name):
+    '''Get all cards created by the artist specified.'''
+    cards = [card.serialize() for card in Card.query.filter_by(artist=artist_name).all()]
+    return jsonify(cards)
 
 
 # ------------------------------------------------------
@@ -144,7 +162,7 @@ def handle_deck(id):
         if request.method == 'PATCH':
             '''Update deck if the user is session owns it.'''
             data = request.json
-            
+
             deck = user.update_deck(
             deck_id = id,
             title = data['title'],
@@ -212,16 +230,6 @@ def handle_comment(id):
         '''Users in session can delete a comment if they have the privilige.'''
         user.delete_comment(id)
 
-
-# ------------------------------------------------------
-# Cardset routes
-# ------------------------------------------------------
-
-@app.route('/api/cards/<set>')
-def get_set(set):
-    '''Get all cards from a set.'''
-    cards = [card.serialize() for card in Card.query.filter_by(card_set=set).all()]
-    return jsonify(cards)
 
 # ------------------------------------------------------
 # Article routes
