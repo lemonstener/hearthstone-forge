@@ -1,24 +1,85 @@
-#dashboard {
+body {}
+
+
+/* Format picker */
+
+#format-picker {
+    width: 100vw;
+    height: 70vh;
     background-image: url(/images/paper-background.jpeg);
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
 }
 
-#hero-img {
-    width: 100%;
-    height: 600px;
-    background-image: url('/images/classes/druid.jpeg');
-    background-position: top;
+.format-panel {
+    text-align: center;
+    width: 33.3333%;
+    height: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: width .5s;
+    position: relative;
+    cursor: pointer;
+}
+
+.active {
+    width: 80%;
+}
+
+.format-title {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.format-sets {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+
+/* Class picker */
+
+#class-picker {
+    width: 100vw;
+    height: 70vh;
+    background-image: url(/images/paper-background.jpeg);
+    background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
 }
 
-.portrait {
-    width: 300px;
-    height: 300px;
+#class-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.class-portrait {
+    width: 18vw;
+    height: 18vh;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
+    cursor: pointer;
+    transition: filter .8s;
+}
+
+.grayscale {
+    filter: grayscale(100%);
 }
 
 #demon-hunter-p {

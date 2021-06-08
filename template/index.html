@@ -6,126 +6,74 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Forge</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/app.css">
 </head>
 
 <body>
 
-    <!-- Nav bar -->
+    <!-- Format picker panel -->
 
-    <ul class="nav nav-tabs flex-row">
-        <li class="nav-item dropdown">
-            <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Cards</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Forge a deck</a></li>
-                <li><a class="dropdown-item" href="#">Browse cards by sets</a></li>
-                <li><a class="dropdown-item" href="#">All sets</a></li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Decks</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Browse decks</a></li>
-                <li><a class="dropdown-item" href="#">Your decks</a></li>
-                <li><a class="dropdown-item" href="#">Favorite decks</a></li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">News</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Username</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
-        </li>
-    </ul>
-
-    <!-- Panels -->
-
-    <!-- Deck creation field -->
-    <div id="dashboard" class="container-fluid">
-        <div id="select-format" class="container-fluid">
-            <div class="row">
-                <div class="col-4 text-center formats mt-3 mb-3">
-                    <img src="/images/standard.png" alt="standard mode icon">
-                </div>
-                <div class="col-4 text-center formats mt-3 mb-3">
-                    <img src="/images/wild.png" alt="wild format icon">
-                </div>
-                <div class="col-4 text-center formats mt-3 mb-3">
-                    <img src="/images/classic.png" alt="classic format icon">
-                </div>
+    <section id="format-picker">
+        <div class="format-panel">
+            <div class=" format-title">
+                <h2>Standard</h2>
+            </div>
+            <div class="format-img">
+                <img src="/images/standard.png" alt="">
+            </div>
+            <div class="format-sets">
+                <p>naxrammas</p>
+                <p>msg</p>
+                <p>core</p>
             </div>
         </div>
-        <div id="select-hero" class="container-fluid">
-            <div class="row">
-                <div id="hero-img" class="col-6 text-center"></div>
+        <div class="format-panel">
+            <div class=" format-title">
+                <h2>Wild</h2>
             </div>
-            <div id="hero-btns" class="col-12">
-                <div class="row">
-                    <div class="col"></div>
-                    <div id="demon-hunter-p" class="col portrait"></div>
-                    <div id="druid-p" class="col portrait"></div>
-                    <div id="hunter-p" class="col portrait"></div>
-                    <div id="mage-p" class="col portrait"></div>
-                    <div id="paladin-p" class="col portrait"></div>
-                    <div class="col"></div>
-                </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div id="priest-p" class="col portrait"></div>
-                    <div id="rogue-p" class="col portrait"></div>
-                    <div id="shaman-p" class="col portrait"></div>
-                    <div id="warlock-p" class="col portrait"></div>
-                    <div id="warrior-p" class="col portrait"></div>
-                    <div class="col"></div>
-                </div>
+            <div class="format-img">
+                <img src="/images/wild.png" alt="">
+            </div>
+            <div class="format-sets">
+                <p>naxrammas</p>
+                <p>msg</p>
+                <p>core</p>
             </div>
         </div>
-
-        <!-- Filters tab -->
-
-        <div id="filters" class="container-flud border">
-            <div class="row">
-                <div class="col-12 text-center mb-1">Filters button</div>
-                <div class="col-12 text-center">Filters</div>
+        <div class="format-panel">
+            <div class=" format-title">
+                <h2>Classic</h2>
+            </div>
+            <div class="format-img">
+                <img src="/images/classic.png" alt="">
+            </div>
+            <div class="format-sets">
+                <p>sdgdsg</p>
+                <p>safads</p>
+                <p>asdfd</p>
             </div>
         </div>
+    </section>
 
-        <!-- Deck creation panel -->
+    <!-- Class picker panel -->
 
-        <div id="deck-creator" class="container-fluid">
-            <div class="row">
-                <div class="col-2 border">
-                    Card sets
-                    <ul>
-                        <li>set</li>
-                        <li>set</li>
-                        <li>set</li>
-                        <li>set</li>
-                    </ul>
-                </div>
-                <div class="col text-center border">
-                    Cards
-                </div>
-                <div class="col-2 text-center border">
-                    Cards in deck
-                    <ul></ul>
-                </div>
-            </div>
+    <section id="class-picker">
+        <div id="class-panel">
+            <div id="demon-hunter-p" class="class-portrait grayscale"></div>
+            <div id="druid-p" class="class-portrait grayscale"></div>
+            <div id="hunter-p" class="class-portrait grayscale"></div>
+            <div id="mage-p" class="class-portrait grayscale"></div>
+            <div id="paladin-p" class="class-portrait grayscale"></div>
+            <div id="priest-p" class="class-portrait grayscale"></div>
+            <div id="rogue-p" class="class-portrait grayscale"></div>
+            <div id="shaman-p" class="class-portrait grayscale"></div>
+            <div id="warlock-p" class="class-portrait grayscale"></div>
+            <div id="warrior-p" class="class-portrait grayscale"></div>
         </div>
-    </div>
+    </section>
 
+    <script src="/static/app.js"></script>
 
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 
 </html>
