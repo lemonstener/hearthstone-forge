@@ -18,10 +18,12 @@ function activate(panel) {
     panel.children[2].style.visibility = 'visible'
     panel.children[2].style.opacity = '1';
     panel.classList.add('active');
+    panel.classList.remove('grayscale')
 }
 
 function deactivate(panel) {
     panel.classList.remove('active');
+    panel.classList.add('grayscale')
     panel.children[0].style.visibility = 'hidden'
     panel.children[0].style.opacity = '0';
     panel.children[2].style.visibility = 'hidden'

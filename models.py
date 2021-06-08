@@ -40,6 +40,7 @@ class Card(db.Model):
 
     def serialize(self):
         return {
+            'id': self.id,
             'name': self.name,
             'player_class': self.player_class,
             'type': self.type,

@@ -1,12 +1,12 @@
 from functools import reduce
 from flask.globals import session
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request, redirect, render_template
 from variables import formats, classes
 from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article, bcrypt
 
-
 curr_user = 'curr_user'
 app = Flask(__name__)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///forge_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -15,6 +15,10 @@ app.config['SECRET_KEY'] = 'cards'
 
 connect_db(app)
 
+
+@app.route('/')
+def home_page():
+    return render_template('index.html')
 
 # ------------------------------------------------------
 # Login and Register routes.
@@ -100,9 +104,9 @@ def get_cards(format,player_class):
         n_cards = Card.query.filter_by(player_class='neu',card_set=set).all()
 
         for c in c_cards:
-            class_specific_cards.append(c.serialize_card())
+            class_specific_cards.append(c.serialize())
         for c in n_cards:
-            neutral_cards.append(c.serialize_card())
+            neutral_cards.append(c.serialize())
     return jsonify(c=class_specific_cards,n=neutral_cards)
 
 # Getting all cards of a card set.
