@@ -78,10 +78,15 @@
     <!-- Deck dashboard -->
 
     <section id="dashboard">
-        <div id="set-picker"></div>
+        <div id="filter-panel">
+            Sets <span class="show-filters">▲</span>
+            <div id="sets" hidden=true></div>
+        </div>
         <div id="card-picker"></div>
         <div id="deck-display">
-            <table id="cards-in-deck"></table>
+            <table>
+                <tbody id="cards-in-deck"></tbody>
+            </table>
         </div>
     </section>
 
