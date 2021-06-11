@@ -1,15 +1,24 @@
-const filterPanel = document.querySelector('#filter-panel')
 const cardPicker = document.querySelector('#card-picker')
 const deckDisplay = document.querySelector('#deck-display')
 const cardsInDeck = document.querySelector('#cards-in-deck')
-
-// Filters
-const setFilter = document.querySelector('#sets')
-
+const cardCounter = document.querySelector('#card-counter')
+const deckIcon = document.querySelector('#deck-icon')
+const backFromDeck = document.querySelector('#back-deck-button')
+const deckHolder = document.querySelector('#deck-holder')
+const button = document.querySelector('#forge-button')
 
 const BASE_URL = 'http://127.0.0.1:5000/api'
 
 // Get all viable cards from the API.
+
+deckIcon.addEventListener('click', function() {
+    deckHolder.style.right = '-40vw'
+    deckDisplay.style.right = '0'
+})
+backFromDeck.addEventListener('click', function() {
+    deckDisplay.style.right = '-40vw'
+    deckHolder.style.right = '0'
+})
 
 async function getCardsByFormat(format, playerClass) {
     const res = await axios.get(`${BASE_URL}/cards/${format}/${playerClass}`);
@@ -22,40 +31,11 @@ async function getCardsByFormat(format, playerClass) {
     for (card of neutralCards) {
         cardPicker.append(createCardElement(card))
     }
-    // Add set filters
-    for (cardSet of formats[format].sets) {
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const br = document.createElement('br')
-
-        label.htmlFor = checkBox.id
-        label.append(checkBox)
-
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.setAttribute('checked', true)
-        checkBox.setAttribute.id = cardSet.code
-        label.innerText = cardSet.name
-
-        setFilter.append(checkBox)
-        setFilter.append(label)
-        setFilter.append(br)
-
-        filters = document.querySelector('.show-filters')
-        filters.addEventListener('mouseover', reveal)
-        filters.addEventListener('click', hide)
-    }
-
+    // Filters are created from the filters.js file.
+    createFilters(format)
 }
 
-function reveal(e) {
-    e.target.innerText = '▼'
-    e.target.parentElement.lastElementChild.hidden = false
-}
 
-function hide(e) {
-    e.target.innerText = '▲'
-    e.target.parentElement.lastElementChild.hidden = true
-}
 
 // Create the card elements, append to the page.
 
@@ -124,6 +104,7 @@ function handleCard(e) {
         deckArr.push(cardId)
         card.classList.add('grayscale')
         addDuplicateCardToDeck(cardId)
+        cardCounter.innerText = parseInt(deckArr.length)
     } else {
         deckArr.push(cardId)
         tableArr.push(cardCost)
@@ -131,6 +112,7 @@ function handleCard(e) {
             return a - b
         });
         addSingleCardToDeck(card)
+        cardCounter.innerText = parseInt(deckArr.length)
     }
 
     // Gray out all cards if deck limit has been reached.
@@ -140,6 +122,7 @@ function handleCard(e) {
         cards.forEach(card => {
             card.classList.add('grayscale-all')
         })
+        button.hidden = false
     }
 }
 
@@ -231,9 +214,11 @@ function removeCard(e) {
         cards.forEach(card => {
             card.classList.remove('grayscale-all')
         })
+        button.hidden = true
     }
 
     card.classList.remove('grayscale')
+    cardCounter.innerText = parseInt(deckArr.length)
 }
 
 // Function to determine whether a card can be added to the deck.
