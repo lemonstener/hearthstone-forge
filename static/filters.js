@@ -1,172 +1,168 @@
 // Here we create the filter for the cards as well as any related functions.
-
+const filterDashboard = document.querySelector('#filter-dashboard')
 const filterPanel = document.querySelector('#filter-panel')
+const filterDisplay = document.querySelector('#filter-display')
 const filterIcon = document.querySelector('#filter-icon')
 const backFromFilter = document.querySelector('#back-filter-button')
-const setFilter = document.querySelector('#cardset')
-const costFilter = document.querySelector('#cost')
-const typeFilter = document.querySelector('#type')
-const rarityFilter = document.querySelector('#rarity')
+
+const format = 'wild'
+const activeSets = []
+let currentFilterColumn
+const activeFilters = []
 
 filterIcon.addEventListener('click', function() {
     this.style.left = '-40vw'
-    filterPanel.style.left = '0'
+    filterDashboard.style.left = '0'
 })
 
 backFromFilter.addEventListener('click', function() {
-    filterPanel.style.left = '-40vw'
+    filterDashboard.style.left = '-40vw'
     filterIcon.style.left = '0'
+    filterDisplay.innerHTML = ''
+    filterDisplay.hidden = true
 })
 
-function createFilters(format) {
-    // Card set filters
-    for (cardSet of formats[format].sets) {
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const br = document.createElement('br')
+backFromFilter.addEventListener('mouseover', function() {
+    filterDisplay.innerHTML = ''
+    filterDisplay.hidden = true
+})
 
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.setAttribute('checked', true)
-        checkBox.id = cardSet.code
-
-        label.htmlFor = checkBox.id
-        label.append(checkBox)
-        label.innerText = cardSet.name
-
-        setFilter.append(label)
-        setFilter.append(checkBox)
-        setFilter.append(br)
-    }
-    // Cost filters
-    for (let i = 0; i <= 10; i++) {
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const br = document.createElement('br')
-
-        checkBox.id = `${i}`
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.setAttribute('checked', true)
-
-        label.htmlFor = checkBox.id
-        label.append(checkBox)
-        label.innerText = `${i}`
-
-        costFilter.append(label)
-        costFilter.append(checkBox)
-        costFilter.append(br)
-        if (i === 10) {
-            checkBox.id = '10+'
-            label.innerText = '10+'
-        }
-    }
-    // Rarity filters
-    for (r in rarity) {
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const br = document.createElement('br')
-
-        checkBox.id = rarity[r].code
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.setAttribute('checked', true)
-
-        label.htmlFor = checkBox.id
-        label.append(checkBox)
-        label.innerText = rarity[r].name
-
-        rarityFilter.append(label)
-        rarityFilter.append(checkBox)
-        rarityFilter.append(br)
-    }
-
-    for (type in cardTypes) {
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const br = document.createElement('br')
-
-        checkBox.id = `${cardTypes[type].code}`
-        checkBox.setAttribute('type', 'checkbox')
-        checkBox.setAttribute('checked', true)
-
-        label.htmlFor = checkBox.id
-        label.append(checkBox)
-        label.innerText = cardTypes[type].name
-
-        typeFilter.append(label)
-        typeFilter.append(checkBox)
-        typeFilter.append(br)
-    }
-    const togglers = document.querySelectorAll('.toggle-filter')
-    const labels = document.querySelectorAll('label')
-    togglers.forEach(toggle => {
-        toggle.addEventListener('click', reveal)
-    })
-
-    const checkboxes = document.querySelectorAll('input[type=checkbox]')
-
-    checkboxes.forEach(checkBox => {
-        checkBox.addEventListener('change', checkUncheck)
-    })
-
-}
+const togglers = document.querySelectorAll('.toggle-filter')
+togglers.forEach(toggle => {
+    toggle.addEventListener('mouseover', reveal)
+    toggle.addEventListener('click', hide)
+})
 
 function reveal() {
-    this.removeEventListener('click', reveal)
-    this.addEventListener('click', hide)
-    this.innerText = '▼'
-    this.parentElement.lastElementChild.hidden = false
+    createFilters(this.id)
+    currentFilterColumn = this.id
 }
 
 function hide() {
-    this.removeEventListener('click', hide)
-    this.addEventListener('click', reveal)
-    this.innerText = '▲'
-    this.parentElement.lastElementChild.hidden = true
+    filterDisplay.innerHTML = ''
+    filterDisplay.hidden = true
 }
 
-function checkUncheck() {
-    const dataType = this.parentElement.id
-    const value = this.id
-    if (this.checked === false) {
-        if (value === '10+') {
-            const tenCost = document.querySelectorAll(`[cost='10']`)
-            const twelveCost = document.querySelectorAll(`[cost='12']`)
-            const twentyFiveCost = document.querySelectorAll(`[cost='25']`)
-            tenCost.forEach(card => {
-                card.hidden = true
-            })
-            twelveCost.forEach(card => {
-                card.hidden = true
-            })
-            twentyFiveCost.forEach(card => {
-                card.hidden = true
-            })
-            return
+function createFilters(id) {
+    if (id === 'cardset') {
+        filterDisplay.innerHTML = ''
+        for (cardSet of formats[format].sets) {
+            const div = document.createElement('div')
+
+            div.style.border = '.1px solid black'
+            div.style.padding = '2px'
+            div.classList.add('filter')
+            div.id = cardSet.code
+            div.innerText = cardSet.name
+
+            filterDisplay.append(div)
         }
-        const cards = document.querySelectorAll(`[${dataType}='${value}']`)
-        cards.forEach(card => {
+    } else if (id === 'cost') {
+        filterDisplay.innerHTML = ''
+        for (let i = 0; i <= 10; i++) {
+            const div = document.createElement('div')
+
+            div.style.border = '.1px solid black'
+            div.style.padding = '2px'
+            div.classList.add('filter')
+
+            div.id = `${i}`
+            div.innerText = `${i}`
+
+            filterDisplay.append(div)
+            if (i === 10) {
+                div.id = '10+'
+                div.innerText = '10+'
+            }
+        }
+    } else if (id === 'type') {
+        filterDisplay.innerHTML = ''
+        for (type in cardTypes) {
+            const div = document.createElement('div')
+
+            div.style.border = '.1px solid black'
+            div.style.padding = '2px'
+            div.classList.add('filter')
+
+            div.id = `${cardTypes[type].code}`
+            div.innerText = cardTypes[type].name
+
+            filterDisplay.append(div)
+        }
+    } else if (id === 'rarity') {
+        filterDisplay.innerHTML = ''
+        for (r in rarity) {
+            const div = document.createElement('div')
+
+            div.style.border = '.1px solid black'
+            div.style.padding = '2px'
+            div.classList.add('filter')
+
+            div.id = rarity[r].code
+            div.innerText = rarity[r].name
+
+            filterDisplay.append(div)
+        }
+    }
+
+    const filters = document.querySelectorAll('.filter')
+
+    filters.forEach(filter => {
+        filter.addEventListener('click', applyRemove)
+        filter.addEventListener('mouseover', hoverOver)
+        filter.addEventListener('mouseout', hoverAway)
+    })
+    filterDisplay.hidden = false
+
+    for (f in activeFilters) {
+        console.log(f)
+    }
+}
+
+function hoverOver() {
+    this.classList.add('hover-over')
+}
+
+function hoverAway() {
+    this.classList.remove('hover-over')
+}
+
+function applyRemove() {
+    const dataType = currentFilterColumn
+    const value = this.id
+
+    const parameter = `[${dataType} = '${value}']`
+
+    if (activeFilters.indexOf(parameter) === -1) {
+        if (dataType === 'cardset') {
+            activeSets.push(parameter)
+        } else {
+            activeFilters.push(parameter)
+        }
+
+        const element = document.getElementById(value)
+        element.style.backgroundColor = 'black'
+        element.style.color = 'white'
+        element.innerText = element.innerText + ' ✓'
+
+        const hiddenCards = document.querySelectorAll('.card')
+        hiddenCards.forEach(card => {
             card.hidden = true
         })
-        return
-    } else {
-        if (value === '10+') {
-            const tenCost = document.querySelectorAll(`[cost='10']`)
-            const twelveCost = document.querySelectorAll(`[cost='12']`)
-            const twentyFiveCost = document.querySelectorAll(`[cost='25']`)
-            tenCost.forEach(card => {
+
+        if (activeSets.length > 0) {
+            for (s of activeSets) {
+                console.log(s)
+                const visibleCards = document.querySelectorAll(s, `${activeFilters.join('')}`)
+                visibleCards.forEach(card => {
+                    card.hidden = false
+                })
+            }
+        } else {
+            const visibleCards = document.querySelectorAll(`${activeFilters.join('')}`)
+            visibleCards.forEach(card => {
                 card.hidden = false
             })
-            twelveCost.forEach(card => {
-                card.hidden = false
-            })
-            twentyFiveCost.forEach(card => {
-                card.hidden = false
-            })
-            return
         }
-        const cards = document.querySelectorAll(`[${dataType}='${value}']`)
-        cards.forEach(card => {
-            card.hidden = false
-        })
-        return
     }
 }

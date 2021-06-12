@@ -95,17 +95,19 @@ def get_cards(format,player_class):
     Filter them by the player class specified and add netural cards from those sets.
     Return cards.
     '''
-    sets_to_get = formats[format]['sets']
+
     class_code = classes[player_class.title()]['code']
     class_specific_cards = []
     neutral_cards = []
-    for set in sets_to_get:
-        c_cards = Card.query.filter(Card.player_class.like(f'%{class_code}%'),Card.card_set==set).all()
-        n_cards = Card.query.filter_by(player_class='neu',card_set=set).all()
 
-        for c in c_cards:
+    c_cards = Card.query.filter(Card.player_class.like(f'%{class_code}%')).order_by(Card.cost).all()
+    n_cards = Card.query.filter_by(player_class='neu').order_by(Card.cost).all()
+
+    for c in c_cards:
+        if c.card_set in formats[format]['sets']:
             class_specific_cards.append(c.serialize())
-        for c in n_cards:
+    for c in n_cards:
+        if c.card_set in formats[format]['sets']:
             neutral_cards.append(c.serialize())
     return jsonify(c=class_specific_cards,n=neutral_cards)
 

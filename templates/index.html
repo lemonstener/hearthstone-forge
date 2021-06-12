@@ -78,23 +78,15 @@
     <!-- Deck dashboard -->
 
     <section id="dashboard">
-        <div id="filter-panel">
-            <div>
-                <span id="back-filter-button">&#10232;</span><br> Sets <span class="toggle-filter">▲</span><br>
-                <div id="cardset" hidden=true></div>
+        <div id="filter-dashboard">
+            <div id="filter-panel">
+                <div><span id="back-filter-button">&#10232;</span><br></div>
+                <div id="cardset" class="toggle-filter">Sets<br></div>
+                <div id="cost" class="toggle-filter">Cost<br></div>
+                <div id='type' class="toggle-filter">Type<br></div>
+                <div id='rarity' class="toggle-filter">Rarity<br></div>
             </div>
-            <div>
-                Cost <span class="toggle-filter">▲</span><br>
-                <div id="cost" hidden=true></div>
-            </div>
-            <div>
-                Type <span class="toggle-filter">▲</span><br>
-                <div id='type' hidden=true></div>
-            </div>
-            <div>
-                Rarity <span class="toggle-filter">▲</span><br>
-                <div id='rarity' hidden=true></div>
-            </div>
+            <div id="filter-display" hidden=true></div>
         </div>
         <div id="filter-icon"></div>
         <div id="card-picker"></div>

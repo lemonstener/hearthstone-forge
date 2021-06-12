@@ -215,11 +215,6 @@ schools_of_magic = {
 
 
 sets = {
-  'Vanilla': {
-      'code': 'van',
-      'name': 'Vanilla',
-      'img': None
-      },
   'Classic': {
       'code': 'cls',
       'name': 'Classic',
