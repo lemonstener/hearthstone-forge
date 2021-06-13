@@ -1,3 +1,5 @@
+const dashboard = document.querySelector('#dashboard')
+const showcase = document.querySelector('#showcase')
 const cardPicker = document.querySelector('#card-picker')
 const deckDisplay = document.querySelector('#deck-display')
 const cardsInDeck = document.querySelector('#cards-in-deck')
@@ -31,8 +33,6 @@ async function getCardsByFormat(format, playerClass) {
     for (card of neutralCards) {
         cardPicker.append(createCardElement(card))
     }
-    // Filters are created from the filters.js file.
-    createFilters(format)
 }
 
 
@@ -42,6 +42,7 @@ async function getCardsByFormat(format, playerClass) {
 function createCardElement(card) {
     const div = document.createElement('div')
     div.classList.add('card')
+    div.setAttribute('playerclass', card.player_class)
     div.style.backgroundImage = `url(${card.img})`
     div.setAttribute('img', card.img)
     div.setAttribute('c-id', card.id)
@@ -70,9 +71,83 @@ function createCardElement(card) {
         div.setAttribute('health', card.health)
     }
 
+    const icon = document.createElement('div')
+    icon.innerHTML = '<span>&#8505;</span>'
+    icon.classList.add('info-icon')
+    div.append(icon)
+
+    icon.addEventListener('click', showcaseCard)
+
     div.addEventListener('click', handleCard)
+    div.addEventListener('mouseover', showInfoIcon)
+    div.addEventListener('mouseout', hideInfoIcon)
 
     return div
+}
+
+function showInfoIcon(e) {
+    const icon = this.firstElementChild
+    icon.style.visibility = 'visible'
+    icon.style.opacity = '1'
+}
+
+function hideInfoIcon() {
+    const icon = this.firstElementChild
+    icon.style.visibility = 'hidden'
+    icon.style.opacity = '0'
+}
+
+function showcaseCard() {
+    const card = this.parentElement
+    showcase.hidden = false
+    showcase.style.top = '0'
+
+    const img = document.createElement('img')
+    img.src = card.getAttribute('img')
+    img.style.width = '190px'
+    img.style.height = '250px'
+
+    const info = document.createElement('div')
+    info.style.width = '300px'
+
+    const cardName = document.createElement('h3')
+    const cardFlavor = document.createElement('p')
+    const cardText = document.createElement('p')
+
+    cardName.innerText = card.getAttribute('name')
+    cardFlavor.innerHTML = `<i>${card.getAttribute('flavor')}</i>`
+    cardText.innerText = card.getAttribute('text')
+
+    const list = document.createElement('ul')
+    const cardType = document.createElement('li')
+    const cardRarity = document.createElement('li')
+    const cardSet = document.createElement('li')
+    const cardClass = document.createElement('li')
+    const cardCost = document.createElement('li')
+    const cardArtist = document.createElement('li')
+
+    cardType.innerText = 'Type: ' + cardTypes[card.getAttribute('type')].name
+    cardRarity.innerText = 'Rarity: ' + rarity[card.getAttribute('rarity')].name
+    cardSet.innerText = 'Set: ' + sets[card.getAttribute('cardset')].name
+    cardClass.innerText = 'Class: ' + `${classes[card.getAttribute('playerclass')].name}`
+    cardCost.innerText = 'Cost to craft: ' + `${rarity[card.getAttribute('rarity')].cost}`
+    cardArtist.innerText = 'Artist: ' + card.getAttribute('artist')
+
+    list.append(cardType)
+    list.append(cardRarity)
+    list.append(cardSet)
+    list.append(cardClass)
+    list.append(cardCost)
+    list.append(cardArtist)
+
+    info.append(cardName)
+    info.append(cardFlavor)
+    info.append(cardText)
+    info.append(list)
+
+    showcase.append(img)
+    showcase.append(info)
+
 }
 
 // deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
@@ -251,4 +326,4 @@ function checkForDuplicate(id) {
     return false
 }
 
-getCardsByFormat('wild', 'paladin')
+getCardsByFormat('wild', 'warrior')

@@ -5,10 +5,15 @@ const filterDisplay = document.querySelector('#filter-display')
 const filterIcon = document.querySelector('#filter-icon')
 const backFromFilter = document.querySelector('#back-filter-button')
 
-const format = 'wild'
-const activeSets = []
 let currentFilterColumn
-const activeFilters = []
+const activeFilters = {
+    cardset: [],
+    cost: [],
+    type: [],
+    rarity: [],
+    attack: [],
+    health: []
+}
 
 filterIcon.addEventListener('click', function() {
     this.style.left = '-40vw'
@@ -30,12 +35,18 @@ backFromFilter.addEventListener('mouseover', function() {
 const togglers = document.querySelectorAll('.toggle-filter')
 togglers.forEach(toggle => {
     toggle.addEventListener('mouseover', reveal)
+    toggle.addEventListener('mouseout', hoverAwayCategory)
     toggle.addEventListener('click', hide)
 })
 
 function reveal() {
+    this.classList.add('hover-over-category')
     createFilters(this.id)
     currentFilterColumn = this.id
+}
+
+function hoverAwayCategory() {
+    this.classList.remove('hover-over-category')
 }
 
 function hide() {
@@ -45,6 +56,8 @@ function hide() {
 
 function createFilters(id) {
     if (id === 'cardset') {
+        // format = userInSession.format
+        format = 'wild'
         filterDisplay.innerHTML = ''
         for (cardSet of formats[format].sets) {
             const div = document.createElement('div')
@@ -57,7 +70,7 @@ function createFilters(id) {
 
             filterDisplay.append(div)
         }
-    } else if (id === 'cost') {
+    } else if (id === 'cost' || id === 'attack' || id === 'health') {
         filterDisplay.innerHTML = ''
         for (let i = 0; i <= 10; i++) {
             const div = document.createElement('div')
@@ -109,60 +122,63 @@ function createFilters(id) {
 
     filters.forEach(filter => {
         filter.addEventListener('click', applyRemove)
-        filter.addEventListener('mouseover', hoverOver)
-        filter.addEventListener('mouseout', hoverAway)
+        filter.addEventListener('mouseover', hoverOverValue)
+        filter.addEventListener('mouseout', hoverAwayValue)
+        if (activeFilters[id].indexOf(`${filter.id}`) > -1) {
+            filter.classList.add('scratched')
+        }
     })
     filterDisplay.hidden = false
-
-    for (f in activeFilters) {
-        console.log(f)
-    }
 }
 
-function hoverOver() {
-    this.classList.add('hover-over')
+function hoverOverValue() {
+    this.classList.add('hover-over-value')
 }
 
-function hoverAway() {
-    this.classList.remove('hover-over')
+function hoverAwayValue() {
+    this.classList.remove('hover-over-value')
 }
 
 function applyRemove() {
     const dataType = currentFilterColumn
     const value = this.id
 
-    const parameter = `[${dataType} = '${value}']`
+    if (!this.classList.contains('scratched')) {
+        this.classList.add('scratched')
 
-    if (activeFilters.indexOf(parameter) === -1) {
-        if (dataType === 'cardset') {
-            activeSets.push(parameter)
+        if (value === '10+') {
+            cards = document.querySelectorAll('.card')
+            cards.forEach(card => {
+                if (card.getAttribute(dataType) > 9) {
+                    card.hidden = true
+                }
+            })
         } else {
-            activeFilters.push(parameter)
+            cards = document.querySelectorAll(`[${dataType}='${value}']`)
+            cards.forEach(card => {
+                card.hidden = true
+            })
         }
+        activeFilters[dataType].push(value)
+        return
+    } else {
+        this.classList.remove('scratched')
 
-        const element = document.getElementById(value)
-        element.style.backgroundColor = 'black'
-        element.style.color = 'white'
-        element.innerText = element.innerText + ' ✓'
-
-        const hiddenCards = document.querySelectorAll('.card')
-        hiddenCards.forEach(card => {
-            card.hidden = true
-        })
-
-        if (activeSets.length > 0) {
-            for (s of activeSets) {
-                console.log(s)
-                const visibleCards = document.querySelectorAll(s, `${activeFilters.join('')}`)
-                visibleCards.forEach(card => {
+        if (value === '10+') {
+            cards = document.querySelectorAll('.card')
+            cards.forEach(card => {
+                if (card.getAttribute(dataType) > 9) {
                     card.hidden = false
-                })
-            }
+                }
+            })
         } else {
-            const visibleCards = document.querySelectorAll(`${activeFilters.join('')}`)
-            visibleCards.forEach(card => {
+            cards = document.querySelectorAll(`[${dataType}='${value}']`)
+            cards.forEach(card => {
                 card.hidden = false
             })
         }
+        const index = activeFilters[dataType]
+        activeFilters[dataType].splice(index, 1)
+        return
     }
 }

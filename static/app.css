@@ -6,6 +6,7 @@ body {
     background-size: cover;
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
 }
 
 
@@ -77,28 +78,58 @@ body {
 
 /* Class picker */
 
+#class-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    background-position: center;
+    background-size: cover;
+    box-sizing: border-box;
+    transition: background-image .2s;
+}
+
+#push-down {
+    width: 99%;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#class-name {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+
 #class-picker {
     width: 100vw;
     height: 50vh;
     box-sizing: border-box;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    border-radius: 12px;
 }
 
-#class-panel {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+.portrait-holder {
+    width: 18vw;
+    height: 20vh;
 }
 
 .class-portrait {
-    width: 20vw;
-    height: 18vh;
-    margin-top: 5vh;
+    width: 100%;
+    height: 100%;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -107,43 +138,43 @@ body {
 }
 
 #demon-hunter-p {
-    background-image: url('/static/images/classes/demon-hunter-p.png');
+    background-image: url(/static/images/classes/demon-hunter-p.png);
 }
 
 #druid-p {
-    background-image: url('/static/images/classes/druid-p.png');
+    background-image: url(/static/images/classes/druid-p.png);
 }
 
 #hunter-p {
-    background-image: url('/static/images/classes/hunter-p.png');
+    background-image: url(/static/images/classes/hunter-p.png);
 }
 
 #mage-p {
-    background-image: url('/static/images/classes/mage-p.png');
+    background-image: url(/static/images/classes/mage-p.png);
 }
 
 #paladin-p {
-    background-image: url('/static/images/classes/paladin-p.png');
+    background-image: url(/static/images/classes/paladin-p.png);
 }
 
 #priest-p {
-    background-image: url('/static/images/classes/priest-p.png');
+    background-image: url(/static/images/classes/priest-p.png);
 }
 
 #rogue-p {
-    background-image: url('/static/images/classes/rogue-p.png');
+    background-image: url(/static/images/classes/rogue-p.png);
 }
 
 #shaman-p {
-    background-image: url('/static/images/classes/shaman-p.png');
+    background-image: url(/static/images/classes/shaman-p.png);
 }
 
 #warlock-p {
-    background-image: url('/static/images/classes/warlock-p.png');
+    background-image: url(/static/images/classes/warlock-p.png);
 }
 
 #warrior-p {
-    background-image: url('/static/images/classes/warrior-p.png');
+    background-image: url(/static/images/classes/warrior-p.png);
 }
 
 
@@ -164,9 +195,20 @@ body {
     border-top: .2px solid black;
 }
 
-.hover-over {
+.hover-over-category {
     background-color: black;
     color: white;
+}
+
+.hover-over-value {
+    background-color: orange;
+    color: white;
+}
+
+.scratched {
+    background-color: gray;
+    color: white;
+    text-decoration: line-through;
 }
 
 #filter-dashboard {
@@ -187,11 +229,11 @@ body {
     height: 250px;
     position: fixed;
     left: 0;
-    bottom: 45%;
+    bottom: 36%;
     transition: left .5s;
     margin-left: 2vw;
     margin-top: 5vh;
-    background-image: url('/static/images/filter-icon.png');
+    background-image: url(/static/images/filter-icon.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -252,7 +294,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background-image: url('/static/images/deck-blue.jpeg');
+    background-image: url(/static/images/deck-blue.jpeg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -264,7 +306,7 @@ body {
     height: 250px;
     position: fixed;
     right: 0;
-    bottom: 48%;
+    bottom: 40%;
     transition: right .5s;
     margin-right: 5vw;
     margin-top: 5vh;
@@ -274,7 +316,7 @@ body {
     position: absolute;
     right: 0;
     bottom: 0;
-    background-image: url('/static/images/deck.png');
+    background-image: url(/static/images/deck.png);
     width: 150px;
     height: 200px;
     background-position: center;
@@ -297,7 +339,7 @@ body {
     width: 90%;
     height: 12%;
     font-size: 1.4rem;
-    background-image: url('/static/images/forge-button.webp');
+    background-image: url(/static/images/forge-button.webp);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -322,6 +364,29 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
+    position: relative;
+}
+
+.info-icon {
+    font-size: 2rem;
+    border: 1px solid black;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    color: gold;
+    background-image: url('https://images.thdstatic.com/productImages/48c52888-daa9-4def-b027-853c5b5490b7/svn/brewster-wallpaper-samples-412-56912sam-64_600.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    position: absolute;
+    top: 18px;
+    right: 8px;
+    transition: opacity .1ss;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 .logo {
@@ -368,12 +433,24 @@ tr:hover img {
     color: gold;
 }
 
+#showcase {
+    font-size: 1.3rem;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .9);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
 
 /* News panel */
 
 #news-panel {
     width: 100vw;
     height: 100vh;
-    background-image: url(/static/images/paper-background.jpeg);
     text-align: center;
 }

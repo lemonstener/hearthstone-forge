@@ -2,6 +2,9 @@
 
 const panels = document.querySelectorAll('.format-panel')
 const portraits = document.querySelectorAll('.class-portrait')
+const classPanel = document.querySelector('#class-panel')
+const className = document.querySelector('#class-name')
+const classQuote = document.querySelector('#class-quote')
 
 panels.forEach(panel => {
     panel.addEventListener('mouseover', (e) => {
@@ -33,8 +36,16 @@ function deactivate(panel) {
 portraits.forEach(portrait => {
     portrait.addEventListener('mouseover', (e) => {
         e.target.classList.remove('grayscale');
+        changeImg(e.target.id)
     })
     portrait.addEventListener('mouseout', (e) => {
         e.target.classList.add('grayscale');
     })
 })
+
+function changeImg(id) {
+    const el = document.querySelector(`#${id}`)
+    const urlStr = id.substring(0, id.length - 2)
+    classPanel.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
+    className.innerText = el.getAttribute('data-name')
+}

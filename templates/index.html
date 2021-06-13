@@ -60,18 +60,41 @@
 
     <!-- Class picker panel -->
 
-    <!-- <section id="class-picker">
-        <div id="class-panel">
-            <div id="demon-hunter-p" class="class-portrait grayscale"></div>
-            <div id="druid-p" class="class-portrait grayscale"></div>
-            <div id="hunter-p" class="class-portrait grayscale"></div>
-            <div id="mage-p" class="class-portrait grayscale"></div>
-            <div id="paladin-p" class="class-portrait grayscale"></div>
-            <div id="priest-p" class="class-portrait grayscale"></div>
-            <div id="rogue-p" class="class-portrait grayscale"></div>
-            <div id="shaman-p" class="class-portrait grayscale"></div>
-            <div id="warlock-p" class="class-portrait grayscale"></div>
-            <div id="warrior-p" class="class-portrait grayscale"></div>
+    <!-- <section id="class-panel">
+        <div id="push-down">
+            <div id='class-name'></div>
+        </div>
+        <div id="class-picker">
+            <div class="portrait-holder">
+                <div id="demon-hunter-p" class="class-portrait grayscale" data-name="Demon Hunter"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="druid-p" class="class-portrait grayscale" data-name="Druid"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="hunter-p" class="class-portrait grayscale" data-name="Hunter"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="mage-p" class="class-portrait grayscale" data-name="Mage"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="paladin-p" class="class-portrait grayscale" data-name="Paladin"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="priest-p" class="class-portrait grayscale" data-name="Priest"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="rogue-p" class="class-portrait grayscale" data-name="Rogue"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="shaman-p" class="class-portrait grayscale" data-name="Shaman"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="warlock-p" class="class-portrait grayscale" data-name="Warlock"></div>
+            </div>
+            <div class="portrait-holder">
+                <div id="warrior-p" class="class-portrait grayscale" data-name="Warrior"></div>
+            </div>
         </div>
     </section> -->
 
@@ -82,9 +105,11 @@
             <div id="filter-panel">
                 <div><span id="back-filter-button">&#10232;</span><br></div>
                 <div id="cardset" class="toggle-filter">Sets<br></div>
-                <div id="cost" class="toggle-filter">Cost<br></div>
                 <div id='type' class="toggle-filter">Type<br></div>
                 <div id='rarity' class="toggle-filter">Rarity<br></div>
+                <div id="cost" class="toggle-filter">Cost<br></div>
+                <div id="attack" class="toggle-filter">Attack</div>
+                <div id="health" class="toggle-filter">Health</div>
             </div>
             <div id="filter-display" hidden=true></div>
         </div>
@@ -117,6 +142,9 @@
 
     <section id="news-panel" hidden>
         <h1>What's new</h1>
+    </section>
+
+    <section id="showcase" hidden>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
