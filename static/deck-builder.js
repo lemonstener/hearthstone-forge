@@ -9,9 +9,34 @@ const backFromDeck = document.querySelector('#back-deck-button')
 const deckHolder = document.querySelector('#deck-holder')
 const button = document.querySelector('#forge-button')
 
-const BASE_URL = 'http://127.0.0.1:5000/api'
+// deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
 
-// Get all viable cards from the API.
+// tableArr keeps track of how many rows are in the table and
+// helps keeping it organized.
+
+const deckArr = []
+const tableArr = []
+
+// Adding some event listeners to pre-existing elements.
+
+showcase.addEventListener('click', function() {
+    console.log(this)
+    this.hidden = true
+    this.style.top = '-9999px'
+    this.innerHTML = ''
+
+    // This part down here is to prevent an annoying bug from triggering.
+    // Without this piece of code here, everytime you click the info button
+    // a value of 'null' will get pushed into the two arrays which messes up
+    // the flow. I've tried fixing the issues in multiple ways that should've worked
+    // but for whatever reason it just keeps doing it. Will come back later with
+    // a better solution that doesn't look so choppy.
+
+    const deckIndex = deckArr.indexOf(null)
+    deckArr.splice(deckIndex, 1)
+    const tableIndex = tableArr.indexOf(null)
+    tableArr.splice(tableIndex, 1)
+})
 
 deckIcon.addEventListener('click', function() {
     deckHolder.style.right = '-40vw'
@@ -21,6 +46,8 @@ backFromDeck.addEventListener('click', function() {
     deckDisplay.style.right = '-40vw'
     deckHolder.style.right = '0'
 })
+
+// Get all viable cards from the API.
 
 async function getCardsByFormat(format, playerClass) {
     const res = await axios.get(`${BASE_URL}/cards/${format}/${playerClass}`);
@@ -85,7 +112,7 @@ function createCardElement(card) {
     return div
 }
 
-function showInfoIcon(e) {
+function showInfoIcon() {
     const icon = this.firstElementChild
     icon.style.visibility = 'visible'
     icon.style.opacity = '1'
@@ -102,10 +129,36 @@ function showcaseCard() {
     showcase.hidden = false
     showcase.style.top = '0'
 
-    const img = document.createElement('img')
-    img.src = card.getAttribute('img')
-    img.style.width = '190px'
-    img.style.height = '250px'
+    const tiltBoxWrap = document.createElement('div')
+    const tiltBox = document.createElement('div')
+
+    tiltBox.style.backgroundImage = `url(${card.getAttribute('img')})`
+    tiltBox.classList.add('tilt-box')
+
+    const span1 = document.createElement('span')
+    const span2 = document.createElement('span')
+    const span3 = document.createElement('span')
+    const span4 = document.createElement('span')
+    const span5 = document.createElement('span')
+    const span6 = document.createElement('span')
+    const span7 = document.createElement('span')
+    const span8 = document.createElement('span')
+    const span9 = document.createElement('span')
+
+    span1.classList.add('t_over')
+    span2.classList.add('t_over')
+    span3.classList.add('t_over')
+    span4.classList.add('t_over')
+    span5.classList.add('t_over')
+    span6.classList.add('t_over')
+    span7.classList.add('t_over')
+    span8.classList.add('t_over')
+    span9.classList.add('t_over')
+
+    tiltBoxWrap.append(span1, span2, span3, span4, span5, span6, span7, span8, span9)
+    tiltBoxWrap.classList.add('tilt-box-wrap')
+
+    tiltBoxWrap.append(tiltBox)
 
     const info = document.createElement('div')
     info.style.width = '300px'
@@ -116,6 +169,7 @@ function showcaseCard() {
 
     cardName.innerText = card.getAttribute('name')
     cardFlavor.innerHTML = `<i>${card.getAttribute('flavor')}</i>`
+    cardFlavor.style.color = 'gray'
     cardText.innerText = card.getAttribute('text')
 
     const list = document.createElement('ul')
@@ -126,12 +180,12 @@ function showcaseCard() {
     const cardCost = document.createElement('li')
     const cardArtist = document.createElement('li')
 
-    cardType.innerText = 'Type: ' + cardTypes[card.getAttribute('type')].name
-    cardRarity.innerText = 'Rarity: ' + rarity[card.getAttribute('rarity')].name
-    cardSet.innerText = 'Set: ' + sets[card.getAttribute('cardset')].name
-    cardClass.innerText = 'Class: ' + `${classes[card.getAttribute('playerclass')].name}`
-    cardCost.innerText = 'Cost to craft: ' + `${rarity[card.getAttribute('rarity')].cost}`
-    cardArtist.innerText = 'Artist: ' + card.getAttribute('artist')
+    cardType.innerHTML = '<span class="showcase-category">Type: </span>' + cardTypes[card.getAttribute('type')].name
+    cardRarity.innerHTML = '<span class="showcase-category">Rarity: </span>' + rarity[card.getAttribute('rarity')].name
+    cardSet.innerHTML = '<span class="showcase-category">Set: </span>' + sets[card.getAttribute('cardset')].name
+    cardClass.innerHTML = '<span class="showcase-category">Class: </span>' + `${classes[card.getAttribute('playerclass')].name}`
+    cardCost.innerHTML = '<span class="showcase-category">Cost to craft: </span>' + `${rarity[card.getAttribute('rarity')].cost}`
+    cardArtist.innerHTML = '<span class="showcase-category">Artist: </span>' + card.getAttribute('artist')
 
     list.append(cardType)
     list.append(cardRarity)
@@ -139,24 +193,21 @@ function showcaseCard() {
     list.append(cardClass)
     list.append(cardCost)
     list.append(cardArtist)
+    list.style.textAlign = 'left'
+    if (card.getAttribute('howtoget') !== 'null') {
+        const howToGet = document.createElement('li')
+        howToGet.innerHTML = '<span class="showcase-category">How to Get: </span>' + card.getAttribute('howtoget')
+        list.append(howToGet)
+    }
 
     info.append(cardName)
     info.append(cardFlavor)
     info.append(cardText)
     info.append(list)
 
-    showcase.append(img)
+    showcase.append(tiltBoxWrap)
     showcase.append(info)
-
 }
-
-// deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
-
-// tableArr keeps track of how many rows are in the table and
-// helps keeping it organized.
-
-const deckArr = []
-const tableArr = []
 
 // Maximum of 2 copies of a card per deck.
 // Copies of legendary cards are limited to 1.
@@ -263,10 +314,10 @@ function addDuplicateCardToDeck(id) {
 // Cards which are still in the deck remain grayed out.
 
 function removeCard(e) {
-    const tr = e.target.parentElement
+    const tr = this.parentElement
     const cardId = tr.id.substr(2)
     const card = document.querySelector(`[c-id='${cardId}']`)
-    const childrenCount = e.target.parentElement.childElementCount
+    const childrenCount = tr.childElementCount
 
     if (childrenCount === 4) {
         if (tr.lastElementChild.innerText !== 'x2') {
@@ -281,7 +332,7 @@ function removeCard(e) {
         const rowToRemove = tableArr.indexOf(e.target.getAttribute('cost'))
         tableArr.splice(rowToRemove, 1)
     }
-    const index = deckArr.indexOf(e.target.parentElement.id)
+    const index = deckArr.indexOf(this.parentElement.id)
     deckArr.splice(index, 1)
 
     if (deckArr.length === 29) {
@@ -326,4 +377,4 @@ function checkForDuplicate(id) {
     return false
 }
 
-getCardsByFormat('wild', 'warrior')
+// getCardsByFormat('wild', 'warrior')
