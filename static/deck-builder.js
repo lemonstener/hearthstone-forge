@@ -165,12 +165,10 @@ function showcaseCard() {
 
     const cardName = document.createElement('h3')
     const cardFlavor = document.createElement('p')
-    const cardText = document.createElement('p')
 
     cardName.innerText = card.getAttribute('name')
     cardFlavor.innerHTML = `<i>${card.getAttribute('flavor')}</i>`
     cardFlavor.style.color = 'gray'
-    cardText.innerText = card.getAttribute('text')
 
     const list = document.createElement('ul')
     const cardType = document.createElement('li')
@@ -202,7 +200,6 @@ function showcaseCard() {
 
     info.append(cardName)
     info.append(cardFlavor)
-    info.append(cardText)
     info.append(list)
 
     showcase.append(tiltBoxWrap)
