@@ -1,716 +1,640 @@
-html {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-body {
-    font-family: 'Odibee Sans', cursive;
-    background: url(/static/images/paper-background.jpeg);
-    background-attachment: fixed;
-    background-position: center center;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    transition: background-image .4s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.content {
-    position: absolute;
-    top: -9999px;
-    transition: top .5s;
-}
-
-
-/* Format picker */
-
-#format-picker {
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: row;
-    box-sizing: border-box;
-    font-size: 1.2rem;
-}
-
-.format-panel {
-    color: white;
-    text-align: center;
-    width: 33.3333%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: width .5s;
-    position: relative;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.format-logo {
-    width: 180px;
-    height: 300px;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    cursor: pointer;
-}
-
-#standard-w {
-    background-image: url(/static/images/formats/standard-w.jpeg);
-}
-
-#classic-w {
-    background-image: url(/static/images/formats/classic-w.jpeg);
-}
-
-#wild-w {
-    background-image: url(/static/images/formats/wild-w.jpeg);
-}
-
-.active {
-    width: 80%;
-}
-
-.grayscale {
-    filter: grayscale(100%);
-}
-
-.grayscale-all {
-    filter: grayscale(100%);
-}
-
-.format-title {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 2s;
-}
-
-
-/* Class picker */
-
-#class-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    background-position: center;
-    background-size: cover;
-    box-sizing: border-box;
-    transition: background-image .2s;
-}
-
-#push-down {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    margin-left: 5px;
-    margin-right: 5px;
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-#class-name {
-    width: 100%;
-    text-align: center;
-    font-size: 2rem;
-    color: white;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
-}
-
-#class-picker {
-    width: 100vw;
-    height: 50vh;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-}
-
-.portrait-holder {
-    width: 18vw;
-    height: 20vh;
-}
-
-.class-portrait {
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    transition: filter .8s;
-}
-
-#demon-hunter-p {
-    background-image: url(/static/images/classes/demon-hunter-p.png);
-}
-
-#druid-p {
-    background-image: url(/static/images/classes/druid-p.png);
-}
-
-#hunter-p {
-    background-image: url(/static/images/classes/hunter-p.png);
-}
-
-#mage-p {
-    background-image: url(/static/images/classes/mage-p.png);
-}
-
-#paladin-p {
-    background-image: url(/static/images/classes/paladin-p.png);
-}
-
-#priest-p {
-    background-image: url(/static/images/classes/priest-p.png);
-}
-
-#rogue-p {
-    background-image: url(/static/images/classes/rogue-p.png);
-}
-
-#shaman-p {
-    background-image: url(/static/images/classes/shaman-p.png);
-}
-
-#warlock-p {
-    background-image: url(/static/images/classes/warlock-p.png);
-}
-
-#warrior-p {
-    background-image: url(/static/images/classes/warrior-p.png);
-}
-
-
-/* Deck creation dashboard */
-
-#dashboard {
-    width: 100vw;
-    height: 100vh;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-}
-
-.toggle-filter {
-    border-top: .2px solid black;
-}
-
-.hover-over-category {
-    background-color: black;
-    color: white;
-}
-
-.hover-over-value {
-    background-color: orange;
-    color: white;
-}
-
-.scratched {
-    background-color: gray;
-    color: white;
-    text-decoration: line-through;
-}
-
-#filter-dashboard {
-    margin-left: 5px;
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    left: -40vw;
-    transition: left .5s;
-    height: 98vh;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-#filter-icon {
-    width: 200px;
-    height: 250px;
-    position: fixed;
-    left: 0;
-    bottom: 36%;
-    transition: left .5s;
-    margin-left: 2vw;
-    margin-top: 5vh;
-    background-image: url(/static/images/filter-icon.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    cursor: pointer;
-}
-
-#back-filter-button {
-    cursor: pointer;
-    font-size: 2rem;
-    color: gold;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-}
-
-#filter-panel {
-    border: .2px solid black;
-    background-color: #FCC201;
-    width: 5vw;
-    border-radius: 8px;
-    font-size: 1.3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-}
-
-#filter-display {
-    font-size: 1.1rem;
-    margin-left: 1px;
-    background-color: #0A7E8C;
-    cursor: pointer;
-}
-
-#card-picker {
-    width: 66vw;
-    height: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin-left: 20vw;
-    margin-right: 20vw;
-}
-
-#deck-display {
-    width: 15vw;
-    height: 98%;
-    position: fixed;
-    right: -40vw;
-    margin-right: 5px;
-    transition: right .5s;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    background-image: url(/static/images/deck-blue.jpeg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 8px;
-}
-
-#deck-holder {
-    width: 150px;
-    height: 250px;
-    position: fixed;
-    right: 0;
-    bottom: 40%;
-    transition: right .5s;
-    margin-right: 5vw;
-    margin-top: 5vh;
-}
-
-#deck-icon {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background-image: url(/static/images/deck.png);
-    width: 150px;
-    height: 200px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    text-shadow: black;
-    font-size: 2.5rem;
-    color: gold;
-    -webkit-text-stroke-width: 1.2px;
-    -webkit-text-stroke-color: black;
-}
-
-#forge-button {
-    position: absolute;
-    bottom: 0;
-    margin-left: 5%;
-    margin-right: 5%;
-    border-radius: 5px;
-    width: 90%;
-    height: 12%;
-    font-size: 1.4rem;
-    background-image: url(/static/images/forge-button.webp);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #d4af37;
-    -webkit-text-stroke-width: .4px;
-    -webkit-text-stroke-color: black;
-    cursor: pointer;
-}
-
-#back-deck-button {
-    cursor: pointer;
-    font-size: 3rem;
-    color: gold;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-}
-
-.card {
-    width: 180px;
-    height: 250px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    position: relative;
-}
-
-.info-icon {
-    font-size: 2rem;
-    border: 1px solid black;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    color: gold;
-    background-image: url('https://images.thdstatic.com/productImages/48c52888-daa9-4def-b027-853c5b5490b7/svn/brewster-wallpaper-samples-412-56912sam-64_600.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    position: absolute;
-    top: 18px;
-    right: 8px;
-    transition: opacity .1s;
-    visibility: hidden;
-    opacity: 0;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-}
-
-.logo {
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 25%;
-    height: 100%;
-}
-
-table {
-    text-align: center;
-}
-
-tr {
-    width: 100%;
-    height: 3vh;
-    background-color: black;
-    cursor: pointer;
-    position: relative;
-}
-
-td {
-    border: 1px solid #CAE9FF;
-    margin: 15px;
-}
-
-.snap {
-    position: absolute;
-    opacity: 0;
-    width: 180px;
-    height: 250px;
-    left: 0;
-}
-
-tr:hover img {
-    opacity: 1;
-    bottom: 70px;
-}
-
-.toggle-filter {
-    cursor: pointer;
-    font-size: 1.3rem;
-    color: gold;
-}
-
-#showcase {
-    font-size: 1.1rem;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .9);
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    position: fixed;
-    top: -9999px;
-}
-
-.showcase-category {
-    color: gold;
-}
-
-
-/* News panel */
-
-#news-panel {
-    width: 100vw;
-    height: 100vh;
-    text-align: center;
-}
-
-
-/* All sets panel */
-
-#card-sets-panel {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.year-panel {
-    width: 100%;
-    opacity: 1;
-    transition: opacity .5s;
-}
-
-.set-holder {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.set-panel {
-    border: 3px solid black;
-    margin: 5px;
-    width: 31vw;
-    height: 25vh;
-    background-position: top;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    border-radius: 8px;
-    cursor: pointer;
-    filter: brightness(90%);
-    transition: filter .4s;
-}
-
-.set-logo {
-    width: 80%;
-    height: 65%;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-#showcase-set {
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    text-align: center;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    /* opacity: 0;
-    transition: opacity .5s; */
-}
-
-#showcase-logo {
-    width: 400px;
-    height: 250px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-#showcase-description {
-    width: 100vw;
-    background-position: top;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    text-align: center;
-}
-
-#showcase-quote {
-    width: 100%;
-    height: 20%;
-    color: white;
-    font-size: 2.5rem;
-}
-
-#showcase-info {
-    width: 100%;
-    height: 20%;
-    color: white;
-    font-size: 2rem;
-}
-
-#showcase-cards {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-#back-set-button {
-    cursor: pointer;
-    font-size: 3rem;
-    color: gold;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-}
-
-
-/* ========= */
-
-.tilt-box-wrap {
-    width: 180px;
-    height: 250px;
-    position: relative;
-    transition: all .1s ease-out;
-    perspective: 1000px;
-}
-
-.tilt-box-wrap:hover {
-    transition: all .01s linear;
-}
-
-.tilt-box {
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    transition: all .1s ease-out;
-    transform: rotateX(0deg) rotateY(0deg);
-    perspective: 1000px;
-    transform-style: preserve-3d;
-}
-
-.t_over {
-    width: 33.333%;
-    height: 33.333%;
-    position: absolute;
-    z-index: 1;
-    cursor: pointer;
-}
-
-.t_over:nth-child(1) {
-    left: 0;
-    top: 0
-}
-
-.t_over:nth-child(2) {
-    left: 33.333%;
-    top: 0
-}
-
-.t_over:nth-child(3) {
-    left: 66.666%;
-    top: 0
-}
-
-.t_over:nth-child(4) {
-    left: 0;
-    top: 33.333%
-}
-
-.t_over:nth-child(5) {
-    left: 33.333%;
-    top: 33.333%
-}
-
-.t_over:nth-child(6) {
-    left: 66.666%;
-    top: 33.333%
-}
-
-.t_over:nth-child(7) {
-    left: 0;
-    top: 66.666%
-}
-
-.t_over:nth-child(8) {
-    left: 33.333%;
-    top: 66.666%
-}
-
-.t_over:nth-child(9) {
-    left: 66.666%;
-    top: 66.666%
-}
-
-.t_over:nth-child(1):hover~.tilt-box {
-    transform: rotateX(-20deg) rotateY(20deg)
-}
-
-.t_over:nth-child(2):hover~.tilt-box {
-    transform: rotateX(-20deg) rotateY(0deg)
-}
-
-.t_over:nth-child(3):hover~.tilt-box {
-    transform: rotateX(-20deg) rotateY(-20deg)
-}
-
-.t_over:nth-child(4):hover~.tilt-box {
-    transform: rotateX(0deg) rotateY(20deg)
-}
-
-.t_over:nth-child(5):hover~.tilt-box {
-    transform: rotateX(0deg) rotateY(0deg)
-}
-
-.t_over:nth-child(6):hover~.tilt-box {
-    transform: rotateX(0deg) rotateY(-20deg)
-}
-
-.t_over:nth-child(7):hover~.tilt-box {
-    transform: rotateX(20deg) rotateY(20deg)
-}
-
-.t_over:nth-child(8):hover~.tilt-box {
-    transform: rotateX(20deg) rotateY(0deg)
-}
-
-.t_over:nth-child(9):hover~.tilt-box {
-    transform: rotateX(20deg) rotateY(-20deg)
-}
+            html {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            body {
+                font-family: 'Odibee Sans', cursive;
+                background: url(/static/images/paper-background.jpeg);
+                background-attachment: fixed;
+                background-position: center center;
+                background-size: cover;
+                height: 100%;
+                width: 100%;
+                box-sizing: border-box;
+                transition: background-image .4s;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .content {
+                /* position: absolute;
+                top: 0;
+                transition: opacity .5s; */
+            }
+            /* Format picker */
+            
+            #format-picker {
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: row;
+                box-sizing: border-box;
+                font-size: 1.2rem;
+            }
+            
+            .format-panel {
+                color: white;
+                text-align: center;
+                width: 33.3333%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: width .5s;
+                position: relative;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+            
+            .format-logo {
+                width: 180px;
+                height: 300px;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                cursor: pointer;
+            }
+            
+            #standard-w {
+                background-image: url(/static/images/formats/standard-w.jpeg);
+            }
+            
+            #classic-w {
+                background-image: url(/static/images/formats/classic-w.jpeg);
+            }
+            
+            #wild-w {
+                background-image: url(/static/images/formats/wild-w.jpeg);
+            }
+            
+            .active {
+                width: 80%;
+            }
+            
+            .grayscale {
+                filter: grayscale(100%);
+            }
+            
+            .grayscale-all {
+                filter: grayscale(100%);
+            }
+            
+            .format-title {
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 2s;
+            }
+            /* Class picker */
+            
+            #class-panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                box-sizing: border-box;
+                background-position: center;
+                background-size: cover;
+                box-sizing: border-box;
+                transition: background-image .2s;
+            }
+            
+            #push-down {
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+                margin-left: 5px;
+                margin-right: 5px;
+                height: 50vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+            }
+            
+            #class-name {
+                width: 100%;
+                text-align: center;
+                font-size: 2rem;
+                color: white;
+                -webkit-text-stroke-width: 2px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            #class-picker {
+                width: 100vw;
+                height: 50vh;
+                box-sizing: border-box;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .portrait-holder {
+                width: 18vw;
+                height: 20vh;
+            }
+            
+            .class-portrait {
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                transition: filter .8s;
+            }
+            
+            #demon-hunter-p {
+                background-image: url(/static/images/classes/demon-hunter-p.png);
+            }
+            
+            #druid-p {
+                background-image: url(/static/images/classes/druid-p.png);
+            }
+            
+            #hunter-p {
+                background-image: url(/static/images/classes/hunter-p.png);
+            }
+            
+            #mage-p {
+                background-image: url(/static/images/classes/mage-p.png);
+            }
+            
+            #paladin-p {
+                background-image: url(/static/images/classes/paladin-p.png);
+            }
+            
+            #priest-p {
+                background-image: url(/static/images/classes/priest-p.png);
+            }
+            
+            #rogue-p {
+                background-image: url(/static/images/classes/rogue-p.png);
+            }
+            
+            #shaman-p {
+                background-image: url(/static/images/classes/shaman-p.png);
+            }
+            
+            #warlock-p {
+                background-image: url(/static/images/classes/warlock-p.png);
+            }
+            
+            #warrior-p {
+                background-image: url(/static/images/classes/warrior-p.png);
+            }
+            /* Deck creation dashboard */
+            
+            #dashboard {
+                width: 100vw;
+                height: 100vh;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: row;
+                position: relative;
+            }
+            
+            .toggle-filter {
+                border-top: .2px solid black;
+            }
+            
+            .hover-over-category {
+                background-color: black;
+                color: white;
+            }
+            
+            .hover-over-value {
+                background-color: orange;
+                color: white;
+            }
+            
+            .scratched {
+                background-color: gray;
+                color: white;
+                text-decoration: line-through;
+            }
+            
+            #filter-dashboard {
+                margin-left: 5px;
+                display: flex;
+                flex-direction: row;
+                position: fixed;
+                left: -40vw;
+                transition: left .5s;
+                height: 98vh;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            
+            #filter-icon {
+                width: 200px;
+                height: 250px;
+                position: fixed;
+                left: 0;
+                bottom: 36%;
+                transition: left .5s;
+                margin-left: 2vw;
+                margin-top: 5vh;
+                background-image: url(/static/images/filter-icon.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                cursor: pointer;
+            }
+            
+            #back-filter-button {
+                cursor: pointer;
+                font-size: 2rem;
+                color: gold;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            #filter-panel {
+                border: .2px solid black;
+                background-color: #FCC201;
+                width: 5vw;
+                border-radius: 8px;
+                font-size: 1.3rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            #filter-display {
+                font-size: 1.1rem;
+                margin-left: 1px;
+                background-color: #0A7E8C;
+                cursor: pointer;
+            }
+            
+            #card-picker {
+                width: 66vw;
+                height: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                margin-left: 20vw;
+                margin-right: 20vw;
+            }
+            
+            #deck-display {
+                width: 15vw;
+                height: 98%;
+                position: fixed;
+                right: -40vw;
+                margin-right: 5px;
+                transition: right .5s;
+                text-align: left;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+                background-image: url(/static/images/deck-blue.jpeg);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-radius: 8px;
+            }
+            
+            #deck-holder {
+                width: 150px;
+                height: 250px;
+                position: fixed;
+                right: 0;
+                bottom: 40%;
+                transition: right .5s;
+                margin-right: 5vw;
+                margin-top: 5vh;
+            }
+            
+            #deck-icon {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                background-image: url(/static/images/deck.png);
+                width: 150px;
+                height: 200px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                text-shadow: black;
+                font-size: 2.5rem;
+                color: gold;
+                -webkit-text-stroke-width: 1.2px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            #forge-button {
+                position: absolute;
+                bottom: 0;
+                margin-left: 5%;
+                margin-right: 5%;
+                border-radius: 5px;
+                width: 90%;
+                height: 12%;
+                font-size: 1.4rem;
+                background-image: url(/static/images/forge-button.webp);
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                color: #d4af37;
+                -webkit-text-stroke-width: .4px;
+                -webkit-text-stroke-color: black;
+                cursor: pointer;
+            }
+            
+            #back-deck-button {
+                cursor: pointer;
+                font-size: 3rem;
+                color: gold;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            .card {
+                width: 180px;
+                height: 250px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                position: relative;
+            }
+            
+            .info-icon {
+                font-size: 2rem;
+                border: 1px solid black;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                color: gold;
+                background-image: url('https://images.thdstatic.com/productImages/48c52888-daa9-4def-b027-853c5b5490b7/svn/brewster-wallpaper-samples-412-56912sam-64_600.jpg');
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                border-radius: 50%;
+                position: absolute;
+                top: 18px;
+                right: 8px;
+                transition: opacity .1s;
+                visibility: hidden;
+                opacity: 0;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            .logo {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                width: 25%;
+                height: 100%;
+            }
+            
+            table {
+                text-align: center;
+            }
+            
+            tr {
+                width: 100%;
+                height: 3vh;
+                background-color: black;
+                cursor: pointer;
+                position: relative;
+            }
+            
+            td {
+                border: 1px solid #CAE9FF;
+                margin: 15px;
+            }
+            
+            .snap {
+                position: absolute;
+                opacity: 0;
+                width: 180px;
+                height: 250px;
+                left: 0;
+            }
+            
+            tr:hover img {
+                opacity: 1;
+                bottom: 70px;
+            }
+            
+            .toggle-filter {
+                cursor: pointer;
+                font-size: 1.3rem;
+                color: gold;
+            }
+            
+            #showcase {
+                font-size: 1.1rem;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, .9);
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                color: white;
+                position: fixed;
+                top: 0;
+            }
+            
+            .showcase-category {
+                color: gold;
+            }
+            /* News panel */
+            
+            #news-panel {
+                width: 100vw;
+                height: 100vh;
+                text-align: center;
+            }
+            /* All sets panel */
+            
+            #card-sets-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .year-panel {
+                width: 100%;
+                opacity: 1;
+                transition: opacity .5s;
+            }
+            
+            .set-holder {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            
+            .set-panel {
+                border: 3px solid black;
+                margin: 5px;
+                width: 31vw;
+                height: 25vh;
+                background-position: top;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                border-radius: 8px;
+                cursor: pointer;
+                filter: brightness(90%);
+                transition: filter .4s;
+            }
+            
+            .set-logo {
+                width: 80%;
+                height: 65%;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+            
+            #showcase-set {
+                width: 95%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+                text-align: center;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            
+            #showcase-logo {
+                width: 400px;
+                height: 250px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+            
+            #showcase-description {
+                width: 100vw;
+                background-position: top;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+                text-align: center;
+            }
+            
+            #showcase-quote {
+                width: 100%;
+                height: 20%;
+                color: white;
+                font-size: 2.5rem;
+            }
+            
+            #showcase-info {
+                width: 100%;
+                height: 20%;
+                color: white;
+                font-size: 2rem;
+            }
+            
+            #showcase-cards {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            #back-set-button {
+                cursor: pointer;
+                font-size: 3rem;
+                color: gold;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
+            }
+            /* Fade out animation */
+            
+            .fade-out {
+                animation: fadeOut ease .6s;
+                -webkit-animation: fadeOut ease .6s;
+                -moz-animation: fadeOut ease .6s;
+                -o-animation: fadeOut ease .6s;
+                -ms-animation: fadeOut ease .6s;
+            }
+            
+            @keyframes fadeOut {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+            
+            @-moz-keyframes fadeOut {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+            
+            @-webkit-keyframes fadeOut {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+            
+            @-o-keyframes fadeOut {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+            
+            @-ms-keyframes fadeOut {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }

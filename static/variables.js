@@ -111,8 +111,8 @@ const sets = {
             name: 'Legacy',
             imgSrc: '/static/images/formats/wild.png'
         },
-        clsc: {
-            code: 'clsc',
+        cls: {
+            code: 'cls',
             name: 'Classic',
             imgSrc: '/static/images/formats/classic.png'
         },
@@ -353,7 +353,7 @@ const formats = {
             sets.tgt, sets.brm, sets.gvg, sets.nax, sets.leg
         ]
     },
-    classic: { sets: [sets.clsc] }
+    classic: { sets: [sets.cls] }
 }
 
 const cardTypes = {

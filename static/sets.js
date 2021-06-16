@@ -1,8 +1,9 @@
-const cardSetsPanel = document.querySelector('#card-sets-panel')
+const cardSetsPanel = document.querySelector('.content')
 const body = document.querySelector('body')
 
 function allSets() {
     cardSetsPanel.innerHTML = ''
+    cardSetsPanel.id = 'card-sets-panel'
     body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
     for (year of years) {
         const yearPanel = document.createElement('div')
@@ -84,8 +85,14 @@ function displaySetCards(data) {
     const showcaseCards = document.createElement('div')
     showcaseCards.id = 'showcase-cards'
     cardSetsPanel.append(showcaseCards)
-    for (card of data) {
-        showcaseCards.append(createTiltingCard(card))
+    for (el of data) {
+        const card = createCardElement(el)
+        card.lastElementChild.remove()
+        card.removeEventListener('click', handleCard)
+        card.removeEventListener('mouseover', showInfoIcon)
+        card.removeEventListener('mouseout', hideInfoIcon)
+        card.addEventListener('click', showcaseCard)
+        showcaseCards.append(card)
     }
 }
 

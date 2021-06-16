@@ -1,4 +1,5 @@
 // Format and class picker functions
+
 const content = document.querySelector('.content')
 
 function createFormatPanels() {
@@ -99,11 +100,11 @@ function deactivate(panel) {
 }
 
 function selectFormat() {
-    content.style.opacity = '0'
-    content.style.top = '-9999px'
-    content.id = 'class-panel'
+    content.classList.add('fade-out')
 
-    content.innerHTML = `
+    setTimeout(() => {
+        content.id = 'class-panel'
+        content.innerHTML = `
     <div id="push-down">
             <div id='class-name'></div>
         </div>
@@ -141,35 +142,30 @@ function selectFormat() {
         </div>
     `
 
-    const portraits = document.querySelectorAll('.class-portrait')
-    const classPanel = document.querySelector('#class-panel')
-    const className = document.querySelector('#class-name')
+        const portraits = document.querySelectorAll('.class-portrait')
+        const className = document.querySelector('#class-name')
 
-    portraits.forEach(portrait => {
-        portrait.addEventListener('mouseover', (e) => {
-            e.target.classList.remove('grayscale');
-            changeImg(e.target.id)
+        portraits.forEach(portrait => {
+            portrait.addEventListener('mouseover', (e) => {
+                e.target.classList.remove('grayscale');
+                changeImg(e.target.id)
+            })
+            portrait.addEventListener('mouseout', (e) => {
+                    e.target.classList.add('grayscale');
+                })
+                // Code logic continues in deck-builder.js
+            portrait.addEventListener('click', prepareDeckBuilder)
         })
-        portrait.addEventListener('mouseout', (e) => {
-            e.target.classList.add('grayscale');
-        })
-    })
 
-    function changeImg(id) {
-        const el = document.querySelector(`#${id}`)
-        const urlStr = id.substring(0, id.length - 2)
-        classPanel.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
-        className.innerText = el.getAttribute('data-name')
-    }
-
-
-    content.style.opacity = '1'
-    content.style.top = '0'
+        function changeImg(id) {
+            const el = document.querySelector(`#${id}`)
+            const urlStr = id.substring(0, id.length - 2)
+            content.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
+            className.innerText = el.getAttribute('data-name')
+        }
+        content.classList.remove('fade-out')
+    }, 500);
 
 }
 
-
-
-setTimeout(() => {
-    createFormatPanels()
-}, 1000);
+createFormatPanels()

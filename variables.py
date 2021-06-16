@@ -408,9 +408,9 @@ formats = {
     'wild': {
         'code': 'wild',
         'name': 'Wild',
-        'sets': ['dhi','leg','nax','gvg','brm','tgt',
-        'loe','wog','krzn','msg','goro','kft','knc',
-        'wtch','bmp','rsr','ros','sou','dod','gka']
+        'sets': ['leg','nax','gvg','brm','tgt','loe','wog','krzn','msg','goro',
+        'kft','knc','wtch','bmp','rsr','ros','sou','dod','gka','aou','schl','mad',
+        'bar']
     },
     'classic': {
         'code': 'clsc',

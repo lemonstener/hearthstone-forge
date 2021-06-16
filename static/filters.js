@@ -1,9 +1,4 @@
 // Here we create the filter for the cards as well as any related functions.
-const filterDashboard = document.querySelector('#filter-dashboard')
-const filterPanel = document.querySelector('#filter-panel')
-const filterDisplay = document.querySelector('#filter-display')
-const filterIcon = document.querySelector('#filter-icon')
-const backFromFilter = document.querySelector('#back-filter-button')
 
 let currentFilterColumn
 const activeFilters = {
@@ -15,51 +10,12 @@ const activeFilters = {
     health: []
 }
 
-filterIcon.addEventListener('click', function() {
-    this.style.left = '-40vw'
-    filterDashboard.style.left = '0'
-})
-
-backFromFilter.addEventListener('click', function() {
-    filterDashboard.style.left = '-40vw'
-    filterIcon.style.left = '0'
-    filterDisplay.innerHTML = ''
-    filterDisplay.hidden = true
-})
-
-backFromFilter.addEventListener('mouseover', function() {
-    filterDisplay.innerHTML = ''
-    filterDisplay.hidden = true
-})
-
-const togglers = document.querySelectorAll('.toggle-filter')
-togglers.forEach(toggle => {
-    toggle.addEventListener('mouseover', reveal)
-    toggle.addEventListener('mouseout', hoverAwayCategory)
-    toggle.addEventListener('click', hide)
-})
-
-function reveal() {
-    this.classList.add('hover-over-category')
-    createFilters(this.id)
-    currentFilterColumn = this.id
-}
-
-function hoverAwayCategory() {
-    this.classList.remove('hover-over-category')
-}
-
-function hide() {
-    filterDisplay.innerHTML = ''
-    filterDisplay.hidden = true
-}
-
 function createFilters(id) {
+    const filterDisplay = document.querySelector('#filter-display')
     if (id === 'cardset') {
         // format = userInSession.format
-        format = 'wild'
         filterDisplay.innerHTML = ''
-        for (cardSet of formats[format].sets) {
+        for (cardSet of formats[formatToPull].sets) {
             const div = document.createElement('div')
 
             div.style.border = '.1px solid black'
