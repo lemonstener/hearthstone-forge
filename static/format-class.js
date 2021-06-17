@@ -1,8 +1,8 @@
 // Format and class picker functions
 
-const content = document.querySelector('.content')
-
 function createFormatPanels() {
+    body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
+    content.innerHTML = ''
     content.id = 'format-picker'
     const standard = document.createElement('div')
 
@@ -160,12 +160,10 @@ function selectFormat() {
         function changeImg(id) {
             const el = document.querySelector(`#${id}`)
             const urlStr = id.substring(0, id.length - 2)
-            content.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
+            body.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
             className.innerText = el.getAttribute('data-name')
         }
         content.classList.remove('fade-out')
     }, 500);
 
 }
-
-createFormatPanels()

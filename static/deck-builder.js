@@ -2,7 +2,6 @@
 
 // tableArr keeps track of how many rows are in the table and
 // helps keeping it organized.
-const content = document.querySelector('.content')
 const deckArr = []
 const tableArr = []
 const formatToPull = 'wild'

@@ -8,7 +8,7 @@ function allSets() {
     for (year of years) {
         const yearPanel = document.createElement('div')
         const title = document.createElement('div')
-        const titleText = document.createElement('h2')
+        const titleText = document.createElement('h1')
         const setHolder = document.createElement('div')
         setHolder.classList.add('set-holder')
 
@@ -198,5 +198,3 @@ function showcaseTiltedCard() {
         this.innerHTML = ''
     })
 }
-
-allSets()

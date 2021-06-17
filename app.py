@@ -60,7 +60,7 @@ def register(username,password,email):
     return new_user.serialize()
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET','POST'])
 def login_user():
     username = request.json['username']
     password = request.json['password']
@@ -73,7 +73,10 @@ def register_user():
     email = request.json['email']
     password = request.json['password']
     user = register(username,password,email)
-    return user
+    if user:
+        return user
+    else:
+        return jsonify(msg='Username and password do not match.')
 
 @app.route('/logout')
 def logout():

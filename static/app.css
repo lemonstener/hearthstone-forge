@@ -19,14 +19,62 @@
                 align-items: center;
             }
             
-            .content {
-                /* position: absolute;
+            #hs-logo {
+                width: 150px;
+                height: 150px;
+                background-image: url(/static/images/hs-logo.png);
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                z-index: 9999;
+                position: fixed;
                 top: 0;
-                transition: opacity .5s; */
+                left: 40px;
+                cursor: pointer;
+            }
+            
+            nav {
+                position: fixed;
+                z-index: 9998;
+                top: 0;
+                left: -9999px;
+                height: 100%;
+                font-size: 2rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left .3s;
+            }
+            
+            nav a {
+                text-decoration: none;
+                margin: 0 10px;
+                padding: 10px;
+                margin: 10px;
+                color: white;
+                -webkit-text-stroke-width: 2px;
+                -webkit-text-stroke-color: black;
+                border: 1px solid none;
+            }
+            
+            nav a:hover {
+                background-color: #008080;
+                border-radius: 5px;
+                border: gold;
+            }
+            
+            .blur {
+                filter: blur(20px);
+            }
+            
+            .content {
+                transition: filter .5s;
             }
             /* Format picker */
             
             #format-picker {
+                position: absolute;
                 width: 100%;
                 height: 100%;
                 background-position: center;
@@ -513,6 +561,7 @@
                 cursor: pointer;
                 filter: brightness(90%);
                 transition: filter .4s;
+                position: relative;
             }
             
             .set-logo {
@@ -583,6 +632,49 @@
                 color: gold;
                 -webkit-text-stroke-width: 1px;
                 -webkit-text-stroke-color: black;
+            }
+            /* Login and registration forms */
+            
+            #form-holder {
+                text-align: center;
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                font-size: 1.2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .push-zone {
+                width: 100%;
+                height: 33%;
+            }
+            
+            #user-form {
+                width: 100%;
+                height: 33%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                text-align: center;
+                background-color: rgba(0, 0, 0, .7);
+                border-radius: 5px;
+            }
+            
+            .form-btn {
+                font-family: 'Odibee Sans', cursive;
+                border-radius: 8px;
+                padding: 3px 10px;
+                cursor: pointer;
+                font-size: 1em;
+            }
+            
+            input {
+                margin-left: 10px;
+                margin: 15px;
             }
             /* Fade out animation */
             
