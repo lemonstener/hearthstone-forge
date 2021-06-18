@@ -1,6 +1,5 @@
 // Here we create the filter for the cards as well as any related functions.
 
-let currentFilterColumn
 const activeFilters = {
     cardset: [],
     cost: [],
@@ -13,9 +12,8 @@ const activeFilters = {
 function createFilters(id) {
     const filterDisplay = document.querySelector('#filter-display')
     if (id === 'cardset') {
-        // format = userInSession.format
         filterDisplay.innerHTML = ''
-        for (cardSet of formats[formatToPull].sets) {
+        for (cardSet of formats[userInSession.deckBuilder.format].sets) {
             const div = document.createElement('div')
 
             div.style.border = '.1px solid black'

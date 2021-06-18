@@ -1,65 +1,73 @@
-const BASE_URL = 'http://127.0.0.1:5000/api'
-
 const classes = {
     dhn: {
         code: 'dhn',
         name: 'Demon Hunter',
         params: 'demon%20hunter',
-        portrait: '/static/images/classes/demon-hunter-p.png'
+        portrait: '/static/images/classes/demon-hunter-p.png',
+        figure: '/static/images/classes/demon-hunter-figure.png'
     },
     dru: {
         code: 'dru',
         name: 'Druid',
         params: 'druid',
-        portrait: '/static/images/classes/druid-p.png'
+        portrait: '/static/images/classes/druid-p.png',
+        figure: '/static/images/classes/druid-figure.png'
     },
     hun: {
         code: 'hun',
         name: 'Hunter',
         params: 'hunter',
-        portrait: '/static/images/classes/hunter-p.png'
+        portrait: '/static/images/classes/hunter-p.png',
+        figure: '/static/images/classes/hunter-figure.png'
     },
     mag: {
         code: 'mag',
         name: 'Mage',
         params: 'mage',
-        portrait: '/static/images/classes/mage-p.png'
+        portrait: '/static/images/classes/mage-p.png',
+        figure: '/static/images/classes/mage-figure.png'
     },
     pal: {
         code: 'pal',
         name: 'Paladin',
         params: 'paladin',
-        portrait: '/static/images/classes/paladin-p.png'
+        portrait: '/static/images/classes/paladin-p.png',
+        figure: '/static/images/classes/paladin-figure.png'
     },
     pst: {
         code: 'pst',
         name: 'Priest',
         params: 'priest',
-        portrait: '/static/images/classes/priest-p.png'
+        portrait: '/static/images/classes/priest-p.png',
+        figure: '/static/images/classes/priest-figure.png'
     },
     rog: {
         code: 'rog',
         name: 'Rogue',
         params: 'rogue',
-        portrait: '/static/images/classes/rogue-p.png'
+        portrait: '/static/images/classes/rogue-p.png',
+        figure: '/static/images/classes/rogue-figure.png'
     },
     shm: {
         code: 'shm',
         name: 'Shaman',
         params: 'shaman',
-        portrait: '/static/images/classes/shaman-p.png'
+        portrait: '/static/images/classes/shaman-p.png',
+        figure: '/static/images/classes/shaman-figure.png'
     },
     wal: {
         code: 'wal',
         name: 'Warlock',
         params: 'warlock',
-        portrait: '/static/images/classes/warlock-p.png'
+        portrait: '/static/images/classes/warlock-p.png',
+        figure: '/static/images/classes/warlock-figure.png'
     },
     war: {
         code: 'war',
         name: 'Warrior',
         params: 'warrior',
-        portrait: '/static/images/classes/warrior-p.png'
+        portrait: '/static/images/classes/warrior-p.png',
+        figure: '/static/images/classes/warrior-figure.png'
     },
     neu: {
         code: 'neu',

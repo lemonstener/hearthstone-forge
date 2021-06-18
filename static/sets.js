@@ -1,9 +1,8 @@
-const cardSetsPanel = document.querySelector('.content')
-const body = document.querySelector('body')
-
 function allSets() {
-    cardSetsPanel.innerHTML = ''
-    cardSetsPanel.id = 'card-sets-panel'
+    body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
+    content.style.backgroundImage = 'none'
+    content.innerHTML = ''
+    content.id = 'card-sets-panel'
     body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
     for (year of years) {
         const yearPanel = document.createElement('div')
@@ -36,7 +35,7 @@ function allSets() {
             setPanel.addEventListener('mouseout', brightnessDown)
         }
         yearPanel.classList.add('year-panel')
-        cardSetsPanel.append(yearPanel)
+        content.append(yearPanel)
     }
 }
 
@@ -75,16 +74,16 @@ async function getCardsBySet() {
 
     setDesc.append(backButton, setLogo, setQuote, setInfo)
     body.style.backgroundImage = `url(${sets[this.id].wallpaper})`
-    cardSetsPanel.append(setDesc)
+    content.append(setDesc)
 
-    const res = await axios.get(`${BASE_URL}/cards/${this.id}`)
+    const res = await axios.get(`${BASE_URL}/api/cards/${this.id}`)
     displaySetCards(res.data)
 }
 
 function displaySetCards(data) {
     const showcaseCards = document.createElement('div')
     showcaseCards.id = 'showcase-cards'
-    cardSetsPanel.append(showcaseCards)
+    content.append(showcaseCards)
     for (el of data) {
         const card = createCardElement(el)
         card.lastElementChild.remove()

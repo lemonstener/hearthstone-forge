@@ -34,7 +34,7 @@ def login_auth(username,password):
         is_auth = bcrypt.check_password_hash(user.password, password)
         if is_auth:
             session[curr_user] = user.serialize()
-            return jsonify(user.serialize())
+            return jsonify(user=user.serialize())
 
     return False
 
@@ -43,10 +43,15 @@ def register(username,password,email):
     Store user in session.'''
 
     hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+    user = User.query.filter_by(username=username).first()
+    if user:
+        error = 'Username is already taken.'
+        return jsonify(error=error)
     user = User.query.filter_by(email=email).first()
     if user:
-        msg = 'Email is already registered to a different user.'
-        return msg
+        error = 'Email is already registered to a different user.'
+        return jsonify(error=error)
+    
 
     new_user = User(
             username = username,
@@ -57,7 +62,7 @@ def register(username,password,email):
     db.session.add(new_user)
     db.session.commit()
     session[curr_user] = new_user.serialize()
-    return new_user.serialize()
+    return jsonify(user=new_user.serialize())
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -65,18 +70,18 @@ def login_user():
     username = request.json['username']
     password = request.json['password']
     user = login_auth(username,password)
-    return user
+    if user:
+        return user
+    msg = 'Username and password do not match.'
+    return jsonify(error=msg)
 
 @app.route('/register',methods=['POST'])
 def register_user():
     username = request.json['username']
     email = request.json['email']
     password = request.json['password']
-    user = register(username,password,email)
-    if user:
-        return user
-    else:
-        return jsonify(msg='Username and password do not match.')
+    response = register(username,password,email)
+    return response
 
 @app.route('/logout')
 def logout():
@@ -153,7 +158,7 @@ def create_deck():
         title = data['title'],
         player_class = data['playerClass'],
         cards = data['cards'],
-        format = data['format'])
+        format = formats[data['format']]['code'])
     return jsonify(deck.serialize())
 
 # Routes for a single deck. 

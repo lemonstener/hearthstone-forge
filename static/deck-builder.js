@@ -2,12 +2,11 @@
 
 // tableArr keeps track of how many rows are in the table and
 // helps keeping it organized.
-const deckArr = []
-const tableArr = []
-const formatToPull = 'wild'
-const classToPull = 'hunter'
+// const deckArr = []
+// const tableArr = []
 
 function prepareDeckBuilder() {
+    userInSession.deckBuilder.playerClass = this.id.substring(0, this.id.length - 2)
     content.classList.add('fade-out')
     setTimeout(() => {
         content.id = 'dashboard'
@@ -99,7 +98,7 @@ function prepareDeckBuilder() {
             deckHolder.style.right = '0'
         })
 
-        getCardsByFormat(formatToPull, classToPull)
+        getCardsByFormat(userInSession.deckBuilder.format, classes[userInSession.deckBuilder.playerClass].params)
         content.classList.remove('fade-out')
     }, 500);
 }
@@ -110,7 +109,7 @@ function prepareDeckBuilder() {
 
 async function getCardsByFormat(format, playerClass) {
     const cardPicker = document.querySelector('#card-picker')
-    const res = await axios.get(`${BASE_URL}/cards/${format}/${playerClass}`);
+    const res = await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`);
     const classCards = res.data.c
     const neutralCards = res.data.n
 
@@ -271,10 +270,10 @@ function showcaseCard() {
         // but for whatever reason it just keeps doing it. Will come back later with
         // a better solution that doesn't look so choppy.
 
-        const deckIndex = deckArr.indexOf(null)
-        deckArr.splice(deckIndex, 1)
-        const tableIndex = tableArr.indexOf(null)
-        tableArr.splice(tableIndex, 1)
+        const deckIndex = userInSession.deckBuilder.deckArr.indexOf(null)
+        userInSession.deckBuilder.deckArr.splice(deckIndex, 1)
+        const tableIndex = userInSession.deckBuilder.tableArr.indexOf(null)
+        userInSession.deckBuilder.tableArr.splice(tableIndex, 1)
     })
 }
 
@@ -298,28 +297,29 @@ function handleCard(e) {
     const duplicate = checkForDuplicate(cardId)
 
     if (duplicate) {
-        deckArr.push(cardId)
+        userInSession.deckBuilder.deckArr.push(cardId)
         card.classList.add('grayscale')
         addDuplicateCardToDeck(cardId)
-        cardCounter.innerText = parseInt(deckArr.length)
+        cardCounter.innerText = parseInt(userInSession.deckBuilder.deckArr.length)
     } else {
-        deckArr.push(cardId)
-        tableArr.push(cardCost)
-        tableArr.sort(function(a, b) {
+        userInSession.deckBuilder.deckArr.push(cardId)
+        userInSession.deckBuilder.tableArr.push(cardCost)
+        userInSession.deckBuilder.tableArr.sort(function(a, b) {
             return a - b
         });
         addSingleCardToDeck(card)
-        cardCounter.innerText = parseInt(deckArr.length)
+        cardCounter.innerText = parseInt(userInSession.deckBuilder.deckArr.length)
     }
 
     // Gray out all cards if deck limit has been reached.
 
-    if (deckArr.length === 30) {
+    if (userInSession.deckBuilder.deckArr.length === 30) {
         cards = document.querySelectorAll('.card')
         cards.forEach(card => {
             card.classList.add('grayscale-all')
         })
         button.hidden = false
+        button.addEventListener('click', validateDeck)
     }
 }
 
@@ -331,7 +331,7 @@ function addSingleCardToDeck(card) {
     const cardsInDeck = document.querySelector('#cards-in-deck')
     const cardId = card.getAttribute('c-id')
     const cost = card.getAttribute('cost')
-    const index = tableArr.indexOf(cost || 0)
+    const index = userInSession.deckBuilder.tableArr.indexOf(cost || 0)
     const name = card.getAttribute('name')
     const cardRarity = card.getAttribute('rarity')
 
@@ -347,7 +347,6 @@ function addSingleCardToDeck(card) {
 
     tdName.innerText = name
     tdName.style.color = `${rarity[cardRarity].color}`
-    tdName.setAttribute('cost', cost)
     tdName.addEventListener('click', removeCard)
 
 
@@ -395,20 +394,20 @@ function removeCard(e) {
     if (childrenCount === 4) {
         if (tr.lastElementChild.innerText !== 'x2') {
             tr.remove()
-            const rowToRemove = tableArr.indexOf(e.target.getAttribute('cost'))
-            tableArr.splice(rowToRemove, 1)
+            const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(e.target.getAttribute('cost'))
+            userInSession.deckBuilder.tableArr.splice(rowToRemove, 1)
         } else {
             tr.lastElementChild.remove()
         }
     } else {
         tr.remove()
-        const rowToRemove = tableArr.indexOf(e.target.getAttribute('cost'))
-        tableArr.splice(rowToRemove, 1)
+        const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(e.target.getAttribute('cost'))
+        userInSession.deckBuilder.tableArr.splice(rowToRemove, 1)
     }
-    const index = deckArr.indexOf(this.parentElement.id)
-    deckArr.splice(index, 1)
+    const index = userInSession.deckBuilder.deckArr.indexOf(this.parentElement.id)
+    userInSession.deckBuilder.deckArr.splice(index, 1)
 
-    if (deckArr.length === 29) {
+    if (userInSession.deckBuilder.deckArr.length === 29) {
         cards = document.querySelectorAll('.card')
         cards.forEach(card => {
             card.classList.remove('grayscale-all')
@@ -417,17 +416,17 @@ function removeCard(e) {
     }
 
     card.classList.remove('grayscale')
-    cardCounter.innerText = parseInt(deckArr.length)
+    cardCounter.innerText = parseInt(userInSession.deckBuilder.deckArr.length)
 }
 
 // Function to determine whether a card can be added to the deck.
 
 function checkForPermission(id, rarity) {
-    if (deckArr.length === 30) {
+    if (userInSession.deckBuilder.deckArr.length === 30) {
         return false
     }
     let count = 0
-    for (num of deckArr) {
+    for (num of userInSession.deckBuilder.deckArr) {
         if (num === id) {
             count++;
             if (count === 1 && rarity === 'lgnd') {
@@ -444,8 +443,20 @@ function checkForPermission(id, rarity) {
 // Used for non-legendary cards.
 
 function checkForDuplicate(id) {
-    if (deckArr.indexOf(id) >= 0) {
+    if (userInSession.deckBuilder.deckArr.indexOf(id) >= 0) {
         return true
     }
     return false
+}
+
+function validateDeck() {
+    if (!userInSession.isLoggedIn) {
+        content.innerHTML = ''
+        showLoginForm()
+    } else {
+        if (userInSession.deckBuilder.deckArr.length === 30) {
+            content.innerHTML = ''
+            showDeckSubmissionForm(userInSession.deckBuilder.deckArr)
+        }
+    }
 }

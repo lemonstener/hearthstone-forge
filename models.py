@@ -81,7 +81,11 @@ class User(db.Model):
         user =  {
             'id': self.id,
             'username': self.username,
-            'bio': self.bio
+            'bio': self.bio,
+            'is_admin': self.is_admin,
+            'is_mod': self.is_mod,
+            'favorites': [f.deck_id for f in self.favorites],
+            'own_decks': [d.id for d in self.decks]
         }
 
         return user

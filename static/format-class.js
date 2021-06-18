@@ -1,7 +1,12 @@
 // Format and class picker functions
 
 function createFormatPanels() {
+    userInSession.deckBuilder.format = ''
+    userInSession.deckBuilder.playerClass = ''
+    userInSession.deckBuilder.deckArr = []
+    userInSession.deckBuilder.tableArr = []
     body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
+    content.style.backgroundImage = 'none'
     content.innerHTML = ''
     content.id = 'format-picker'
     const standard = document.createElement('div')
@@ -100,6 +105,7 @@ function deactivate(panel) {
 }
 
 function selectFormat() {
+    userInSession.deckBuilder.format = this.id
     content.classList.add('fade-out')
 
     setTimeout(() => {
@@ -110,38 +116,40 @@ function selectFormat() {
         </div>
         <div id="class-picker">
             <div class="portrait-holder">
-                <div id="demon-hunter-p" class="class-portrait grayscale" data-name="Demon Hunter"></div>
+                <div id="dhn-p" class="class-portrait grayscale" data-name="Demon Hunter"></div>
             </div>
             <div class="portrait-holder">
-                <div id="druid-p" class="class-portrait grayscale" data-name="Druid"></div>
+                <div id="dru-p" class="class-portrait grayscale" data-name="Druid"></div>
             </div>
             <div class="portrait-holder">
-                <div id="hunter-p" class="class-portrait grayscale" data-name="Hunter"></div>
+                <div id="hun-p" class="class-portrait grayscale" data-name="Hunter"></div>
             </div>
             <div class="portrait-holder">
-                <div id="mage-p" class="class-portrait grayscale" data-name="Mage"></div>
+                <div id="mag-p" class="class-portrait grayscale" data-name="Mage"></div>
             </div>
             <div class="portrait-holder">
-                <div id="paladin-p" class="class-portrait grayscale" data-name="Paladin"></div>
+                <div id="pal-p" class="class-portrait grayscale" data-name="Paladin"></div>
             </div>
             <div class="portrait-holder">
-                <div id="priest-p" class="class-portrait grayscale" data-name="Priest"></div>
+                <div id="pst-p" class="class-portrait grayscale" data-name="Priest"></div>
             </div>
             <div class="portrait-holder">
-                <div id="rogue-p" class="class-portrait grayscale" data-name="Rogue"></div>
+                <div id="rog-p" class="class-portrait grayscale" data-name="Rogue"></div>
             </div>
             <div class="portrait-holder">
-                <div id="shaman-p" class="class-portrait grayscale" data-name="Shaman"></div>
+                <div id="shm-p" class="class-portrait grayscale" data-name="Shaman"></div>
             </div>
             <div class="portrait-holder">
-                <div id="warlock-p" class="class-portrait grayscale" data-name="Warlock"></div>
+                <div id="wal-p" class="class-portrait grayscale" data-name="Warlock"></div>
             </div>
             <div class="portrait-holder">
-                <div id="warrior-p" class="class-portrait grayscale" data-name="Warrior"></div>
+                <div id="war-p" class="class-portrait grayscale" data-name="Warrior"></div>
             </div>
         </div>
     `
-
+        if (userInSession.deckBuilder.format === 'classic') {
+            document.querySelector('#class-picker').firstElementChild.remove()
+        }
         const portraits = document.querySelectorAll('.class-portrait')
         const className = document.querySelector('#class-name')
 
@@ -160,7 +168,7 @@ function selectFormat() {
         function changeImg(id) {
             const el = document.querySelector(`#${id}`)
             const urlStr = id.substring(0, id.length - 2)
-            body.style.backgroundImage = `url(/static/images/classes/${urlStr}.jpeg)`
+            content.style.backgroundImage = `url(${classes[urlStr].figure})`
             className.innerText = el.getAttribute('data-name')
         }
         content.classList.remove('fade-out')
