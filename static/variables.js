@@ -3,71 +3,91 @@ const classes = {
         code: 'dhn',
         name: 'Demon Hunter',
         params: 'demon%20hunter',
+        color: '#03CEA4',
         portrait: '/static/images/classes/demon-hunter-p.png',
-        figure: '/static/images/classes/demon-hunter-figure.png'
+        figure: '/static/images/classes/demon-hunter-figure.png',
+        face: '/static/images/classes/demon-hunter-face.png'
     },
     dru: {
         code: 'dru',
         name: 'Druid',
         params: 'druid',
+        color: '#D68C45',
         portrait: '/static/images/classes/druid-p.png',
-        figure: '/static/images/classes/druid-figure.png'
+        figure: '/static/images/classes/druid-figure.png',
+        face: '/static/images/classes/druid-face.png'
     },
     hun: {
         code: 'hun',
         name: 'Hunter',
         params: 'hunter',
+        color: '#2C6E49',
         portrait: '/static/images/classes/hunter-p.png',
-        figure: '/static/images/classes/hunter-figure.png'
+        figure: '/static/images/classes/hunter-figure.png',
+        face: '/static/images/classes/hunter-face.png'
     },
     mag: {
         code: 'mag',
         name: 'Mage',
         params: 'mage',
+        color: '#3993DD',
         portrait: '/static/images/classes/mage-p.png',
-        figure: '/static/images/classes/mage-figure.png'
+        figure: '/static/images/classes/mage-figure.png',
+        face: '/static/images/classes/mage-face.png'
     },
     pal: {
         code: 'pal',
         name: 'Paladin',
         params: 'paladin',
+        color: '#E7E247',
         portrait: '/static/images/classes/paladin-p.png',
-        figure: '/static/images/classes/paladin-figure.png'
+        figure: '/static/images/classes/paladin-figure.png',
+        face: '/static/images/classes/paladin-face.png'
     },
     pst: {
         code: 'pst',
         name: 'Priest',
         params: 'priest',
+        color: '#E9EDDE',
         portrait: '/static/images/classes/priest-p.png',
-        figure: '/static/images/classes/priest-figure.png'
+        figure: '/static/images/classes/priest-figure.png',
+        face: '/static/images/classes/priest-face.png'
     },
     rog: {
         code: 'rog',
         name: 'Rogue',
         params: 'rogue',
+        color: '#030027',
         portrait: '/static/images/classes/rogue-p.png',
-        figure: '/static/images/classes/rogue-figure.png'
+        figure: '/static/images/classes/rogue-figure.png',
+        face: '/static/images/classes/rogue-face.png'
     },
     shm: {
         code: 'shm',
         name: 'Shaman',
         params: 'shaman',
+        color: '#7D8CC4',
         portrait: '/static/images/classes/shaman-p.png',
-        figure: '/static/images/classes/shaman-figure.png'
+        figure: '/static/images/classes/shaman-figure.png',
+        face: '/static/images/classes/shaman-face.png'
     },
     wal: {
         code: 'wal',
         name: 'Warlock',
         params: 'warlock',
+        color: '#7E52A0',
         portrait: '/static/images/classes/warlock-p.png',
-        figure: '/static/images/classes/warlock-figure.png'
+        figure: '/static/images/classes/warlock-figure.png',
+        face: '/static/images/classes/warlock-face.png'
     },
     war: {
         code: 'war',
         name: 'Warrior',
         params: 'warrior',
+        color: '#721121',
         portrait: '/static/images/classes/warrior-p.png',
-        figure: '/static/images/classes/warrior-figure.png'
+        figure: '/static/images/classes/warrior-figure.png',
+        face: '/static/images/classes/warrior-face.png'
     },
     neu: {
         code: 'neu',

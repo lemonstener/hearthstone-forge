@@ -40,11 +40,8 @@ hsLogo.addEventListener('click', function() {
 
         forgeLink.addEventListener('click', function(e) {
             e.preventDefault()
-            nav.innerHTML = ''
+            resetNav()
             createFormatPanels()
-            content.classList.remove('blur')
-            nav.style.left = '-9999px'
-            content.style.marginLeft = '0'
         })
 
         const decksLink = document.createElement('a')
@@ -53,6 +50,12 @@ hsLogo.addEventListener('click', function() {
         decksLink.href = ''
         decksLink.style.color = 'white'
         decksLink.append(decksText)
+
+        decksLink.addEventListener('click', function(e) {
+            e.preventDefault()
+            resetNav()
+            prepareAllDecksPanel()
+        })
 
         const setsLink = document.createElement('a')
         const setsText = document.createTextNode("Browse Cards by Set")
@@ -63,11 +66,8 @@ hsLogo.addEventListener('click', function() {
 
         setsLink.addEventListener('click', function(e) {
             e.preventDefault()
-            nav.innerHTML = ''
+            resetNav()
             allSets()
-            content.classList.remove('blur')
-            nav.style.left = '-9999px'
-            content.style.marginLeft = '0'
         })
 
         const newsLink = document.createElement('a')
@@ -88,11 +88,8 @@ hsLogo.addEventListener('click', function() {
 
             loginLink.addEventListener('click', function(e) {
                 e.preventDefault()
-                nav.innerHTML = ''
+                resetNav()
                 showLoginForm()
-                content.classList.remove('blur')
-                nav.style.left = '-9999px'
-                content.style.marginLeft = '0'
             })
 
             nav.append(loginLink)
@@ -117,11 +114,32 @@ hsLogo.addEventListener('click', function() {
         }
         content.classList.add('blur')
         nav.style.left = '0'
+        hsLogo.style.left = '40px'
         content.style.marginLeft = '50vw'
     } else {
-        content.classList.remove('blur')
-        nav.style.left = '-9999px'
-        content.style.marginLeft = '0'
-        nav.innerHTML = ''
+        resetNav()
     }
 })
+
+// Helper functions
+
+function resetDeckBuilder() {
+    userInSession.deckBuilder.format = ''
+    userInSession.deckBuilder.playerClass = ''
+    userInSession.deckBuilder.deckArr = []
+    userInSession.deckBuilder.tableArr = []
+}
+
+function resetContent() {
+    body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
+    content.style.backgroundImage = 'none'
+    content.innerHTML = ''
+}
+
+function resetNav() {
+    content.classList.remove('blur')
+    nav.style.left = '-9999px'
+    content.style.marginLeft = '0'
+    nav.innerHTML = ''
+    hsLogo.style.left = '0'
+}

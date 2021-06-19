@@ -1,7 +1,7 @@
 let test
 
 function showLoginForm() {
-    body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
+    resetContent()
     if (userInSession.isLoggedIn === false) {
         const form = document.createElement('form')
         form.id = 'user-form'
@@ -163,6 +163,8 @@ async function loginUser() {
 
         if (userInSession.deckBuilder.deckArr.length === 30) {
             validateDeck()
+        } else {
+            resetDeckBuilder()
         }
     }
 }
@@ -192,6 +194,8 @@ async function registerUser() {
 
         if (userInSession.deckBuilder.deckArr.length === 30) {
             validateDeck()
+        } else {
+            resetDeckBuilder()
         }
     }
 }
@@ -200,6 +204,7 @@ function showDeckSubmissionForm() {
     if (!userInSession.deckBuilder.deckArr.length === 30) {
         return
     }
+    resetContent()
     content.style.backgroundImage = 'url(/static/images/tyrion.png)'
     const form = document.createElement('form')
     form.id = 'user-form'
@@ -226,12 +231,6 @@ function showDeckSubmissionForm() {
 
     submitBTN.addEventListener('click', async function(e) {
         e.preventDefault()
-        console.log({
-            "title": `${deckName.value}`,
-            "playerClass": `${classes[userInSession.deckBuilder.playerClass].params}`,
-            "cards": userInSession.deckBuilder.deckArr,
-            "format": `${userInSession.deckBuilder.format}`
-        })
         const res = await axios.post(`${BASE_URL}/api/decks`, {
             "title": `${deckName.value}`,
             "playerClass": `${userInSession.deckBuilder.playerClass}`,
@@ -239,10 +238,9 @@ function showDeckSubmissionForm() {
             "format": `${userInSession.deckBuilder.format}`
         })
         console.log(res)
+        resetDeckBuilder()
     })
-
     label.append(deckName)
     form.append(label, submitBTN)
     content.append(div1, form, div2)
-
 }

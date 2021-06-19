@@ -376,6 +376,7 @@ class Deck(db.Model):
         '''Display all properties of the deck.'''
 
         return {
+            'id': self.id,
             'title': self.title,
             'player_class': self.player_class,
             'format': self.format,
@@ -385,7 +386,9 @@ class Deck(db.Model):
             'guide': self.guide,
             'comments': [comment for comment in self.comments],
             'comment_count': self.comment_count(),
-            'favorite_count': self.favorite_count()
+            'favorite_count': self.favorite_count(),
+            'author': self.user.username,
+            'author_id': self.user_id
         }
 
 class Favorite(db.Model):

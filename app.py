@@ -144,7 +144,7 @@ def get_cards_by_artist(artist_name):
 
 @app.route('/api/decks')
 def get_all_decks():
-    all_decks =  [deck.serialize_deck() for deck in Deck.query.all()]
+    all_decks =  [deck.serialize() for deck in Deck.query.all()]
     return jsonify(all_decks=all_decks)
 
 # Route for creating a new deck in the database.

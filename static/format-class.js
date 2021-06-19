@@ -1,13 +1,8 @@
 // Format and class picker functions
 
 function createFormatPanels() {
-    userInSession.deckBuilder.format = ''
-    userInSession.deckBuilder.playerClass = ''
-    userInSession.deckBuilder.deckArr = []
-    userInSession.deckBuilder.tableArr = []
-    body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
-    content.style.backgroundImage = 'none'
-    content.innerHTML = ''
+    resetDeckBuilder()
+    resetContent()
     content.id = 'format-picker'
     const standard = document.createElement('div')
 
