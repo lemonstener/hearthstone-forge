@@ -212,6 +212,7 @@ class User(db.Model):
         if f:
             db.session.delete(f)
             db.session.commit()
+            return 'Deck removed from favorites.'
         else:
             new_fav = Favorite(
                 user_id = self.id,
@@ -220,6 +221,7 @@ class User(db.Model):
 
             db.session.add(new_fav)
             db.session.commit()
+            return 'Deck added to favorites.'
 
 
     def post_comment(self,deck_id,text):

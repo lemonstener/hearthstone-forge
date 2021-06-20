@@ -154,14 +154,17 @@ async function loginUser() {
         return
     } else {
         userInSession.isLoggedIn = true
-        userInSession.username = res.data.user.username,
-            userInSession.bio = res.data.user.bio,
-            userInSession.isAdmin = res.data.user.is_admin,
-            userInSession.isMod = res.data.user.is_mod,
-            userInSession.favorites = res.data.user.favorites,
-            userInSession.ownDecks = res.data.user.own_decks
+        userInSession.id = res.data.user.id
+        userInSession.username = res.data.user.username
+        userInSession.bio = res.data.user.bio
+        userInSession.isAdmin = res.data.user.is_admin
+        userInSession.isMod = res.data.user.is_mod
+        userInSession.favorites = res.data.user.favorites
+        userInSession.ownDecks = res.data.user.own_decks
 
-        if (userInSession.deckBuilder.deckArr.length === 30) {
+        if (userInSession.deckBuilder.deckArr.length === 30 &&
+            userInSession.deckBuilder.format !== '' &&
+            userInSession.deckBuilder.playerClass !== '') {
             validateDeck()
         } else {
             resetDeckBuilder()
@@ -185,14 +188,17 @@ async function registerUser() {
     } else {
         console.log(res.data)
         userInSession.isLoggedIn = true
-        userInSession.username = res.data.user.username,
-            userInSession.bio = res.data.user.bio,
-            userInSession.isAdmin = res.data.user.is_admin,
-            userInSession.isMod = res.data.user.is_mod,
-            userInSession.favorites = res.data.user.favorites,
-            userInSession.ownDecks = res.data.user.own_decks
+        userInSession.id = res.data.user.id
+        userInSession.username = res.data.user.username
+        userInSession.bio = res.data.user.bio
+        userInSession.isAdmin = res.data.user.is_admin
+        userInSession.isMod = res.data.user.is_mod
+        userInSession.favorites = res.data.user.favorites
+        userInSession.ownDecks = res.data.user.own_decks
 
-        if (userInSession.deckBuilder.deckArr.length === 30) {
+        if (userInSession.deckBuilder.deckArr.length === 30 &&
+            userInSession.deckBuilder.format !== '' &&
+            userInSession.deckBuilder.playerClass !== '') {
             validateDeck()
         } else {
             resetDeckBuilder()
@@ -206,6 +212,7 @@ function showDeckSubmissionForm() {
     }
     resetContent()
     content.style.backgroundImage = 'url(/static/images/tyrion.png)'
+    content.style.backgroundSize = 'contain'
     const form = document.createElement('form')
     form.id = 'user-form'
 
@@ -237,8 +244,9 @@ function showDeckSubmissionForm() {
             "cards": userInSession.deckBuilder.deckArr,
             "format": `${userInSession.deckBuilder.format}`
         })
-        console.log(res)
+        currentDecks[res.data.id] = res.data
         resetDeckBuilder()
+        displayDeck(res.data.id)
     })
     label.append(deckName)
     form.append(label, submitBTN)

@@ -1,5 +1,3 @@
-const currentDecks = {}
-
 function prepareAllDecksPanel() {
     resetDeckBuilder()
     resetContent()
@@ -54,6 +52,14 @@ async function getDecksFromAPI() {
         byUser.innerText = `by ${deck.author}`
         const format = document.createElement('div')
         format.innerText = deck.format
+        if (deck.player_class === 'pst' ||
+            deck.player_class === 'pal' ||
+            deck.player_class === 'dhn' ||
+            deck.player_class === 'shm') {
+            title.style.color = 'black'
+            byUser.style.color = 'black'
+            format.style.color = 'black'
+        }
 
         info.append(title, byUser, format)
 
@@ -63,7 +69,8 @@ async function getDecksFromAPI() {
         const heart = document.createElement('div')
         heart.classList.add('heart')
         const heartCounter = document.createElement('div')
-        heart.innerHTML = '<span>&#9825;</span>'
+        heart.innerHTML = '<span>♡</span>'
+        heart.style.color = 'red'
         heartCounter.innerText = deck.favorite_count
         heartCounter.classList.add('heart-counter')
 
@@ -73,6 +80,14 @@ async function getDecksFromAPI() {
         const bubbleCounter = document.createElement('div')
         bubbleCounter.innerText = deck.comment_count
         bubbleCounter.classList.add('bubble-counter')
+
+        if (deck.player_class === 'pst' ||
+            deck.player_class === 'pal' ||
+            deck.player_class === 'dhn' ||
+            deck.player_class === 'shm') {
+            heartCounter.style.color = 'black'
+            bubbleCounter.style.color = 'black'
+        }
 
         const top = document.createElement('div')
         top.classList.add('stats-field')
@@ -87,49 +102,88 @@ async function getDecksFromAPI() {
         const appendTo = document.querySelector(`#${deck.player_class}`)
         appendTo.append(deckHolder)
 
-        deckHolder.addEventListener('click', displayDeck)
+        deckHolder.addEventListener('click', function() {
+            displayDeck(this.id)
+        })
     }
 }
 
-function displayDeck() {
-    resetContent()
-    content.id = 'showcase-deck'
+function displayDeck(num) {
+    content.classList.add('fade-out')
+    setTimeout(() => {
+        resetContent()
+        content.id = 'showcase-deck'
 
-    for (card of currentDecks[this.id].cards) {
-        userInSession.deckBuilder.deckArr.push(card.id)
-    }
+        const deck = currentDecks[num]
+        const deckWallpaper = document.createElement('div')
+        deckWallpaper.classList.add('deck-wallpaper')
+        deckWallpaper.style.backgroundImage = `url(${classes[currentDecks[deck.id].player_class].figure})`
 
-    const deckWallpaper = document.createElement('div')
-    deckWallpaper.classList.add('deck-wallpaper')
-    deckWallpaper.style.backgroundImage = `url(${classes[currentDecks[this.id].player_class].figure})`
+        const info = document.createElement('div')
+        info.id = 'deck-desc'
+        info.setAttribute('deck-id', deck.id)
 
-    const table = document.createElement('table')
-    table.style.zIndex = '9000'
+        const backButton = document.createElement('div')
+        backButton.innerHTML = '<span id="back-set-button">&#10232;</span>'
+        backButton.addEventListener('click', prepareAllDecksPanel)
 
-    for (card of currentDecks[this.id].cards) {
-        const tr = document.createElement('tr')
-        let count = 0
-        for (num of userInSession.deckBuilder.deckArr) {
-            if (num === card.id) {
-                count++;
-                if (count === 1 && card.rarity === 'lgnd') {
-                    table.append(legendary(card))
-                } else if (count === 2) {
-                    table.append(duplicate(card))
-                } else {
-                    table.append(single(card))
-                }
+        const heading = document.createElement('div')
+        heading.innerHTML = `<h2>${deck.title}</h2>by ${deck.author}`
+        heading.style.fontSize = '2rem'
+
+        const favButton = document.createElement('div')
+        favButton.style.fontSize = '2em'
+        favButton.style.cursor = 'pointer'
+
+        if (userInSession.isLoggedIn && deck.author_id !== userInSession.id) {
+            const favorites = userInSession.favorites
+            if (favorites.indexOf(deck.id) > -1) {
+                favButton.innerHTML = `<span>♥︎</span>`
+                favButton.style.color = 'red'
+            } else {
+                favButton.innerHTML = `<span>♥</span>`
+                favButton.style.color = 'rgba(60, 179, 113,.7)'
+            }
+            favButton.addEventListener('click', favUnfav)
+        }
+
+        const guide = document.createElement('div')
+        guide.innerText = deck.guide
+        guide.style.backgroundColor = 'rgba(0, 0, 0, .3)'
+
+        info.append(backButton, heading, favButton, guide)
+        body.append(info)
+
+        const table = document.createElement('table')
+        table.style.zIndex = '9999'
+        table.style.position = 'fixed'
+        table.style.right = '50px'
+
+        content.append(deckWallpaper, table)
+
+        for (card of currentDecks[deck.id].cards) {
+            const duplicateCard = checkForDuplicate(card.id)
+            if (duplicateCard) {
+                userInSession.deckBuilder.deckArr.push(card.id)
+                duplicate(card)
+            } else {
+                userInSession.deckBuilder.deckArr.push(card.id)
+                userInSession.deckBuilder.tableArr.push(card.cost)
+                userInSession.deckBuilder.tableArr.sort(function(a, b) {
+                    return a - b
+                });
+                single(card)
             }
         }
-    }
-
-
-
-    content.append(deckWallpaper, table)
+        content.classList.remove('fade-out')
+    }, 500);
 }
 
 function single(card) {
-    const tr = document.createElement('tr')
+    const index = userInSession.deckBuilder.tableArr.indexOf(card.cost || 0)
+    const table = document.querySelector('table')
+    const tr = table.insertRow(index)
+    tr.id = card.id
     const cost = document.createElement('td')
     const name = document.createElement('td')
 
@@ -138,14 +192,44 @@ function single(card) {
     name.innerText = card.name
     name.style.color = rarity[card.rarity].color
 
-    tr.append(cost, name)
-    return tr
+    if (card.rarity === 'lgnd') {
+        const star = document.createElement('td')
+        star.innerHTML = '<span>&#9733;</span>'
+        star.style.textAlign = 'center'
+        star.style.color = 'gold'
+        tr.append(star)
+    }
+
+    const img = document.createElement('img')
+    img.src = card.img
+    img.classList.add('snap-deck-showcase')
+
+    tr.prepend(img, cost, name)
 }
 
 function duplicate(card) {
-    console.log(card)
+    const tr = document.getElementById(card.id)
+    const symbol = document.createElement('td')
+
+    symbol.innerText = 'x2'
+    symbol.style.textAlign = 'center'
+    symbol.style.color = 'gold'
+
+    tr.append(symbol)
 }
 
-function legendary(card) {
-    console.log(card)
+async function favUnfav() {
+    const deck = this.parentElement.getAttribute('deck-id')
+    const res = await axios.post(`${BASE_URL}/api/decks/${deck}/favorite`)
+    const num = parseInt(deck)
+    if (res.data === 'Deck added to favorites.') {
+        this.innerHTML = '<span>♥︎</span>'
+        this.style.color = 'red'
+        userInSession.favorites.push(num)
+    } else {
+        this.innerHTML = '<span>♥︎</span>'
+        this.style.color = 'rgba(60, 179, 113,.4)'
+        const index = userInSession.favorites.indexOf(num)
+        userInSession.favorites.splice(index, 1)
+    }
 }

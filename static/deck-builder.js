@@ -336,7 +336,9 @@ function addSingleCardToDeck(card) {
     const cardRarity = card.getAttribute('rarity')
 
     const tr = cardsInDeck.insertRow(index)
+    tr.setAttribute('cost', card.getAttribute('cost'))
     tr.id = `r-${cardId}`
+    tr.classList.add('row')
 
     const tdCost = document.createElement('td')
     const tdName = document.createElement('td')
@@ -348,7 +350,6 @@ function addSingleCardToDeck(card) {
     tdName.innerText = name
     tdName.style.color = `${rarity[cardRarity].color}`
     tdName.addEventListener('click', removeCard)
-
 
     img.src = card.getAttribute('img')
     img.classList.add('snap')

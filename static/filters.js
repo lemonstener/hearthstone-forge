@@ -101,14 +101,14 @@ function applyRemove() {
         this.classList.add('scratched')
 
         if (value === '10+') {
-            cards = document.querySelectorAll('.card')
+            cards = document.querySelectorAll('.card:not(.row)')
             cards.forEach(card => {
                 if (card.getAttribute(dataType) > 9) {
                     card.hidden = true
                 }
             })
         } else {
-            cards = document.querySelectorAll(`[${dataType}='${value}']`)
+            cards = document.querySelectorAll(`[${dataType}='${value}']:not(.row)`)
             cards.forEach(card => {
                 card.hidden = true
             })
@@ -119,14 +119,14 @@ function applyRemove() {
         this.classList.remove('scratched')
 
         if (value === '10+') {
-            cards = document.querySelectorAll('.card')
+            cards = document.querySelectorAll('.card:not(.row)')
             cards.forEach(card => {
                 if (card.getAttribute(dataType) > 9) {
                     card.hidden = false
                 }
             })
         } else {
-            cards = document.querySelectorAll(`[${dataType}='${value}']`)
+            cards = document.querySelectorAll(`[${dataType}='${value}']:not(.row)`)
             cards.forEach(card => {
                 card.hidden = false
             })

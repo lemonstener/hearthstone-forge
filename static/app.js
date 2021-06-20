@@ -9,8 +9,11 @@ const newsLink = document.querySelector('#news')
 
 const BASE_URL = 'http://127.0.0.1:5000'
 
+const currentDecks = {}
+
 const userInSession = {
     isLoggedIn: false,
+    id: '',
     username: '',
     bio: '',
     favorites: '',
@@ -134,6 +137,11 @@ function resetContent() {
     body.style.backgroundImage = `url(/static/images/paper-background.jpeg)`
     content.style.backgroundImage = 'none'
     content.innerHTML = ''
+    try {
+        document.querySelector('#deck-desc').remove()
+    } catch (error) {
+        console.log('Nothing to remove')
+    }
 }
 
 function resetNav() {

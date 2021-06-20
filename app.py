@@ -211,8 +211,8 @@ def handle_guide(id):
 def fav_unfav_deck(id):
     '''User can favorite or unfavorite a deck.'''
     user = User.query.get_or_404(session[curr_user]['id'])
-    user.fav_unfav_deck(id)
-
+    res = user.fav_unfav_deck(id)
+    return jsonify(res)
 
 # ------------------------------------------------------
 # Comment routes
