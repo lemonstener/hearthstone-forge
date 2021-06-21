@@ -6,7 +6,6 @@
 // const tableArr = []
 
 function prepareDeckBuilder() {
-    userInSession.deckBuilder.playerClass = this.id.substring(0, this.id.length - 2)
     content.classList.add('fade-out')
     setTimeout(() => {
         content.id = 'dashboard'
@@ -119,6 +118,10 @@ async function getCardsByFormat(format, playerClass) {
     for (card of neutralCards) {
         cardPicker.append(createCardElement(card))
     }
+
+    if (userInSession.deckBuilder.editMode) {
+        placeDeckCards()
+    }
 }
 
 
@@ -170,7 +173,9 @@ function createCardElement(card) {
 
     icon.addEventListener('click', showcaseCard)
 
-    div.addEventListener('click', handleCard)
+    div.addEventListener('click', function(e) {
+        handleCard(e.target)
+    })
     div.addEventListener('mouseover', showInfoIcon)
     div.addEventListener('mouseout', hideInfoIcon)
 
@@ -199,6 +204,8 @@ function showcaseCard() {
         card = this.parentElement.cloneNode(true)
         card.lastElementChild.remove()
     }
+
+    card.classList.remove('grayscale')
 
     const showcase = document.createElement('div')
     showcase.id = 'showcase'
@@ -277,15 +284,22 @@ function showcaseCard() {
     })
 }
 
+function placeDeckCards() {
+    for (num of userInSession.deckBuilder.editCards) {
+        const card = document.querySelector(`[c-id='${num}']`)
+        handleCard(card)
+    }
+}
+
 // Maximum of 2 copies of a card per deck.
 // Copies of legendary cards are limited to 1.
 // We gray out cards that have reached the limit for better user experience.
 
-function handleCard(e) {
+function handleCard(card) {
     const cardCounter = document.querySelector('#card-counter')
     const button = document.querySelector('#forge-button')
-    const card = e.target
-    const cardId = card.getAttribute('c-id')
+
+    const cardId = parseInt(card.getAttribute('c-id'))
     const cardRarity = card.getAttribute('rarity')
     const cardCost = card.getAttribute('cost')
 

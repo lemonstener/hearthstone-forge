@@ -24,7 +24,10 @@ const userInSession = {
         format: '',
         playerClass: '',
         deckArr: [],
-        tableArr: []
+        tableArr: [],
+        editMode: false,
+        deckToEdit: '',
+        editCards: []
             // deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
             // tableArr keeps track of how many rows are in the table and
             // helps keeping it organized.
@@ -106,6 +109,14 @@ hsLogo.addEventListener('click', function() {
 
             nav.prepend(userLink)
 
+            userLink.addEventListener('click', function(e) {
+                e.preventDefault()
+                resetContent()
+                resetDeckBuilder()
+                resetNav()
+                userPage()
+            })
+
             const logoutLink = document.createElement('a')
             const logoutText = document.createTextNode(`Logout`)
             logoutLink.id = 'logout'
@@ -114,6 +125,18 @@ hsLogo.addEventListener('click', function() {
             logoutLink.append(logoutText)
 
             nav.append(logoutLink)
+
+            logoutLink.addEventListener('click', async function(e) {
+                e.preventDefault()
+                resetContent()
+                resetDeckBuilder()
+                resetNav()
+                const res = await axios.get(`${BASE_URL}/logout`)
+                const msg = document.createElement('h1')
+                msg.innerText = 'Thank you for visiting!'
+
+                content.append(msg)
+            })
         }
         content.classList.add('blur')
         nav.style.left = '0'

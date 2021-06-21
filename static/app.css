@@ -806,6 +806,28 @@
                 color: red;
                 font-size: .8em;
             }
+            /* User page */
+            
+            #user-page {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .user-decks-holder {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .user-decks {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+            /* Goodbye page */
             /* Fade out animation */
             
             .fade-out {

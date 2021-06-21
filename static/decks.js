@@ -32,80 +32,94 @@ function prepareAllDecksPanel() {
 
 async function getDecksFromAPI() {
     const res = await axios.get(`${BASE_URL}/api/decks`)
-    for (deck of res.data.all_decks) {
-        currentDecks[deck.id] = deck
-        const deckHolder = document.createElement('div')
-        deckHolder.classList.add('deck')
-        deckHolder.style.backgroundColor = `${classes[deck.player_class].color}`
-        deckHolder.id = deck.id
-
-        const portrait = document.createElement('div')
-        portrait.classList.add('deck-portrait')
-        portrait.style.backgroundImage = `url(${classes[deck.player_class].face})`
-
-        const info = document.createElement('div')
-        info.classList.add('deck-info')
-
-        const title = document.createElement('div')
-        title.innerText = deck.title
-        const byUser = document.createElement('div')
-        byUser.innerText = `by ${deck.author}`
-        const format = document.createElement('div')
-        format.innerText = deck.format
-        if (deck.player_class === 'pst' ||
-            deck.player_class === 'pal' ||
-            deck.player_class === 'dhn' ||
-            deck.player_class === 'shm') {
-            title.style.color = 'black'
-            byUser.style.color = 'black'
-            format.style.color = 'black'
-        }
-
-        info.append(title, byUser, format)
-
-        const stats = document.createElement('div')
-        stats.classList.add('stats')
-
-        const heart = document.createElement('div')
-        heart.classList.add('heart')
-        const heartCounter = document.createElement('div')
-        heart.innerHTML = '<span>♡</span>'
-        heart.style.color = 'red'
-        heartCounter.innerText = deck.favorite_count
-        heartCounter.classList.add('heart-counter')
-
-        const bubble = document.createElement('div')
-        bubble.innerHTML = '<span>&#x1F5E8;</span>'
-        bubble.classList.add('bubble')
-        const bubbleCounter = document.createElement('div')
-        bubbleCounter.innerText = deck.comment_count
-        bubbleCounter.classList.add('bubble-counter')
-
-        if (deck.player_class === 'pst' ||
-            deck.player_class === 'pal' ||
-            deck.player_class === 'dhn' ||
-            deck.player_class === 'shm') {
-            heartCounter.style.color = 'black'
-            bubbleCounter.style.color = 'black'
-        }
-
-        const top = document.createElement('div')
-        top.classList.add('stats-field')
-        const bottom = document.createElement('div')
-        bottom.classList.add('stats-field')
-
-        top.append(heart, bubble)
-        bottom.append(heartCounter, bubbleCounter)
-        stats.append(top, bottom)
-
-        deckHolder.append(portrait, info, stats)
-        const appendTo = document.querySelector(`#${deck.player_class}`)
-        appendTo.append(deckHolder)
-
-        deckHolder.addEventListener('click', function() {
-            displayDeck(this.id)
-        })
+    for (el of res.data.all_decks) {
+        currentDecks[el.id] = el
+        const appendTo = document.querySelector(`#${el.player_class}`)
+        appendTo.append(createBanner(el))
     }
+}
+
+function createBanner(deck) {
+    const deckHolder = document.createElement('div')
+    deckHolder.classList.add('deck')
+    deckHolder.style.backgroundColor = `${classes[deck.player_class].color}`
+    deckHolder.id = deck.id
+
+    const portrait = document.createElement('div')
+    portrait.classList.add('deck-portrait')
+    portrait.style.backgroundImage = `url(${classes[deck.player_class].face})`
+
+    const info = document.createElement('div')
+    info.classList.add('deck-info')
+
+    const title = document.createElement('div')
+    title.innerText = deck.title
+    const byUser = document.createElement('div')
+    byUser.innerText = `by ${deck.author}`
+    const format = document.createElement('div')
+    format.innerText = deck.format
+
+    if (deck.format === 'stnd') {
+        format.innerText = 'standard'
+    } else if (deck.format === 'clsc') {
+        format.innerText = 'classic'
+    } else {
+        format.innerText = deck.format
+    }
+
+    if (deck.player_class === 'pst' ||
+        deck.player_class === 'pal' ||
+        deck.player_class === 'dhn' ||
+        deck.player_class === 'shm') {
+        title.style.color = 'black'
+        byUser.style.color = 'black'
+        format.style.color = 'black'
+    }
+
+    info.append(title, byUser, format)
+
+    const stats = document.createElement('div')
+    stats.classList.add('stats')
+
+    const heart = document.createElement('div')
+    heart.classList.add('heart')
+    const heartCounter = document.createElement('div')
+    heart.innerHTML = '<span>♡</span>'
+    heart.style.color = 'red'
+    heartCounter.innerText = deck.favorite_count
+    heartCounter.classList.add('heart-counter')
+
+    const bubble = document.createElement('div')
+    bubble.innerHTML = '<span>&#x1F5E8;</span>'
+    bubble.classList.add('bubble')
+    const bubbleCounter = document.createElement('div')
+    bubbleCounter.innerText = deck.comment_count
+    bubbleCounter.classList.add('bubble-counter')
+
+    if (deck.player_class === 'pst' ||
+        deck.player_class === 'pal' ||
+        deck.player_class === 'dhn' ||
+        deck.player_class === 'shm') {
+        heartCounter.style.color = 'black'
+        bubbleCounter.style.color = 'black'
+    }
+
+    const top = document.createElement('div')
+    top.classList.add('stats-field')
+    const bottom = document.createElement('div')
+    bottom.classList.add('stats-field')
+
+    top.append(heart, bubble)
+    bottom.append(heartCounter, bubbleCounter)
+    stats.append(top, bottom)
+
+    deckHolder.append(portrait, info, stats)
+
+    deckHolder.addEventListener('click', function() {
+        displayDeck(this.id)
+    })
+
+    return deckHolder
 }
 
 function displayDeck(num) {
@@ -131,27 +145,45 @@ function displayDeck(num) {
         heading.innerHTML = `<h2>${deck.title}</h2>by ${deck.author}`
         heading.style.fontSize = '2rem'
 
-        const favButton = document.createElement('div')
-        favButton.style.fontSize = '2em'
-        favButton.style.cursor = 'pointer'
+        const buttons = document.createElement('div')
+        buttons.style.fontSize = '2em'
+        buttons.style.cursor = 'pointer'
 
         if (userInSession.isLoggedIn && deck.author_id !== userInSession.id) {
             const favorites = userInSession.favorites
             if (favorites.indexOf(deck.id) > -1) {
-                favButton.innerHTML = `<span>♥︎</span>`
-                favButton.style.color = 'red'
+                buttons.innerHTML = `<span>♥︎</span>`
+                buttons.style.color = 'red'
             } else {
-                favButton.innerHTML = `<span>♥</span>`
-                favButton.style.color = 'rgba(60, 179, 113,.7)'
+                buttons.innerHTML = `<span>♥</span>`
+                buttons.style.color = 'rgba(60, 179, 113,.7)'
             }
-            favButton.addEventListener('click', favUnfav)
+            buttons.addEventListener('click', favUnfav)
+        } else if (userInSession.isLoggedIn && deck.author_id === userInSession.id) {
+            const editDeckBTN = document.createElement('button')
+            const editGuideBTN = document.createElement('button')
+
+            editDeckBTN.innerText = 'Edit Deck'
+            editDeckBTN.setAttribute('deck', deck.id)
+            editGuideBTN.innerText = 'Edit Guide'
+            editGuideBTN.setAttribute('deck', deck.id)
+
+            editDeckBTN.addEventListener('click', editDeck)
+                // Will come back to add this function some other time,
+                // right now I just want to wrap this up.
+                // editGuide.addEventListener('click', editGuide)
+
+            buttons.append(editDeckBTN, editGuideBTN)
         }
 
         const guide = document.createElement('div')
         guide.innerText = deck.guide
         guide.style.backgroundColor = 'rgba(0, 0, 0, .3)'
 
-        info.append(backButton, heading, favButton, guide)
+        info.append(backButton, heading, guide)
+        if (buttons.innerHTML !== '') {
+            info.insertBefore(buttons, info.childNodes[2])
+        }
         body.append(info)
 
         const table = document.createElement('table')
@@ -232,4 +264,23 @@ async function favUnfav() {
         const index = userInSession.favorites.indexOf(num)
         userInSession.favorites.splice(index, 1)
     }
+}
+
+function editDeck() {
+    const deck = currentDecks[this.getAttribute('deck')]
+    resetContent()
+    userInSession.deckBuilder.editMode = true
+    if (deck.format === 'stnd') {
+        userInSession.deckBuilder.format = 'standard'
+    } else if (deck.format === 'clsc') {
+        userInSession.deckBuilder.format = 'classic'
+    } else {
+        userInSession.deckBuilder.format = deck.format
+    }
+    userInSession.deckBuilder.playerClass = deck.player_class
+    userInSession.deckBuilder.deckToEdit = parseInt(deck.id)
+    userInSession.deckBuilder.editCards = userInSession.deckBuilder.deckArr
+    userInSession.deckBuilder.deckArr = []
+    userInSession.deckBuilder.tableArr = []
+    prepareDeckBuilder()
 }

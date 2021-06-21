@@ -220,11 +220,6 @@ sets = {
       'name': 'Classic',
       'img': None
       },
-  'Hall of Fame': {
-      'code': 'hof',
-      'name': 'Hall of Fame',
-      'img': None
-      },
   'Curse of Naxxramas': {
       'code': 'nax',
       'name': 'Curse of Naxxramas',

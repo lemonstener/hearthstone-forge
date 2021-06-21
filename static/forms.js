@@ -147,10 +147,8 @@ async function loginUser() {
         "username": `${user.value}`,
         "password": `${password.value}`
     })
-    console.log(res)
     if (res.data.error) {
         errorMsg.innerText = res.data.error
-        console.log(res.data.error)
         return
     } else {
         userInSession.isLoggedIn = true
@@ -168,6 +166,8 @@ async function loginUser() {
             validateDeck()
         } else {
             resetDeckBuilder()
+            resetContent()
+            userPage()
         }
     }
 }
@@ -202,6 +202,8 @@ async function registerUser() {
             validateDeck()
         } else {
             resetDeckBuilder()
+            resetContent()
+            userPage()
         }
     }
 }
@@ -236,19 +238,44 @@ function showDeckSubmissionForm() {
     submitBTN.classList.add('form-btn')
     submitBTN.id = 'submit-btn'
 
-    submitBTN.addEventListener('click', async function(e) {
-        e.preventDefault()
-        const res = await axios.post(`${BASE_URL}/api/decks`, {
-            "title": `${deckName.value}`,
-            "playerClass": `${userInSession.deckBuilder.playerClass}`,
-            "cards": userInSession.deckBuilder.deckArr,
-            "format": `${userInSession.deckBuilder.format}`
+    if (userInSession.deckBuilder.editMode) {
+        submitBTN.addEventListener('click', function(e) {
+            e.preventDefault()
+            patchDeck()
         })
-        currentDecks[res.data.id] = res.data
-        resetDeckBuilder()
-        displayDeck(res.data.id)
-    })
+    } else {
+        submitBTN.addEventListener('click', function(e) {
+            e.preventDefault()
+            postDeck()
+        })
+    }
+
     label.append(deckName)
     form.append(label, submitBTN)
     content.append(div1, form, div2)
+}
+
+async function postDeck() {
+    const deckName = document.querySelector('#deck-name')
+    const res = await axios.post(`${BASE_URL}/api/decks`, {
+        "title": `${deckName.value}`,
+        "playerClass": `${userInSession.deckBuilder.playerClass}`,
+        "cards": userInSession.deckBuilder.deckArr,
+        "format": `${userInSession.deckBuilder.format}`
+    })
+    currentDecks[res.data.id] = res.data
+    resetDeckBuilder()
+    displayDeck(res.data.id)
+}
+
+async function patchDeck() {
+    const deckName = document.querySelector('#deck-name')
+    const id = userInSession.deckBuilder.deckToEdit
+    const res = await axios.patch(`${BASE_URL}/api/decks/${id}`, {
+        "title": `${deckName.value}`,
+        "cards": userInSession.deckBuilder.deckArr
+    })
+    currentDecks[res.data.id] = res.data
+    resetDeckBuilder()
+    displayDeck(res.data.id)
 }

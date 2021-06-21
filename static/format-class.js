@@ -157,7 +157,10 @@ function selectFormat() {
                     e.target.classList.add('grayscale');
                 })
                 // Code logic continues in deck-builder.js
-            portrait.addEventListener('click', prepareDeckBuilder)
+            portrait.addEventListener('click', function(e) {
+                userInSession.deckBuilder.playerClass = e.target.id.substring(0, this.id.length - 2)
+                prepareDeckBuilder()
+            })
         })
 
         function changeImg(id) {

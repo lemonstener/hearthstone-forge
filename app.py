@@ -174,7 +174,7 @@ def handle_deck(id):
 
     else:
         if request.method == 'PATCH':
-            '''Update deck if the user is session owns it.'''
+            '''Update deck if the user in session owns it.'''
             data = request.json
 
             deck = user.update_deck(
