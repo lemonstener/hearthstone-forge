@@ -1,5 +1,8 @@
 function userPage() {
+    resetContent()
+    resetDeckBuilder()
     content.id = 'user-page'
+    currentDecks.currentPage = userPage
 
     const info = document.createElement('div')
     const username = document.createElement('h1')

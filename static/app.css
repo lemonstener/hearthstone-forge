@@ -19,19 +19,35 @@
                 align-items: center;
             }
             
-            #hs-logo {
-                width: 150px;
-                height: 60px;
-                background-image: url(/static/images/hs-logo.png);
-                background-position: center;
-                background-size: contain;
-                background-repeat: no-repeat;
+            #logo-holder {
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
                 z-index: 9999;
                 position: fixed;
-                top: 0;
-                left: 0;
+                top: 15px;
+                left: 50px;
                 cursor: pointer;
                 transition: left .4s;
+                background-color: rgba(0, 0, 0, .5);
+            }
+            
+            .logo-holder-active {
+                background-image: url(/static/images/blue-bg.gif);
+                background-position: bottom;
+                background-size: cover;
+                background-repeat: no-repeat;
+                box-shadow: 0px 0px 6px 3px #4C4B63;
+            }
+            
+            #hs-logo {
+                border-radius: 50%;
+                width: 90px;
+                height: 90px;
+                background-image: url(/static/images/Hearthstone-Logo.png);
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
             }
             
             nav {
@@ -147,31 +163,13 @@
             }
             /* Class picker */
             
-            #class-panel {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                justify-content: center;
-                flex-wrap: wrap;
-                box-sizing: border-box;
-                background-position: center;
-                background-size: contain;
-                background-repeat: no-repeat;
-                box-sizing: border-box;
-                transition: background-image .1s;
-            }
-            
-            #push-down {
-                margin-left: auto;
-                margin-right: auto;
+            #class-picker {
+                position: absolute;
                 width: 100%;
-                margin-left: 5px;
-                margin-right: 5px;
-                height: 50vh;
+                height: 100%;
                 display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
+                flex-direction: row;
+                justify-content: center;
                 align-items: center;
             }
             
@@ -184,19 +182,10 @@
                 -webkit-text-stroke-color: black;
             }
             
-            #class-picker {
-                width: 100vw;
-                height: 50vh;
-                box-sizing: border-box;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-            }
-            
             .portrait-holder {
                 width: 18vw;
                 height: 20vh;
+                position: relative;
             }
             
             .class-portrait {
@@ -207,6 +196,20 @@
                 background-repeat: no-repeat;
                 cursor: pointer;
                 transition: filter .8s;
+            }
+            
+            .mark {
+                position: absolute;
+                top: 0;
+                left: 10px;
+                width: 80%;
+                height: 80%;
+                margin: 5%;
+                background-image: url(/static/images/cross-off.png);
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                z-index: 9;
             }
             
             #dhn-p {
@@ -295,11 +298,11 @@
             }
             
             #filter-icon {
-                width: 200px;
-                height: 250px;
+                width: 150px;
+                height: 150px;
                 position: fixed;
                 left: 0;
-                bottom: 36%;
+                bottom: 40%;
                 transition: left .5s;
                 margin-left: 2vw;
                 margin-top: 5vh;
@@ -409,18 +412,18 @@
             
             #forge-button {
                 position: absolute;
-                bottom: 0;
+                bottom: -30px;
                 margin-left: 5%;
                 margin-right: 5%;
                 border-radius: 5px;
                 width: 90%;
                 height: 12%;
                 font-size: 1.4rem;
-                background-image: url(/static/images/forge-button.webp);
+                background-image: url(/static/images/blue-bg.gif);
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
-                color: #d4af37;
+                color: white;
                 -webkit-text-stroke-width: .4px;
                 -webkit-text-stroke-color: black;
                 cursor: pointer;
@@ -637,6 +640,20 @@
                 font-size: 1.3rem;
                 -webkit-text-stroke-width: 1px;
                 -webkit-text-stroke-color: black;
+            }
+            
+            #deck-icon-small {
+                position: fixed;
+                right: 80px;
+                top: 100px;
+                background-image: url(/static/images/deck.png);
+                width: 75px;
+                height: 120px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                z-index: 9999;
             }
             /* News panel */
             

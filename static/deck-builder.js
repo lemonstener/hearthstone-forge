@@ -205,8 +205,6 @@ function showcaseCard() {
         card.lastElementChild.remove()
     }
 
-    card.classList.remove('grayscale')
-
     const showcase = document.createElement('div')
     showcase.id = 'showcase'
 

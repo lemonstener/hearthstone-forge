@@ -308,18 +308,3 @@ def get_user(id):
     elif request.method == 'DELETE':
         sess_user = User.query.get_or_404(session[curr_user]['id'])
         sess_user.delete_user(id)
-
-
-
-    
-
-        
-
-
-    
-    
-    
-
-
-
-

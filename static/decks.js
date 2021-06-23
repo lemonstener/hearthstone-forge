@@ -2,6 +2,7 @@ function prepareAllDecksPanel() {
     resetDeckBuilder()
     resetContent()
     content.id = 'all-decks'
+    currentDecks.currentPage = prepareAllDecksPanel
     for (c in classes) {
         if (classes[c].name !== 'Neutral') {
             const div = document.createElement('div')
@@ -139,7 +140,7 @@ function displayDeck(num) {
 
         const backButton = document.createElement('div')
         backButton.innerHTML = '<span id="back-set-button">&#10232;</span>'
-        backButton.addEventListener('click', prepareAllDecksPanel)
+        backButton.addEventListener('click', currentDecks.currentPage)
 
         const heading = document.createElement('div')
         heading.innerHTML = `<h2>${deck.title}</h2>by ${deck.author}`
@@ -162,23 +163,34 @@ function displayDeck(num) {
         } else if (userInSession.isLoggedIn && deck.author_id === userInSession.id) {
             const editDeckBTN = document.createElement('button')
             const editGuideBTN = document.createElement('button')
+            const deleteBTN = document.createElement('button')
 
             editDeckBTN.innerText = 'Edit Deck'
             editDeckBTN.setAttribute('deck', deck.id)
             editGuideBTN.innerText = 'Edit Guide'
             editGuideBTN.setAttribute('deck', deck.id)
+            deleteBTN.innerText = 'Delete Deck'
+            deleteBTN.setAttribute('deck', deck.id)
 
             editDeckBTN.addEventListener('click', editDeck)
-                // Will come back to add this function some other time,
-                // right now I just want to wrap this up.
-                // editGuide.addEventListener('click', editGuide)
+            editGuideBTN.addEventListener('click', editGuide)
+            deleteBTN.addEventListener('click', deleteDeck)
 
-            buttons.append(editDeckBTN, editGuideBTN)
+            buttons.append(editDeckBTN, editGuideBTN, deleteBTN)
         }
 
         const guide = document.createElement('div')
-        guide.innerText = deck.guide
+
+        if (deck.guide === null) {
+            guide.innerText = 'The owner of this deck has not posted a guide for it yet.'
+        } else {
+            guide.innerText = deck.guide
+        }
+
         guide.style.backgroundColor = 'rgba(0, 0, 0, .3)'
+        guide.style.width = '80%'
+        guide.style.marginLeft = '20px'
+        guide.style.marginRight = '20px'
 
         info.append(backButton, heading, guide)
         if (buttons.innerHTML !== '') {
@@ -186,12 +198,26 @@ function displayDeck(num) {
         }
         body.append(info)
 
+        const deckIcon = document.createElement('div')
+        deckIcon.id = 'deck-icon-small'
+
         const table = document.createElement('table')
         table.style.zIndex = '9999'
         table.style.position = 'fixed'
         table.style.right = '50px'
+        table.style.top = '240px'
+        table.style.opacity = '0'
+        table.style.transition = 'opacity .5s'
 
-        content.append(deckWallpaper, table)
+        deckIcon.addEventListener('click', function() {
+            if (table.style.opacity === '1') {
+                table.style.opacity = '0'
+            } else {
+                table.style.opacity = '1'
+            }
+        })
+
+        content.append(deckWallpaper, deckIcon, table)
 
         for (card of currentDecks[deck.id].cards) {
             const duplicateCard = checkForDuplicate(card.id)
@@ -283,4 +309,18 @@ function editDeck() {
     userInSession.deckBuilder.deckArr = []
     userInSession.deckBuilder.tableArr = []
     prepareDeckBuilder()
+}
+
+function editGuide() {
+    const deck = currentDecks[this.getAttribute('deck')]
+    userInSession.deckBuilder.deckToEdit = deck.id
+    resetContent()
+    showGuideForm()
+}
+
+async function deleteDeck() {
+    const deck = currentDecks[this.getAttribute('deck')]
+    const res = await axios.delete(`${BASE_URL}/api/decks/${deck.id}`)
+    delete currentDecks[deck.id]
+    currentDecks.currentPage()
 }

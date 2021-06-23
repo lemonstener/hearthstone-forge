@@ -58,6 +58,7 @@ function showLoginForm() {
 
         loginBTN.addEventListener('click', function(e) {
             e.preventDefault()
+            loginBTN.disabled = true
             loginUser()
         })
         regLink.addEventListener('click', showRegistrationForm)
@@ -109,6 +110,7 @@ function showRegistrationForm(e) {
         regBTN.setAttribute('value', 'Register')
         regBTN.classList.add('form-btn')
         regBTN.id = 'reg-btn'
+        regBTN.disabled = true
 
         const loginLink = document.createElement('a')
         const linkText = document.createTextNode("Already have an account? Login here")
@@ -126,8 +128,13 @@ function showRegistrationForm(e) {
         content.append(form)
         content.append(div2)
 
+        username.addEventListener('keyup', validateInputs)
+        password.addEventListener('keyup', validateInputs)
+        email.addEventListener('keyup', validateInputs)
+
         regBTN.addEventListener('click', function(e) {
             e.preventDefault()
+            regBTN.disabled = true
             registerUser()
         })
         loginLink.addEventListener('click', function(e) {
@@ -149,14 +156,12 @@ async function loginUser() {
     })
     if (res.data.error) {
         errorMsg.innerText = res.data.error
+        document.querySelector('input[type="submit"]').disabled = false
         return
     } else {
         userInSession.isLoggedIn = true
         userInSession.id = res.data.user.id
         userInSession.username = res.data.user.username
-        userInSession.bio = res.data.user.bio
-        userInSession.isAdmin = res.data.user.is_admin
-        userInSession.isMod = res.data.user.is_mod
         userInSession.favorites = res.data.user.favorites
         userInSession.ownDecks = res.data.user.own_decks
 
@@ -169,6 +174,7 @@ async function loginUser() {
             resetContent()
             userPage()
         }
+        logoHolder.classList.add('logo-holder-active')
     }
 }
 
@@ -184,15 +190,13 @@ async function registerUser() {
     })
     if (res.data.error) {
         errorMsg.innerText = res.data.error
+        document.querySelector('input[type="submit"]').disabled = false
         return
     } else {
         console.log(res.data)
         userInSession.isLoggedIn = true
         userInSession.id = res.data.user.id
         userInSession.username = res.data.user.username
-        userInSession.bio = res.data.user.bio
-        userInSession.isAdmin = res.data.user.is_admin
-        userInSession.isMod = res.data.user.is_mod
         userInSession.favorites = res.data.user.favorites
         userInSession.ownDecks = res.data.user.own_decks
 
@@ -205,6 +209,7 @@ async function registerUser() {
             resetContent()
             userPage()
         }
+        logoHolder.classList.add('logo-holder-active')
     }
 }
 
@@ -226,8 +231,6 @@ function showDeckSubmissionForm() {
     const deckName = document.createElement('input')
     const label = document.createElement('label')
 
-    deckName.value = 'Unnamed Deck'
-
     deckName.id = 'deck-name'
     label.htmlFor = 'deck-name'
     label.innerText = 'Deck Name'
@@ -237,6 +240,17 @@ function showDeckSubmissionForm() {
     submitBTN.setAttribute('value', 'Submit')
     submitBTN.classList.add('form-btn')
     submitBTN.id = 'submit-btn'
+    submitBTN.disabled = true
+
+    deckName.addEventListener('keyup', function() {
+        // Make sure the input value is not just a bunch of white spaces.
+        const str = deckName.value.trim()
+        if (deckName.value.length !== 0 && str.length !== 0) {
+            submitBTN.disabled = false
+        } else {
+            submitBTN.disabled = true
+        }
+    })
 
     if (userInSession.deckBuilder.editMode) {
         submitBTN.addEventListener('click', function(e) {
@@ -253,6 +267,24 @@ function showDeckSubmissionForm() {
     label.append(deckName)
     form.append(label, submitBTN)
     content.append(div1, form, div2)
+}
+
+function validateInputs() {
+    const username = document.querySelector('#username')
+    const password = document.querySelector('#password')
+    const email = document.querySelector('#email')
+    const button = document.querySelector('input[type="submit"]')
+
+    const strUser = username.value.trim()
+    const strPass = password.value.trim()
+    const strEmail = email.value.trim()
+    if (username.value.length !== 0 && strUser.length !== 0 &&
+        password.value.length !== 0 && strPass.length !== 0 &&
+        email.value.length !== 0 && strEmail.length !== 0) {
+        button.disabled = false
+    } else {
+        button.disabled = true
+    }
 }
 
 async function postDeck() {
@@ -278,4 +310,54 @@ async function patchDeck() {
     currentDecks[res.data.id] = res.data
     resetDeckBuilder()
     displayDeck(res.data.id)
+}
+
+function showGuideForm() {
+    content.style.backgroundImage = 'url(/static/images/tyrion.png)'
+    content.style.backgroundSize = 'contain'
+    content.style.backgroundRepeat = 'no-repeat'
+    const form = document.createElement('form')
+    form.id = 'user-form'
+
+    const div1 = document.createElement('div')
+    const div2 = document.createElement('div')
+    div1.classList.add('push-zone')
+    div2.classList.add('push-zone')
+
+    form.innerHTML = `
+    Edit the guide for <b>${currentDecks[userInSession.deckBuilder.deckToEdit].title}</b>
+    <br>
+    <textarea id="guide" rows = "20" cols = "60">
+    ${currentDecks[userInSession.deckBuilder.deckToEdit].guide}
+    </textarea><br>
+    `
+
+
+    const submitBTN = document.createElement('input')
+    submitBTN.setAttribute('type', 'submit')
+    submitBTN.setAttribute('value', 'Submit')
+    submitBTN.classList.add('form-btn')
+    submitBTN.id = ''
+
+    form.append(submitBTN)
+
+    submitBTN.addEventListener('click', function(e) {
+        e.preventDefault()
+        patchGuide()
+    })
+
+    content.append(div1, form, div2)
+}
+
+async function patchGuide() {
+    const id = userInSession.deckBuilder.deckToEdit
+    const guide = document.querySelector('#guide').value
+
+    const res = await axios.patch(`${BASE_URL}/api/decks/${id}/guide`, {
+        "guide": `${guide}`
+    })
+    resetContent()
+    resetDeckBuilder()
+    currentDecks[id].guide = guide
+    displayDeck(id)
 }

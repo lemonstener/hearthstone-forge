@@ -1,5 +1,6 @@
 const body = document.querySelector('body')
 const content = document.querySelector('.content')
+const logoHolder = document.querySelector('#logo-holder')
 const hsLogo = document.querySelector('#hs-logo')
 const nav = document.querySelector('nav')
 const forgeLink = document.querySelector('#forge')
@@ -9,7 +10,9 @@ const newsLink = document.querySelector('#news')
 
 const BASE_URL = 'http://127.0.0.1:5000'
 
-const currentDecks = {}
+const currentDecks = {
+    currentPage: ''
+}
 
 const userInSession = {
     isLoggedIn: false,
@@ -18,8 +21,6 @@ const userInSession = {
     bio: '',
     favorites: '',
     ownDecks: '',
-    isMod: '',
-    isAdmin: '',
     deckBuilder: {
         format: '',
         playerClass: '',
@@ -76,14 +77,16 @@ hsLogo.addEventListener('click', function() {
             allSets()
         })
 
-        const newsLink = document.createElement('a')
-        const newsText = document.createTextNode("News")
-        newsLink.id = 'news'
-        newsLink.href = ''
-        newsLink.style.color = 'white'
-        newsLink.append(newsText)
+        // I plan on adding a news section to the website at some point.
 
-        nav.append(forgeLink, decksLink, setsLink, newsLink)
+        // const newsLink = document.createElement('a')
+        // const newsText = document.createTextNode("News")
+        // newsLink.id = 'news'
+        // newsLink.href = ''
+        // newsLink.style.color = 'white'
+        // newsLink.append(newsText)
+
+        nav.append(forgeLink, decksLink, setsLink)
         if (!userInSession.isLoggedIn) {
             const loginLink = document.createElement('a')
             const loginText = document.createTextNode("Login")
@@ -131,16 +134,26 @@ hsLogo.addEventListener('click', function() {
                 resetContent()
                 resetDeckBuilder()
                 resetNav()
+
+                userInSession.isLoggedIn = false
+                userInSession.id = ''
+                userInSession.bio = ''
+                userInSession.favorites = ''
+                userInSession.ownDecks = ''
+
                 const res = await axios.get(`${BASE_URL}/logout`)
                 const msg = document.createElement('h1')
                 msg.innerText = 'Thank you for visiting!'
 
                 content.append(msg)
+
+                logoHolder.classList.remove('logo-holder-active')
+                logoHolder.style.backgroundColor = 'rgba(0, 0, 0, .5);'
             })
         }
         content.classList.add('blur')
         nav.style.left = '0'
-        hsLogo.style.left = '40px'
+        logoHolder.style.left = '76px'
         content.style.marginLeft = '50vw'
     } else {
         resetNav()
@@ -172,5 +185,5 @@ function resetNav() {
     nav.style.left = '-9999px'
     content.style.marginLeft = '0'
     nav.innerHTML = ''
-    hsLogo.style.left = '0'
+    logoHolder.style.left = '50px'
 }

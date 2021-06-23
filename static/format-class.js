@@ -104,72 +104,126 @@ function selectFormat() {
     content.classList.add('fade-out')
 
     setTimeout(() => {
-        content.id = 'class-panel'
-        content.innerHTML = `
-    <div id="push-down">
-            <div id='class-name'></div>
-        </div>
-        <div id="class-picker">
-            <div class="portrait-holder">
-                <div id="dhn-p" class="class-portrait grayscale" data-name="Demon Hunter"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="dru-p" class="class-portrait grayscale" data-name="Druid"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="hun-p" class="class-portrait grayscale" data-name="Hunter"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="mag-p" class="class-portrait grayscale" data-name="Mage"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="pal-p" class="class-portrait grayscale" data-name="Paladin"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="pst-p" class="class-portrait grayscale" data-name="Priest"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="rog-p" class="class-portrait grayscale" data-name="Rogue"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="shm-p" class="class-portrait grayscale" data-name="Shaman"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="wal-p" class="class-portrait grayscale" data-name="Warlock"></div>
-            </div>
-            <div class="portrait-holder">
-                <div id="war-p" class="class-portrait grayscale" data-name="Warrior"></div>
-            </div>
-        </div>
-    `
-        if (userInSession.deckBuilder.format === 'classic') {
-            document.querySelector('#class-picker').firstElementChild.remove()
-        }
-        const portraits = document.querySelectorAll('.class-portrait')
-        const className = document.querySelector('#class-name')
+        content.innerHTML = ''
+        content.id = 'class-picker'
 
-        portraits.forEach(portrait => {
-            portrait.addEventListener('mouseover', (e) => {
-                e.target.classList.remove('grayscale');
-                changeImg(e.target.id)
-            })
-            portrait.addEventListener('mouseout', (e) => {
-                    e.target.classList.add('grayscale');
-                })
-                // Code logic continues in deck-builder.js
-            portrait.addEventListener('click', function(e) {
-                userInSession.deckBuilder.playerClass = e.target.id.substring(0, this.id.length - 2)
-                prepareDeckBuilder()
-            })
+        const row1 = document.createElement('div')
+        const row2 = document.createElement('div')
+        const row3 = document.createElement('div')
+
+        const ph1 = document.createElement('div')
+        const ph2 = document.createElement('div')
+        const ph3 = document.createElement('div')
+        const ph4 = document.createElement('div')
+        const ph5 = document.createElement('div')
+        const ph6 = document.createElement('div')
+        const ph7 = document.createElement('div')
+        const ph8 = document.createElement('div')
+        const ph9 = document.createElement('div')
+        const ph10 = document.createElement('div')
+
+        const phs = [ph1, ph2, ph3, ph4, ph5, ph6, ph7, ph8, ph9, ph10]
+        phs.forEach(panel => {
+            panel.classList.add('portrait-holder')
         })
 
-        function changeImg(id) {
-            const el = document.querySelector(`#${id}`)
-            const urlStr = id.substring(0, id.length - 2)
-            content.style.backgroundImage = `url(${classes[urlStr].figure})`
-            className.innerText = el.getAttribute('data-name')
-        }
-        content.classList.remove('fade-out')
-    }, 500);
+        const dru = document.createElement('div')
+        const hun = document.createElement('div')
+        const mag = document.createElement('div')
+        const pal = document.createElement('div')
+        const pst = document.createElement('div')
+        const rog = document.createElement('div')
+        const shm = document.createElement('div')
+        const wal = document.createElement('div')
+        const war = document.createElement('div')
+        const dhn = document.createElement('div')
 
+        const portraits = [dhn, dru, hun, mag, pal, pst, rog, shm, wal, war]
+
+        dru.id = 'dru-p'
+        dru.classList.add('class-portrait')
+        dru.classList.add('grayscale')
+        ph1.append(dru)
+
+        hun.id = 'hun-p'
+        hun.classList.add('class-portrait')
+        hun.classList.add('grayscale')
+        ph2.append(hun)
+
+        mag.id = 'mag-p'
+        mag.classList.add('class-portrait')
+        mag.classList.add('grayscale')
+        ph3.append(mag)
+
+        pal.id = 'pal-p'
+        pal.classList.add('class-portrait')
+        pal.classList.add('grayscale')
+        ph4.append(pal)
+
+        pst.id = 'pst-p'
+        pst.classList.add('class-portrait')
+        pst.classList.add('grayscale')
+        ph5.append(pst)
+
+        rog.id = 'rog-p'
+        rog.classList.add('class-portrait')
+        rog.classList.add('grayscale')
+        ph6.append(rog)
+
+        shm.id = 'shm-p'
+        shm.classList.add('class-portrait')
+        shm.classList.add('grayscale')
+        ph7.append(shm)
+
+        wal.id = 'wal-p'
+        wal.classList.add('class-portrait')
+        wal.classList.add('grayscale')
+        ph8.append(wal)
+
+        war.id = 'war-p'
+        war.classList.add('class-portrait')
+        war.classList.add('grayscale')
+        ph9.append(war)
+
+        dhn.id = 'dhn-p'
+        dhn.classList.add('class-portrait')
+        dhn.classList.add('grayscale')
+        ph10.append(dhn)
+
+        row1.append(ph10, ph1, ph2)
+        row2.append(ph3, ph4, ph5, ph6)
+        row3.append(ph7, ph8, ph9)
+
+        portraits.forEach(portrait => {
+            portrait.addEventListener('mouseover', removeGrayscale)
+            portrait.addEventListener('mouseout', addGrayscale)
+                // Code logic continues in deck-builder.js
+            portrait.addEventListener('click', selectClass)
+        })
+
+        if (userInSession.deckBuilder.format === 'classic') {
+            const mark = document.createElement('div')
+            mark.classList.add('mark')
+            ph10.append(mark)
+            dhn.removeEventListener('mouseover', removeGrayscale)
+            dhn.removeEventListener('mouseout', addGrayscale)
+            dhn.removeEventListener('click', selectClass)
+            ph10.style.cursor = 'mouse'
+        }
+
+        content.append(row1, row2, row3)
+    }, 500);
+}
+
+function addGrayscale() {
+    this.classList.add('grayscale');
+}
+
+function removeGrayscale() {
+    this.classList.remove('grayscale');
+}
+
+function selectClass() {
+    userInSession.deckBuilder.playerClass = this.id.substring(0, this.id.length - 2)
+    prepareDeckBuilder()
 }

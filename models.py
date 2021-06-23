@@ -346,7 +346,7 @@ class Deck(db.Model):
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     format = db.Column(db.String(4),nullable=False)
-    guide = db.Column(db.Text,default='The owner of this deck has not created a guide for it yet.')
+    guide = db.Column(db.Text)
     title = db.Column(db.String(30),nullable=False)
     player_class = db.Column(db.String(3),nullable=False)
     created_at = db.Column(db.DateTime,default=datetime.utcnow())
@@ -440,9 +440,3 @@ class Article(db.Model):
             'title': self.title,
             'text': self.text
         }
-
-
-
-
-
-
