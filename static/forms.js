@@ -49,7 +49,10 @@ function showLoginForm() {
         errorDisplay.append(span)
 
         form.append(labelUsername, labelPassword, errorDisplay, loginBTN, regLink)
-        content.style.backgroundImage = 'url(https://pngimage.net/wp-content/uploads/2018/06/png-hearthstone-2.png)'
+        content.style.backgroundImage = 'url(/static/images/home.png)'
+        content.style.backgroundPosition = 'center'
+        content.style.backgroundSize = 'contain'
+        content.style.backgroundRepeat = 'no-repeat'
         content.innerHTML = ''
         content.id = 'form-holder'
         content.append(div1)
@@ -218,7 +221,7 @@ function showDeckSubmissionForm() {
         return
     }
     resetContent()
-    content.style.backgroundImage = 'url(/static/images/tyrion.png)'
+    content.style.backgroundImage = 'url(/static/images/home.png)'
     content.style.backgroundSize = 'contain'
     const form = document.createElement('form')
     form.id = 'user-form'
@@ -313,7 +316,7 @@ async function patchDeck() {
 }
 
 function showGuideForm() {
-    content.style.backgroundImage = 'url(/static/images/tyrion.png)'
+    content.style.backgroundImage = 'url(/static/images/home.png)'
     content.style.backgroundSize = 'contain'
     content.style.backgroundRepeat = 'no-repeat'
     const form = document.createElement('form')

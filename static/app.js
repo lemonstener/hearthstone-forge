@@ -35,8 +35,9 @@ const userInSession = {
     }
 }
 
-
 hsLogo.addEventListener('click', function() {
+    clearInterval(addShake)
+    clearInterval(removeShake)
     if (!content.classList.contains('blur')) {
         const forgeLink = document.createElement('a')
         const forgeText = document.createTextNode("Forge a Deck")
@@ -142,13 +143,13 @@ hsLogo.addEventListener('click', function() {
                 userInSession.ownDecks = ''
 
                 const res = await axios.get(`${BASE_URL}/logout`)
-                const msg = document.createElement('h1')
-                msg.innerText = 'Thank you for visiting!'
 
-                content.append(msg)
+                content.id = 'home'
+                content.style.backgroundImage = 'url(/static/images/home.png)'
 
                 logoHolder.classList.remove('logo-holder-active')
                 logoHolder.style.backgroundColor = 'rgba(0, 0, 0, .5);'
+
             })
         }
         content.classList.add('blur')
@@ -187,3 +188,13 @@ function resetNav() {
     nav.innerHTML = ''
     logoHolder.style.left = '50px'
 }
+
+content.id = 'home'
+
+const addShake = setInterval(() => {
+    hsLogo.classList.add('shake-horizontal')
+}, 1000);
+
+const removeShake = setInterval(() => {
+    hsLogo.classList.remove('shake-horizontal')
+}, 2700);

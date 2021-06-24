@@ -204,17 +204,19 @@ function displayDeck(num) {
         const table = document.createElement('table')
         table.style.zIndex = '9999'
         table.style.position = 'fixed'
-        table.style.right = '50px'
-        table.style.top = '240px'
+        table.style.top = '-9999px'
+        table.style.right = '1px'
         table.style.opacity = '0'
         table.style.transition = 'opacity .5s'
 
         deckIcon.addEventListener('click', function() {
-            if (table.style.opacity === '1') {
-                table.style.opacity = '0'
-            } else {
-                table.style.opacity = '1'
-            }
+            table.style.opacity = '1'
+            table.style.top = '150px'
+        })
+
+        table.addEventListener('click', function() {
+            table.style.top = '-9999px'
+            table.style.opacity = '0'
         })
 
         content.append(deckWallpaper, deckIcon, table)

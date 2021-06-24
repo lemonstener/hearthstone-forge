@@ -224,6 +224,13 @@ function removeGrayscale() {
 }
 
 function selectClass() {
+    const portraits = document.querySelectorAll('.class-portrait')
+    portraits.forEach(portrait => {
+        portrait.removeEventListener('mouseover', removeGrayscale)
+        portrait.removeEventListener('mouseout', addGrayscale)
+        portrait.removeEventListener('click', selectClass)
+    })
+    this.classList.remove('grayscale')
     userInSession.deckBuilder.playerClass = this.id.substring(0, this.id.length - 2)
     prepareDeckBuilder()
 }
