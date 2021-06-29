@@ -1,4 +1,5 @@
 from functools import reduce
+from operator import methodcaller
 from flask.globals import session
 from flask import Flask, jsonify, request, redirect, render_template
 from variables import formats, classes
@@ -33,7 +34,8 @@ def login_auth(username,password):
     if user:
         is_auth = bcrypt.check_password_hash(user.password, password)
         if is_auth:
-            session[curr_user] = user.serialize()
+            session[curr_user] = user.id
+            session.permanent = True
             return jsonify(user=user.serialize())
 
     return False
@@ -61,8 +63,9 @@ def register(username,password,email):
         )
     db.session.add(new_user)
     db.session.commit()
-    session[curr_user] = new_user.serialize()
-    return jsonify(user=new_user.serialize())
+    session[curr_user] = user.id
+    session.permanent = True
+    return jsonify(user=user.serialize())
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -89,6 +92,13 @@ def logout():
         del session[curr_user]
     return 'Logout successfull'
 
+@app.route('/session', methods=['GET'])
+def check_for_logged_in_user():
+    if curr_user in session:
+        user = User.query.get(session[curr_user])
+        return jsonify(user=user.serialize())
+    else:
+        return jsonify(msg='No user found.')
 
 # ------------------------------------------------------
 # Card routes
@@ -124,7 +134,7 @@ def get_cards(format,player_class):
 @app.route('/api/cards/<set>')
 def get_set(set):
     '''Get all cards from a set.'''
-    cards = [card.serialize() for card in Card.query.filter_by(card_set=set).all()]
+    cards = [card.serialize() for card in Card.query.filter_by(card_set=set).order_by(Card.cost).all()]
     return jsonify(cards)
 
 # Getting all cards by artist
@@ -151,7 +161,7 @@ def get_all_decks():
 
 @app.route('/api/decks',methods=['POST'])
 def create_deck():
-    user = User.query.get_or_404(session[curr_user]['id'])
+    user = User.query.get_or_404(session[curr_user])
     data = request.json
     
     deck = user.create_deck(
@@ -165,7 +175,7 @@ def create_deck():
 
 @app.route('/api/decks/<int:id>', methods=['GET','PATCH','DELETE'])
 def handle_deck(id):
-    user = User.query.get_or_404(session[curr_user]['id'])
+    user = User.query.get_or_404(session[curr_user])
 
     if request.method == 'GET':
         '''Get information for a specific deck.'''
@@ -196,7 +206,7 @@ def handle_deck(id):
 def handle_guide(id):
     if request.method == 'PATCH':
         '''Create or update a guide for a deck created by the user in session.'''
-        user = User.query.get_or_404(session[curr_user]['id'])
+        user = User.query.get_or_404(session[curr_user])
         data = request.json
 
         deck = user.update_deck_guide(data['guide'],id)
@@ -210,7 +220,7 @@ def handle_guide(id):
 @app.route('/api/decks/<int:id>/favorite',methods=['POST'])
 def fav_unfav_deck(id):
     '''User can favorite or unfavorite a deck.'''
-    user = User.query.get_or_404(session[curr_user]['id'])
+    user = User.query.get_or_404(session[curr_user])
     res = user.fav_unfav_deck(id)
     return jsonify(res)
 
@@ -221,7 +231,7 @@ def fav_unfav_deck(id):
 @app.route('/api/comments',methods=['POST'])
 def create_comment():
     '''Create a comment about a deck.'''
-    user = User.query.get_or_404(session[curr_user]['id'])
+    user = User.query.get_or_404(session[curr_user])
     data = request.json
     deck_id = data['deckId']
     text = data['text']
@@ -230,7 +240,7 @@ def create_comment():
 
 @app.route('/api/comments/<int:id>',methods=['PATCH','DELETE'])
 def handle_comment(id):
-    user = User.query.get_or_404(session[curr_user]['id'])
+    user = User.query.get_or_404(session[curr_user])
 
     if request.method == 'PATCH':
         '''Update comment.'''

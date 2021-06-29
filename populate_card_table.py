@@ -40,7 +40,24 @@ def add_card(card):
       if 'race' in card:
         new_card.minion_type = minion_types[card['race']]['code']
       if 'cost' in card:
-        new_card.cost = card['cost']
+        if card['name'] == 'First Day Of School':
+          new_card.cost = 1
+        elif card['name'] == 'Fiendish Circle':
+          new_card.cost = 4
+        elif card['name'] == 'Refreshing Spring Water':
+          new_card.cost = 4
+        elif card['name'] == 'Hysteria':
+          new_card.cost = 3
+        elif card['name'] == 'Deck of Chaos':
+          new_card.cost = 6
+        elif card['name'] == 'Vicious Fledgling':
+          new_card.cost = 3
+        elif card['name'] == 'Call to Arms':
+          new_card.cost = 5
+        elif card['name'] == 'Shieldmaiden':
+          new_card.cost = 6
+        else:
+         new_card.cost = card['cost']  
       if 'attack' in card:
         new_card.attack = card['attack']
       if 'health' in card:

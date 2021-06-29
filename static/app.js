@@ -10,6 +10,22 @@ const newsLink = document.querySelector('#news')
 
 const BASE_URL = 'http://127.0.0.1:5000'
 
+async function checkForLoggedInUser() {
+    const res = await axios.get(`${BASE_URL}/session`)
+    if (res.data.user) {
+        userInSession.isLoggedIn = true
+        userInSession.favorites = res.data.user.favorites
+        userInSession.id = res.data.user.id
+        userInSession.ownDecks = res.data.user.own_decks
+        userInSession.username = res.data.user.username
+
+        logoHolder.classList.add('logo-holder-active')
+    }
+    return
+}
+
+checkForLoggedInUser()
+
 const currentDecks = {
     currentPage: ''
 }
@@ -18,7 +34,6 @@ const userInSession = {
     isLoggedIn: false,
     id: '',
     username: '',
-    bio: '',
     favorites: '',
     ownDecks: '',
     deckBuilder: {

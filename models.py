@@ -347,7 +347,7 @@ class Deck(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     format = db.Column(db.String(4),nullable=False)
     guide = db.Column(db.Text)
-    title = db.Column(db.String(30),nullable=False)
+    title = db.Column(db.String(20),nullable=False)
     player_class = db.Column(db.String(3),nullable=False)
     created_at = db.Column(db.DateTime,default=datetime.utcnow())
 

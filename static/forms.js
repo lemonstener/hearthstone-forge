@@ -147,8 +147,6 @@ function showRegistrationForm(e) {
     }
 }
 
-
-
 async function loginUser() {
     const errorMsg = document.querySelector('.error-msg')
     const user = document.querySelector('#username')
@@ -162,6 +160,7 @@ async function loginUser() {
         document.querySelector('input[type="submit"]').disabled = false
         return
     } else {
+        console.log(res)
         userInSession.isLoggedIn = true
         userInSession.id = res.data.user.id
         userInSession.username = res.data.user.username
@@ -171,6 +170,7 @@ async function loginUser() {
         if (userInSession.deckBuilder.deckArr.length === 30 &&
             userInSession.deckBuilder.format !== '' &&
             userInSession.deckBuilder.playerClass !== '') {
+            currentDecks.currentPage = userPage
             validateDeck()
         } else {
             resetDeckBuilder()
@@ -206,6 +206,7 @@ async function registerUser() {
         if (userInSession.deckBuilder.deckArr.length === 30 &&
             userInSession.deckBuilder.format !== '' &&
             userInSession.deckBuilder.playerClass !== '') {
+            currentDecks.currentPage = userPage
             validateDeck()
         } else {
             resetDeckBuilder()
@@ -248,7 +249,8 @@ function showDeckSubmissionForm() {
     deckName.addEventListener('keyup', function() {
         // Make sure the input value is not just a bunch of white spaces.
         const str = deckName.value.trim()
-        if (deckName.value.length !== 0 && str.length !== 0) {
+        if (deckName.value.length !== 0 && str.length !== 0 &&
+            deckName.value.length <= 30) {
             submitBTN.disabled = false
         } else {
             submitBTN.disabled = true
@@ -266,7 +268,6 @@ function showDeckSubmissionForm() {
             postDeck()
         })
     }
-
     label.append(deckName)
     form.append(label, submitBTN)
     content.append(div1, form, div2)
@@ -299,7 +300,9 @@ async function postDeck() {
         "format": `${userInSession.deckBuilder.format}`
     })
     currentDecks[res.data.id] = res.data
+    currentDecks.currentPage = userPage
     resetDeckBuilder()
+    userInSession.ownDecks.push(res.data.id)
     displayDeck(res.data.id)
 }
 
