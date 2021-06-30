@@ -63,9 +63,9 @@ def register(username,password,email):
         )
     db.session.add(new_user)
     db.session.commit()
-    session[curr_user] = new_user.id
+    session[curr_user] = user.id
     session.permanent = True
-    return jsonify(user=new_user.serialize())
+    return jsonify(user=user.serialize())
 
 
 @app.route('/login', methods=['GET','POST'])
