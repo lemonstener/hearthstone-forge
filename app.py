@@ -4,6 +4,7 @@ from flask.globals import session
 from flask import Flask, jsonify, request, redirect, render_template
 from variables import formats, classes
 from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article, bcrypt
+import os
 
 curr_user = 'curr_user'
 app = Flask(__name__)
@@ -12,7 +13,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///forge_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = 'cards'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretcards13')
 
 connect_db(app)
 
