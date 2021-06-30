@@ -55,7 +55,7 @@ hsLogo.addEventListener('click', function() {
     clearInterval(removeShake)
     if (!content.classList.contains('blur')) {
         const forgeLink = document.createElement('a')
-        const forgeText = document.createTextNode("Forge a Deck")
+        const forgeText = document.createTextNode("Deck Builder")
         forgeLink.id = 'forge'
         forgeLink.href = ''
         forgeLink.style.color = 'white'

@@ -33,10 +33,11 @@ function prepareDeckBuilder() {
         </div>
         <div id="deck-display">
             <div><span id="back-deck-button">&#10233;</span></div>	
-                
+                <div>
                 <table>
                     <tbody id="cards-in-deck"></tbody>
                 </table>
+                </div>
             </div>
         `
         const deckDisplay = document.querySelector('#deck-display')
@@ -205,6 +206,8 @@ function showcaseCard() {
         card.lastElementChild.remove()
     }
 
+    card.style.filter = 'grayscale(0)'
+
     const showcase = document.createElement('div')
     showcase.id = 'showcase'
 
@@ -365,6 +368,7 @@ function addSingleCardToDeck(card) {
 
     img.src = card.getAttribute('img')
     img.classList.add('snap')
+
     tr.append(tdCost)
     tr.append(tdName)
     tr.append(img)

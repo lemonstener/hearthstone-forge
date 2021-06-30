@@ -8,8 +8,11 @@ function userPage() {
     const username = document.createElement('h1')
     info.style.width = '100%'
     username.innerText = userInSession.username
+    const up = document.createElement('p')
+    up.innerText = "Your username. It's kind of stupid."
 
-    info.append(username)
+
+    info.append(username, up)
 
     const yourDecksPanel = document.createElement('div')
     const yourTitle = document.createElement('h2')
@@ -36,6 +39,18 @@ function userPage() {
     favTitle.innerText = 'Favorites'
     favPanel.append(favTitle, favDecks)
     favPanel.classList.add('user-decks-holder')
+
+    if (userInSession.ownDecks.length === 0) {
+        const p = document.createElement('p')
+        p.innerText = 'You have not created any decks yet. Head over to the deck builder and try it out.'
+        yourDecksPanel.append(p)
+    }
+
+    if (userInSession.favorites.length === 0) {
+        const p = document.createElement('p')
+        p.innerText = 'You have not favorited any decks. Go browse some decks and click the heart button... or else.'
+        favPanel.append(p)
+    }
 
     for (el of userInSession.favorites) {
         getSingleDeck(el)

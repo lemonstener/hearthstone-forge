@@ -376,12 +376,12 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.3rem;
                 background-image: url(/static/images/deck-blue.jpeg);
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
                 border-radius: 8px;
+                box-sizing: border-box;
             }
             
             #deck-display-showcase-mode {
@@ -441,7 +441,7 @@
             
             #back-deck-button {
                 cursor: pointer;
-                font-size: 3rem;
+                font-size: 2.5rem;
                 color: gold;
                 -webkit-text-stroke-width: 1px;
                 -webkit-text-stroke-color: black;
@@ -507,8 +507,8 @@
             .snap {
                 position: absolute;
                 opacity: 0;
-                width: 180px;
-                height: 250px;
+                width: 150px;
+                height: 220px;
                 left: 0;
             }
             
