@@ -517,6 +517,7 @@
                 left: -150px;
                 top: -150px;
                 z-index: 1000;
+                -webkit-transform: translate3d(0, 0, 0);
             }
             
             #showcase {
