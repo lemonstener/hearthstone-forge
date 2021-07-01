@@ -5,7 +5,7 @@ from app import app
 # If you haven't done so yet, now is the time to create the database 
 # in your terminal:   -----> createdb forge_db
 
-# db.drop_all()
+db.drop_all()
 db.create_all()
 
 # We are pulling all cards from the API by set. The keys in the 'sets' object
