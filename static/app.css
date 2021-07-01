@@ -48,6 +48,7 @@
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
+                z-index: 9999;
             }
             
             nav {
@@ -456,6 +457,7 @@
                 background-repeat: no-repeat;
                 cursor: pointer;
                 position: relative;
+                z-index: 500;
             }
             
             .info-icon {
@@ -517,7 +519,6 @@
                 left: -150px;
                 top: -150px;
                 z-index: 1000;
-                -webkit-animation-transition: translate3d(0, 0, 0);
             }
             
             #showcase {
@@ -535,7 +536,6 @@
                 position: fixed;
                 top: 0;
                 z-index: 9999;
-                -webkit-animation-transition: translate3d(0, 0, 0);
             }
             
             .showcase-category {
