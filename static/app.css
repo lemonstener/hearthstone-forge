@@ -512,6 +512,7 @@ td {
 }
 
 .snap {
+    position: absolute;
     opacity: 0;
     width: 150px;
     height: 220px;
