@@ -1,4 +1,4 @@
-from models import db, Card
+from models import db, Card, User
 import requests
 from variables import classes, rarity, card_types, minion_types, factions, schools_of_magic, sets
 from app import app
@@ -107,3 +107,5 @@ for key in keys:
   json = response.json()
   for card in json:
     add_card(card)
+
+User.create_admin('lemon','lemontheadmin','anemail')
