@@ -7,6 +7,7 @@ from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, Deck
 import os
 import re
 
+
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)

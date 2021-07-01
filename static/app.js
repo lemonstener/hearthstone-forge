@@ -8,7 +8,7 @@ const decksLink = document.querySelector('#decks')
 const setsLink = document.querySelector('#sets')
 const newsLink = document.querySelector('#news')
 
-const BASE_URL = 'http://127.0.0.1:5000'
+const BASE_URL = 'https://hearthstone-forge.herokuapp.com'
 
 async function checkForLoggedInUser() {
     const res = await axios.get(`${BASE_URL}/session`)
