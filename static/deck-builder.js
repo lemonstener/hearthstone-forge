@@ -352,12 +352,13 @@ function addSingleCardToDeck(card) {
 
     const tr = cardsInDeck.insertRow(index)
     tr.setAttribute('cost', card.getAttribute('cost'))
+    tr.setAttribute('img', card.getAttribute('img'))
     tr.id = `r-${cardId}`
     tr.classList.add('row')
 
     const tdCost = document.createElement('td')
     const tdName = document.createElement('td')
-    const img = document.createElement('img')
+
 
     tdCost.innerText = cost
     tdCost.style.color = 'white'
@@ -384,11 +385,9 @@ function addSingleCardToDeck(card) {
         img.remove()
     })
 
-    img.src = card.getAttribute('img')
-    img.classList.add('snap')
-
     tr.append(tdCost)
     tr.append(tdName)
+        // tr.append(img)
     if (cardRarity === 'lgnd') {
         card.classList.add('grayscale')
         const star = document.createElement('td')
