@@ -366,12 +366,29 @@ function addSingleCardToDeck(card) {
     tdName.style.color = `${rarity[cardRarity].color}`
     tdName.addEventListener('click', removeCard)
 
+    tdName.addEventListener('mouseover', function() {
+        const img = document.createElement('img')
+        img.src = this.parentElement.getAttribute('img')
+        img.classList.add('snap')
+        body.append(img)
+    })
+
+    tdName.addEventListener('mousemove', function(e) {
+        const img = document.querySelector('.snap')
+        img.style.left = (e.pageX - 75) + 'px'
+        img.style.top = (e.pageY - 245) + 'px'
+    })
+
+    tdName.addEventListener('mouseout', function() {
+        const img = document.querySelector('.snap')
+        img.remove()
+    })
+
     img.src = card.getAttribute('img')
     img.classList.add('snap')
 
     tr.append(tdCost)
     tr.append(tdName)
-    tr.append(img)
     if (cardRarity === 'lgnd') {
         card.classList.add('grayscale')
         const star = document.createElement('td')

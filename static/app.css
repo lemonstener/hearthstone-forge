@@ -498,33 +498,23 @@ nav a:hover {
 
 table {
     text-align: center;
+    cursor: pointer;
 }
 
 tr {
     width: 100%;
     background-color: black;
-    cursor: pointer;
     position: relative;
 }
 
 td {
     border: 1px solid #CAE9FF;
-    margin: 15px;
 }
 
 .snap {
     position: absolute;
-    opacity: 0;
     width: 150px;
     height: 220px;
-    left: 0;
-}
-
-tr:hover img {
-    opacity: 1;
-    left: -150px;
-    top: -150px;
-    z-index: 1000;
 }
 
 #showcase {
