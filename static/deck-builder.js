@@ -167,35 +167,35 @@ function createCardElement(card) {
         div.setAttribute('health', card.health)
     }
 
-    const icon = document.createElement('div')
-    icon.innerHTML = '<span>&#8505;</span>'
-    icon.classList.add('info-icon')
-    div.append(icon)
+    // const icon = document.createElement('div')
+    // icon.innerHTML = '<span>&#8505;</span>'
+    // icon.classList.add('info-icon')
+    // div.append(icon)
 
-    icon.addEventListener('click', showcaseCard)
+    // icon.addEventListener('click', showcaseCard)
 
     div.addEventListener('click', function(e) {
-        handleCard(e.target)
-    })
-    div.addEventListener('mouseover', showInfoIcon)
-    div.addEventListener('mouseout', hideInfoIcon)
+            handleCard(e.target)
+        })
+        // div.addEventListener('mouseover', showInfoIcon)
+        // div.addEventListener('mouseout', hideInfoIcon)
 
     VanillaTilt.init(div)
 
     return div
 }
 
-function showInfoIcon() {
-    const icon = this.firstElementChild
-    icon.style.visibility = 'visible'
-    icon.style.opacity = '1'
-}
+// function showInfoIcon() {
+//     const icon = this.firstElementChild
+//     icon.style.visibility = 'visible'
+//     icon.style.opacity = '1'
+// }
 
-function hideInfoIcon() {
-    const icon = this.firstElementChild
-    icon.style.visibility = 'hidden'
-    icon.style.opacity = '0'
-}
+// function hideInfoIcon() {
+//     const icon = this.firstElementChild
+//     icon.style.visibility = 'hidden'
+//     icon.style.opacity = '0'
+// }
 
 function showcaseCard() {
     let card
@@ -365,7 +365,7 @@ function addSingleCardToDeck(card) {
 
     tdName.innerText = name
     tdName.style.color = `${rarity[cardRarity].color}`
-    tdName.addEventListener('click', removeCard)
+    tr.addEventListener('click', removeCard)
 
     tdName.addEventListener('mouseover', function() {
         const img = document.createElement('img')
@@ -417,30 +417,35 @@ function addDuplicateCardToDeck(id) {
 // If deck was full before card got removed all cards not currently in deck get their colors back.
 // Cards which are still in the deck remain grayed out.
 
-function removeCard(e) {
+function removeCard() {
     const cardCounter = document.querySelector('#card-counter')
-    const tr = this.parentElement
-    const cardId = tr.id.substr(2)
+    const img = document.querySelector('.snap')
+    const tr = this
+    const cardId = parseInt(tr.id.substr(2))
+    console.log(cardId)
     const card = document.querySelector(`[c-id='${cardId}']`)
     const childrenCount = tr.childElementCount
 
-    if (childrenCount === 4) {
-        if (tr.lastElementChild.innerText !== 'x2') {
+    if (childrenCount === 3) {
+        if (tr.lastElementChild.innerText === '★') {
             tr.remove()
-            const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(e.target.getAttribute('cost'))
+            const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(tr.getAttribute('cost'))
             userInSession.deckBuilder.tableArr.splice(rowToRemove, 1)
+            img.remove()
         } else {
             tr.lastElementChild.remove()
         }
     } else {
         tr.remove()
-        const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(e.target.getAttribute('cost'))
+        img.remove()
+        const rowToRemove = userInSession.deckBuilder.tableArr.indexOf(tr.getAttribute('cost'))
         userInSession.deckBuilder.tableArr.splice(rowToRemove, 1)
     }
-    const index = userInSession.deckBuilder.deckArr.indexOf(this.parentElement.id)
+    const index = userInSession.deckBuilder.deckArr.indexOf(cardId)
     userInSession.deckBuilder.deckArr.splice(index, 1)
 
-    if (userInSession.deckBuilder.deckArr.length === 29) {
+    if (userInSession.deckBuilder.deckArr.length !== 30) {
+        const button = document.querySelector('button')
         cards = document.querySelectorAll('.card')
         cards.forEach(card => {
             card.classList.remove('grayscale-all')

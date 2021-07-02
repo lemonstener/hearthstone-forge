@@ -81,7 +81,7 @@ hsLogo.addEventListener('click', function() {
         })
 
         const setsLink = document.createElement('a')
-        const setsText = document.createTextNode("Browse Cards by Set")
+        const setsText = document.createTextNode("Cards by Set")
         setsLink.id = 'sets'
         setsLink.href = ''
         setsLink.style.color = 'white'
