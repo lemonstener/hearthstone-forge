@@ -198,6 +198,11 @@ function displayDeck(num) {
         }
         body.append(info)
 
+        const div = document.createElement('div')
+        div.style.display = 'flex'
+        div.style.flexDirection = 'column'
+        div.style.justifyContent = 'center'
+
         const deckIcon = document.createElement('div')
         deckIcon.id = 'deck-icon-small'
 
@@ -219,7 +224,8 @@ function displayDeck(num) {
             table.style.opacity = '0'
         })
 
-        content.append(deckWallpaper, deckIcon, table)
+        div.append(deckIcon, table)
+        content.append(deckWallpaper)
 
         for (card of currentDecks[deck.id].cards) {
             const duplicateCard = checkForDuplicate(card.id)
