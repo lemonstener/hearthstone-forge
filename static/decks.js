@@ -260,11 +260,26 @@ function single(card) {
         tr.append(star)
     }
 
-    const img = document.createElement('img')
-    img.src = card.img
-    img.classList.add('snap-deck-showcase')
+    name.addEventListener('mouseover', function() {
+        const img = document.createElement('img')
+        img.src = card.img
+        img.classList.add('snap')
+        img.style.zIndex = '9999'
+        body.append(img)
+    })
 
-    tr.prepend(img, cost, name)
+    name.addEventListener('mousemove', function(e) {
+        const img = document.querySelector('.snap')
+        img.style.left = (e.pageX - 75) + 'px'
+        img.style.top = (e.pageY - 245) + 'px'
+    })
+
+    name.addEventListener('mouseout', function() {
+        const img = document.querySelector('.snap')
+        img.remove()
+    })
+
+    tr.prepend(cost, name)
 }
 
 function duplicate(card) {
