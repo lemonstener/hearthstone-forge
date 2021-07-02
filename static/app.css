@@ -44,7 +44,7 @@ body {
     border-radius: 50%;
     width: 90px;
     height: 90px;
-    background-image: url(/static/images/hearthstone-logo.png);
+    background-image: url(/static/images/Hearthstone-Logo.png);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -636,14 +636,6 @@ td {
     font-size: 1.3rem;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
-}
-
-.snap-deck-showcase {
-    position: absolute;
-    opacity: 0;
-    width: 150px;
-    height: 200px;
-    left: 0;
 }
 
 #deck-icon-small {
