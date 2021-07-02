@@ -84,10 +84,7 @@ function displaySetCards(data) {
     content.append(showcaseCards)
     for (el of data) {
         const card = createCardElement(el)
-        card.lastElementChild.remove()
         card.removeEventListener('click', handleCard)
-        card.removeEventListener('mouseover', showInfoIcon)
-        card.removeEventListener('mouseout', hideInfoIcon)
         card.addEventListener('click', showcaseCard)
         showcaseCards.append(card)
     }
