@@ -225,7 +225,7 @@ function displayDeck(num) {
         })
 
         div.append(deckIcon, table)
-        content.append(deckWallpaper)
+        content.append(deckWallpaper, div)
 
         for (card of currentDecks[deck.id].cards) {
             const duplicateCard = checkForDuplicate(card.id)
