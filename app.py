@@ -6,6 +6,11 @@ from variables import formats, classes
 from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article, bcrypt
 import os
 import re
+from flask import Flask
+from flask_cors import CORS
+
+
+
 
 
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
@@ -14,9 +19,11 @@ if uri.startswith("postgres://"):
 # rest of connection code using the connection string `uri`
 
 curr_user = 'curr_user'
-app = Flask(__name__)
+app = Flask(__name__) 
+CORS(app)
 
 
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = uri 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
