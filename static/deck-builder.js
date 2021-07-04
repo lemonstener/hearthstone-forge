@@ -109,7 +109,8 @@ function prepareDeckBuilder() {
 
 async function getCardsByFormat(format, playerClass) {
     const cardPicker = document.querySelector('#card-picker')
-    const res = await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`);
+    console.log(await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`));
+    const res = await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`)
     const classCards = res.data.c
     const neutralCards = res.data.n
 
