@@ -6,7 +6,6 @@ from variables import formats, classes
 from models import db, connect_db, db, Card, User, Deck, Favorite, Comment, DeckCard, Article, bcrypt
 import os
 import re
-from flask import Flask
 from flask_cors import CORS
 
 

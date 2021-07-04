@@ -1,3 +1,11 @@
+// ***************************************************
+// Create a menu displaying all card sets.
+// When clicking on a panel request the appropriate cards from the server and append to the page.
+// Change the way the background looks based on which set the user is browsing.
+// Clicking on a card showcases the card.
+// Clicking on the back button resets everything and returns the user back to the menu.
+// ***************************************************
+
 function allSets() {
     resetDeckBuilder()
     resetContent()
@@ -36,6 +44,8 @@ function allSets() {
         content.append(yearPanel)
     }
 }
+
+// A very subtle 'light up' effect on hover.
 
 function brightnessUp() {
     this.style.filter = 'brightness(100%)'

@@ -1,3 +1,8 @@
+// ***************************************************
+// The User page displays the username as well as favorite and created decks.
+// Browse a deck by clicking on it.
+// ***************************************************
+
 function userPage() {
     resetContent()
     resetDeckBuilder()

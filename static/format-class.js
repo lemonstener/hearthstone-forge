@@ -1,4 +1,8 @@
-// Format and class picker functions
+// ***************************************************
+// Format and class picker functions.
+// Selections are stored in the userInSession variable and then used 
+// to get the appropriate data from the server.
+// ***************************************************
 
 function createFormatPanels() {
     resetDeckBuilder()
@@ -103,6 +107,8 @@ function selectFormat() {
     userInSession.deckBuilder.format = this.id
     content.classList.add('fade-out')
 
+    // Timeout added for a fade-out transition.
+
     setTimeout(() => {
         content.innerHTML = ''
         content.id = 'class-picker'
@@ -200,6 +206,8 @@ function selectFormat() {
                 // Code logic continues in deck-builder.js
             portrait.addEventListener('click', selectClass)
         })
+
+        // The Demon Hunter class is not allowed in Classic Mode.
 
         if (userInSession.deckBuilder.format === 'classic') {
             const mark = document.createElement('div')

@@ -1,3 +1,7 @@
+// ***************************************************
+// Variables containg general information about the game which are used generously all across the app.
+// ***************************************************
+
 const classes = {
     dhn: {
         code: 'dhn',

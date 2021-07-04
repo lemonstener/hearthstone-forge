@@ -1,5 +1,8 @@
-// Here we create the filter for the cards as well as any related functions.
+// ***************************************************
+// Filters.
+// ***************************************************
 
+// Keep track of what is currently filtered.
 const activeFilters = {
     cardset: [],
     cost: [],
@@ -8,6 +11,10 @@ const activeFilters = {
     attack: [],
     health: []
 }
+
+// ***************************************************
+// Filter options are created dynamically based on where in the menu the user has moused over.
+// ***************************************************
 
 function createFilters(id) {
     const filterDisplay = document.querySelector('#filter-display')
@@ -85,6 +92,8 @@ function createFilters(id) {
     filterDisplay.hidden = false
 }
 
+// Simple event listeners used for styling.
+
 function hoverOverValue() {
     this.classList.add('hover-over-value')
 }
@@ -92,6 +101,8 @@ function hoverOverValue() {
 function hoverAwayValue() {
     this.classList.remove('hover-over-value')
 }
+
+// Trigger the filter function with a click.
 
 function applyRemove() {
     const dataType = currentFilterColumn

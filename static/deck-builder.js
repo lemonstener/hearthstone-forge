@@ -1,12 +1,10 @@
-// deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
-
-// tableArr keeps track of how many rows are in the table and
-// helps keeping it organized.
-// const deckArr = []
-// const tableArr = []
+// ***************************************************
+// Setting up the deck builder.
+// ***************************************************
 
 function prepareDeckBuilder() {
     content.classList.add('fade-out')
+        // Timeout added for a fade-out transition.
     setTimeout(() => {
         content.id = 'dashboard'
         content.style.backgroundImage = 'none'
@@ -40,6 +38,19 @@ function prepareDeckBuilder() {
                 </div>
             </div>
         `
+
+        // ***************************************************
+        // There a lot of moving pieces here. Explained from left to right:
+        // 1. Filter icon with a fixed position that when clicked will bring up the filter menu.
+        // 2. Filter menu allows the user to filter out cards based on preferences.
+        // 3. The Card picker takes most of the spaces and contains all the available cards.
+        // 4. deckIcon keeps track of the length of your deck and when clicked brings up all the cards currently in it.
+        // 5. deckDisplay shows all current cards in your deck in the form of a table. Table rows have two event listeners:
+        //            - on hover display the image of the card.
+        //            - on click remove the card from the deck.
+        // 6. Back buttons for both filterPanel and deckDisplay that bring the icons back.
+        // ***************************************************
+
         const deckDisplay = document.querySelector('#deck-display')
         const deckIcon = document.querySelector('#deck-icon')
         const backFromDeck = document.querySelector('#back-deck-button')
@@ -109,8 +120,7 @@ function prepareDeckBuilder() {
 
 async function getCardsByFormat(format, playerClass) {
     const cardPicker = document.querySelector('#card-picker')
-    console.log(await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`));
-    const res = await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`)
+    const res = await axios.get(`${BASE_URL}/api/cards/${format}/${playerClass}`);
     const classCards = res.data.c
     const neutralCards = res.data.n
 
@@ -168,35 +178,24 @@ function createCardElement(card) {
         div.setAttribute('health', card.health)
     }
 
-    // const icon = document.createElement('div')
-    // icon.innerHTML = '<span>&#8505;</span>'
-    // icon.classList.add('info-icon')
-    // div.append(icon)
-
-    // icon.addEventListener('click', showcaseCard)
-
     div.addEventListener('click', function(e) {
-            handleCard(e.target)
-        })
-        // div.addEventListener('mouseover', showInfoIcon)
-        // div.addEventListener('mouseout', hideInfoIcon)
+        handleCard(e.target)
+    })
 
+    // VanillaTilt used for the tilting card animations.
+    // Check it out here:
+    // https://micku7zu.github.io/vanilla-tilt.js/
     VanillaTilt.init(div)
 
     return div
 }
 
-// function showInfoIcon() {
-//     const icon = this.firstElementChild
-//     icon.style.visibility = 'visible'
-//     icon.style.opacity = '1'
-// }
-
-// function hideInfoIcon() {
-//     const icon = this.firstElementChild
-//     icon.style.visibility = 'hidden'
-//     icon.style.opacity = '0'
-// }
+// ***************************************************
+// Create a simple black transparent background and showcase the selected card with some info about it.
+// Removed by simply clicking anywhere.
+// Used to be available in the deck building portion but I decided to remove it from here.
+// This way the 'Browse cards by set' page has more purpose.
+// ***************************************************
 
 function showcaseCard() {
     let card
@@ -286,6 +285,13 @@ function showcaseCard() {
     })
 }
 
+// ***************************************************
+// Function for when a user is editing his/her deck.
+// Uses a simple editCards array from the userInSession variable. 
+// That array contains id numbers for cards.
+// For each of them run handleCard().
+// ***************************************************
+
 function placeDeckCards() {
     for (num of userInSession.deckBuilder.editCards) {
         const card = document.querySelector(`[c-id='${num}']`)
@@ -293,9 +299,11 @@ function placeDeckCards() {
     }
 }
 
+// ***************************************************
 // Maximum of 2 copies of a card per deck.
 // Copies of legendary cards are limited to 1.
 // We gray out cards that have reached the limit for better user experience.
+// ***************************************************
 
 function handleCard(card) {
     const cardCounter = document.querySelector('#card-counter')
@@ -339,9 +347,11 @@ function handleCard(card) {
     }
 }
 
+// ***************************************************
 // If card does not exist in the deck, create a new row in the table.
 // Rows display the card's cost and the card's name.
 // Legendary cards get an extra 'star' symbol to indicate their rarity.
+// ***************************************************
 
 function addSingleCardToDeck(card) {
     const cardsInDeck = document.querySelector('#cards-in-deck')
@@ -399,7 +409,7 @@ function addSingleCardToDeck(card) {
     }
 }
 
-// If the card already exists in deck, simply add 'x2' next to it.
+// If the card already exists in deck, and is not legendary then simply add 'x2' next to it.
 
 function addDuplicateCardToDeck(id) {
     const tr = document.getElementById(`r-${id}`)
@@ -412,11 +422,13 @@ function addDuplicateCardToDeck(id) {
     tr.append(symbol)
 }
 
+// ***************************************************
 // Remove cards from the deck. 
 // Style the table accordingly.
 // Remove from tableArr and deckArr accordingly.
 // If deck was full before card got removed all cards not currently in deck get their colors back.
 // Cards which are still in the deck remain grayed out.
+// ***************************************************
 
 function removeCard() {
     const cardCounter = document.querySelector('#card-counter')
@@ -458,7 +470,9 @@ function removeCard() {
     cardCounter.innerText = parseInt(userInSession.deckBuilder.deckArr.length)
 }
 
+// ***************************************************
 // Function to determine whether a card can be added to the deck.
+// ***************************************************
 
 function checkForPermission(id, rarity) {
     if (userInSession.deckBuilder.deckArr.length === 30) {
@@ -478,8 +492,10 @@ function checkForPermission(id, rarity) {
     return true
 }
 
+// ***************************************************
 // Function to determine whether a card already exists in deck.
 // Used for non-legendary cards.
+// ***************************************************
 
 function checkForDuplicate(id) {
     if (userInSession.deckBuilder.deckArr.indexOf(id) >= 0) {
@@ -488,6 +504,10 @@ function checkForDuplicate(id) {
     return false
 }
 
+// ***************************************************
+// Make sure that decks follow the guidelines.
+// Also brings up the login form if there is no logged in user.
+// ***************************************************
 function validateDeck() {
     if (!userInSession.isLoggedIn) {
         content.innerHTML = ''

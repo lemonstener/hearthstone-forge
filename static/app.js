@@ -3,12 +3,13 @@ const content = document.querySelector('.content')
 const logoHolder = document.querySelector('#logo-holder')
 const hsLogo = document.querySelector('#hs-logo')
 const nav = document.querySelector('nav')
-const forgeLink = document.querySelector('#forge')
-const decksLink = document.querySelector('#decks')
-const setsLink = document.querySelector('#sets')
-const newsLink = document.querySelector('#news')
 
-const BASE_URL = 'https://hearthstone-forge.herokuapp.com'
+
+const BASE_URL = 'https://hearthstone-forge.herokuapp.com/'
+
+// ***************************************************
+// Server will remember logged in users.
+// ***************************************************
 
 async function checkForLoggedInUser() {
     const res = await axios.get(`${BASE_URL}/session`)
@@ -26,9 +27,26 @@ async function checkForLoggedInUser() {
 
 checkForLoggedInUser()
 
+// ***************************************************
+// This variable is used to store information about decks pulled from the database.
+// Since I haven't learned about caching yet this is how I'm doing it at this point in time.
+// Current page affects the functionality of a back button defined in sets.js.
+// ***************************************************
+
 const currentDecks = {
     currentPage: ''
 }
+
+
+// ***************************************************
+// Store information about the current user in session.
+
+// deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
+// tableArr keeps track of how many rows are in the table and helps keeping it organized.
+
+// editMode,deckToEdit and editCards are used only when users update their decks.
+// ***************************************************
+
 
 const userInSession = {
     isLoggedIn: false,
@@ -44,11 +62,12 @@ const userInSession = {
         editMode: false,
         deckToEdit: '',
         editCards: []
-            // deckArr keeps track of the length of the deck. Maximum of 30 cards allowed.
-            // tableArr keeps track of how many rows are in the table and
-            // helps keeping it organized.
     }
 }
+
+// ***************************************************
+// Add different functionaly to the navbar depending on whether a user is logged in.
+// ***************************************************
 
 hsLogo.addEventListener('click', function() {
     clearInterval(addShake)
@@ -92,15 +111,6 @@ hsLogo.addEventListener('click', function() {
             resetNav()
             allSets()
         })
-
-        // I plan on adding a news section to the website at some point.
-
-        // const newsLink = document.createElement('a')
-        // const newsText = document.createTextNode("News")
-        // newsLink.id = 'news'
-        // newsLink.href = ''
-        // newsLink.style.color = 'white'
-        // newsLink.append(newsText)
 
         nav.append(forgeLink, decksLink, setsLink)
         if (!userInSession.isLoggedIn) {
@@ -176,7 +186,9 @@ hsLogo.addEventListener('click', function() {
     }
 })
 
+// ***************************************************
 // Helper functions
+// ***************************************************
 
 function resetDeckBuilder() {
     userInSession.deckBuilder.format = ''
@@ -205,6 +217,12 @@ function resetNav() {
 }
 
 content.id = 'home'
+
+// ***************************************************
+// When you first open the website the logo will 'shake' in order to get the user's attention.
+// Clicking it will disable the shake.
+// The code for that is contained at the bottom of the css file.
+// ***************************************************
 
 const addShake = setInterval(() => {
     hsLogo.classList.add('shake-horizontal')

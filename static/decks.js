@@ -1,3 +1,8 @@
+// ***************************************************
+// Create 10 different elements, one for each class and style them.
+// For each class, display the appropriate decks.
+// ***************************************************
+
 function prepareAllDecksPanel() {
     resetDeckBuilder()
     resetContent()
@@ -14,10 +19,7 @@ function prepareAllDecksPanel() {
             titleHolder.style.backgroundColor = classes[c].color
 
             const title = document.createElement('h3')
-            title.style.color = 'white'
-            title.style.fontSize = '1.4rem'
-            title.style.webkitTextStrokeWidth = '.1px'
-            title.style.webkitTextStrokeColor = 'black'
+            title.classList.add('class-title')
             title.innerText = `${classes[c].name}`
 
             const decksShowcase = document.createElement('div')
@@ -39,6 +41,8 @@ async function getDecksFromAPI() {
         appendTo.append(createBanner(el))
     }
 }
+
+// How a deck is displayed.
 
 function createBanner(deck) {
     const deckHolder = document.createElement('div')
@@ -123,6 +127,11 @@ function createBanner(deck) {
     return deckHolder
 }
 
+// ***************************************************
+// Get information about deck.
+// Information is fetched from the currentDecks variable and not the API.
+// ***************************************************
+
 function displayDeck(num) {
     content.classList.add('fade-out')
     setTimeout(() => {
@@ -140,6 +149,8 @@ function displayDeck(num) {
 
         const backButton = document.createElement('div')
         backButton.innerHTML = '<span id="back-set-button">&#10232;</span>'
+            // If the user accessed the deck from the User Page return to the User page.
+            // If the user accessed the deck from the Browse Decks page return to the Browse Decks page.
         backButton.addEventListener('click', currentDecks.currentPage)
 
         const heading = document.createElement('div')
@@ -298,6 +309,10 @@ function duplicate(card) {
 
     tr.append(symbol)
 }
+
+// ***************************************************
+// Different actions users can take which interact with the server and database.
+// ***************************************************
 
 async function favUnfav() {
     const deck = this.parentElement.getAttribute('deck-id')

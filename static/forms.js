@@ -260,11 +260,13 @@ function showDeckSubmissionForm() {
     if (userInSession.deckBuilder.editMode) {
         submitBTN.addEventListener('click', function(e) {
             e.preventDefault()
+            submitBTN.disabled = true
             patchDeck()
         })
     } else {
         submitBTN.addEventListener('click', function(e) {
             e.preventDefault()
+            submitBTN.disabled = true
             postDeck()
         })
     }
