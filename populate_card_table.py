@@ -93,15 +93,19 @@ for key in keys:
     current = 'Naxxramas'
   if current == 'Core 2021':
     current = 'Core'
+
+  # Card information taken from RAPID API.
+  # Credit goes to omgvamp 
+  # For more information: https://hearthstoneapi.com/
   
   url = f"https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/sets/{current}"
 
   querystring = {"collectible":"1"}
 
-  headers = {
-    'x-rapidapi-key': "8bfdf70366mshf039f2f948a7794p153f88jsn5e942b8afa0b",
-    'x-rapidapi-host': "omgvamp-hearthstone-v1.p.rapidapi.com"
-  }
+  # headers = {
+  #   'x-rapidapi-key': You'll need a RAPID API account for this part. After you register place your key here and add a coma at the end.
+  #   'x-rapidapi-host': "omgvamp-hearthstone-v1.p.rapidapi.com"
+  #   }
 
   response = requests.request("GET", url, headers=headers, params=querystring)
   json = response.json()
