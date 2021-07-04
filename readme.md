@@ -58,7 +58,7 @@ Safari users: Vanilla Tilt might cause a graphical glitch or two.
 
 ### Database
 (Don't mind the typo)
-![Schema!](schema/forge-schema.png 'Schema')
+![Schema!](forge-schema.png 'Schema')
 The database contains information about cards, users, decks and favorites which are in the current published version of the app. There is added functionality for administrators, moderators, comments and news articles all of which unfortunately I lack the time to add to the final version. It is a lot of work for a single boot camp student to do everything in just a few weeks but hopefully I'll find some time in the future and improve the app if there is interest.  
 Flask SQLAlchemy model functionality not currently in use in the Front end:
  - comments - view, post, edit, delete and flag comments
