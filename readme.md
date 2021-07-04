@@ -41,13 +41,14 @@ Safari users: Vanilla Tilt might cause a graphical glitch or two.
 
 ## How to use
 1. Clone this repository.
-2. Register for a RAPID API account if you do not already have one.
-3. Create a new database titled **forge_db** 
-4. Tweek the **populate_card_table.py** file:
+2. Run **pip install -r requirements.txt** in the shell
+3. Register for a RAPID API account if you do not already have one.
+4. Create a new database titled **forge_db** 
+5. Tweek the **populate_card_table.py** file:
     - uncomment everything from line 105 to 108
     - 'x-rapidapi-key': --> your RAPID API key in quotes + a coma at the end.
-5. Run **populate_card_table.py**
-6. Run the **flask run** command in the shell
+6. Run **populate_card_table.py**
+7. Run the **flask run** command in the shell
 
 ### *What populate_card_table.py does*
 > It is essentially a seed file that will fetch all the needed data from the Hearthstone API and create all the tables. From now on card data will be requested from our own API. There is a separate seed file called **seed.py** which you can use to specifically test user functionality that does not affect the cards table. This is done so you don't have to wait a full minute each time you want to reset users and try something different.
