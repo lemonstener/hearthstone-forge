@@ -366,7 +366,6 @@ class Deck(db.Model):
     def favorite_count(self):
         '''Display how many times this deck has been favorited by other users.'''
 
-        count = len(self.favorites)
         return len(self.favorites)
 
     def comment_count(self):
