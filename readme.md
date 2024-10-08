@@ -1,7 +1,7 @@
 # The Forge
 
 ## NOTE
-This application is currently hosted on Heroku. Due to Heroku eliminating the Free tier, you will not be able to view it. You can still view all of the code while I'm sorting this issue out.
+This application is currently hosted on Heroku. Because Heroku has eliminated the Free tier, you are not currently able to view the deployed version. You can still view all of the code while I'm sorting this issue out.
 
 ## Table of Contents
   - [Overview](#overview)
