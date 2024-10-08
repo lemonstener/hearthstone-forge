@@ -1,6 +1,6 @@
 # The Forge
 
-##NOTE
+## NOTE
 This application is currently hosted on Heroku. Due to Heroku eliminating the Free tier, you will not be able to view it. You can still view all of the code while I'm sorting this issue out.
 
 ## Table of Contents
